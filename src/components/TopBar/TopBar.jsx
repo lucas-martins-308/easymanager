@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Dropdown } from 'react-bootstrap';
-import './TopBar.css';
+import './index.css';
 import logo from '../../assets/Logo_Art_Hostel_Abaporu.png';
 
 export default function TopBar() {
