@@ -1,0 +1,70 @@
+.menu-dropdown{
+    display: flex;
+}
+/* Estilização dos Dropdowns */
+.custom-dropdown .dropdown-toggle {
+    font-size: xx-large;
+    font-family: 'Jomhuria', cursive;
+    color: white;
+    border: none;
+    background: #142f0e67;
+    padding: 8px 12px;
+    transition: background-color 0.3s, color 0.3s;
+}
+  
+.custom-dropdown .dropdown-toggle:hover {
+    background-color: #142F0E;
+}
+  
+.custom-dropdown .dropdown-menu {
+    background-color: #1A4A20; /* Verde escuro */
+    padding: 0;
+    margin-top: 5px;
+    display: block; 
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.custom-dropdown.show .dropdown-menu {
+    opacity: 1;
+}
+
+/* Estilização dos Itens do Dropdown */
+.custom-dropdown .dropdown-item {
+    padding: 12px 16px;
+    font-size: 25px;
+    font-family: 'Jomhuria', cursive;
+    color: #e0e0e0; /* Cor dos textos clara */
+    background-color: #1a5323; /* Cor de fundo verde médio */
+    border-bottom: 1px solid #1A4A20; /* Separador mais escuro */
+    display: block; /* Garante que os itens fiquem um abaixo do outro */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Efeito hover dos itens */
+.custom-dropdown .dropdown-item:hover {
+    background-color: #366F45; /* Tom mais claro de verde no hover */
+    color: #fff; /* Cor ao passar o mouse */
+}
+
+/* Itens ativos (quando clicados ou selecionados) */
+.custom-dropdown .dropdown-item.active,
+.custom-dropdown .dropdown-item:active {
+    background-color: #4A8A5C; /* Verde mais claro quando ativo */
+    color: #ffffff;
+}
+
+/* Remover a borda do último item */
+.custom-dropdown .dropdown-item:last-child {
+    border-bottom: none;
+}
+
+/* Adicionar uma pequena sombra ao menu para destaque */
+.custom-dropdown .dropdown-menu {
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Transição suave ao abrir o menu */
+.custom-dropdown .dropdown-menu {
+    border-radius: 4px;
+}
