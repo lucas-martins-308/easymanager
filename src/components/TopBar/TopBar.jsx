@@ -1,14 +1,14 @@
 import './index.css';
 import logo from '../../assets/Logo_Art_Hostel_Abaporu.png';
-import MenuDropdown from './MenuDropdown/MenuDropdown';
+import Navbar from '../TopBar/Navbar/Navbar.jsx'
 
 
-export default function TopBar() {
+export default function TopBar({ setCurrentPage }) {
 
   return (
     <div className="topbar">
       <img src={logo} alt="Logo" className="topbar-logo" />
-      <MenuDropdown/>
+        <Navbar/>
       <h1>Usuário</h1>
     </div>
   );
