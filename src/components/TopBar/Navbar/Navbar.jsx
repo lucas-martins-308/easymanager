@@ -1,13 +1,13 @@
-import "./index.css"
+import './index.css';
 
 export default function Navbar({ setCurrentPage }) {
-    return(
-        <div id="navbar">
-            <botton class="navbar-button" onClick={() => setCurrentPage('home')}>Mapa</botton>
-            <botton class="navbar-button" onClick={() => setCurrentPage('home')}>Reservas</botton>
-            <botton class="navbar-button" onClick={() => setCurrentPage('home')}>Estoque</botton>
-            <botton class="navbar-button" onClick={() => setCurrentPage('home')}>Financeiro</botton>
-            <botton class="navbar-button" onClick={() => setCurrentPage('home')}>Admin</botton>
-        </div>
-    )
+  return (
+    <div id="navbar">
+      <button className="navbar-button" onClick={() => setCurrentPage('map')}>Mapa</button>
+      <button className="navbar-button" onClick={() => setCurrentPage('reservations')}>Reservas</button>
+      <button className="navbar-button" onClick={() => setCurrentPage('stock')}>Estoque</button>
+      <button className="navbar-button" onClick={() => setCurrentPage('financial')}>Financeiro</button>
+      <button className="navbar-button" onClick={() => setCurrentPage('admin')}>Admin</button>
+    </div>
+  );
 }

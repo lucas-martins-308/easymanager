@@ -4,13 +4,12 @@ import ViewingNotes from "../ViewingNotes/ViewingNotes";
 import LogoHome from "../LogoHome/LogoHome"
 import MenuDropdown from "../TopBar/MenuDropdown/MenuDropdown";
 
-export default function() {
+export default function Map() {
 
     return(
         <>
-        <div id="home">
+        <div id="map">
         <MenuDropdown/>
-
             <ViewingNotes/>
             <ViewingNotes/>
             <ViewingNotes/>
