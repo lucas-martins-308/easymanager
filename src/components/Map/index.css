@@ -1,0 +1,8 @@
+#map{
+    min-height: 83.8%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: center;
+    padding-top: 45px;
+}
