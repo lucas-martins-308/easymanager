@@ -9,7 +9,6 @@ export default function Map() {
     return(
         <>
         <div id="map">
-        <MenuDropdown/>
             <ViewingNotes/>
             <ViewingNotes/>
             <ViewingNotes/>

@@ -8,7 +8,7 @@ export default function TopBar({ setCurrentPage }) {
   return (
     <div className="topbar">
       <img src={logo} alt="Logo" className="topbar-logo" />
-        <Navbar/>
+        <Navbar setCurrentPage={setCurrentPage} />
       <h1>Usuário</h1>
     </div>
   );
