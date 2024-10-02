@@ -5,7 +5,7 @@
     width: 420px;
     height: 260px;
     margin: 10px;
-    border-radius: 4px;
+    border-radius: 2px;
     background: #FFFFFF;
 
 }
@@ -18,5 +18,5 @@
     font-family: 'Jomhuria', cursive;
     color: #FFFFFF;
     margin-top: 0px;
-    border-radius: 4px 4px 0px 0px;
+    border-radius: 2% 2px 0px 0px;
 }
