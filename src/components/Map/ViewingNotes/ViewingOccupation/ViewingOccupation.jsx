@@ -1,6 +1,6 @@
 import './index.css'
 
-export default function ViewingNotes() {
+export default function ViewingOccupation() {
 
     return(
         <>

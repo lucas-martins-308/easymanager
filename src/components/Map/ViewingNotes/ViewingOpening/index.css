@@ -13,10 +13,10 @@
 #viewing-notes h1{
     font-weight: 400;
     padding-top: 5px;
-    background-color: #7B9666;
+    background: #CF7C7C;
     font-size: 30px;
     font-family: 'Jomhuria', cursive;
     color: #FFFFFF;
     margin-top: 0px;
-    border-radius: 2% 2px 0px 0px;
+    border-radius: 2px 2px 0px 0px;
 }
