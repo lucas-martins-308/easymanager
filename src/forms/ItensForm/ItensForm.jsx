@@ -1,8 +1,7 @@
-import {useEffect, useState} from 'react';
-import initialUsers from "../../data/users.json";
+import { useEffect, useState } from 'react';
+import initialUsers from "../../data/users.json"; // Verifique se isso é realmente um array de itens
 
 function ItensForm() {
-
     const [formData, setFormData] = useState({});
     const [itens, setItens] = useState([]);
 
@@ -11,37 +10,39 @@ function ItensForm() {
         setItens(storedItens);
     }, []);
 
-    const fields = {
-        itens: [
-            {label: "Nome item",name: "nome_item", type: "text"},
-            {label:  "Quantidade",name: "quantidade", type: "text"},
-            {label: "Preco",name: "preco", type: "text"},
-            {label: "Data validade",name: "data_validade", type: "date"},
-        ]
-    };
+    const fields = [
+        { label: "Nome item", name: "nome_item", type: "text" },
+        { label: "Quantidade", name: "quantidade", type: "text" },
+        { label: "Preço", name: "preco", type: "text" },
+        { label: "Data validade", name: "data_validade", type: "date" },
+    ];
 
     const handleChange = (e) => {
-        const {name, value} = e.target;
-        setFormData({...formData, [name]: value});
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const newItens = {...formData, itens};
+        const newItens = { ...formData };
         const updatedItens = [...itens, newItens];
 
+        // Salva os itens atualizados no localStorage
         localStorage.setItem('itens', JSON.stringify(updatedItens));
-
-        alert(`Item cadastrado com sucesso!`);
+        
+        // Atualiza o estado local com os novos itens e limpa o formulário
+        setItens(updatedItens);
         setFormData({});
+        
+        alert(`Item cadastrado com sucesso!`);
     };
 
     return (
         <form onSubmit={handleSubmit}>
             <h2>Cadastro de item</h2>
 
-            {fields.itens.map((field) => (
+            {fields.map((field) => (
                 <div key={field.name}>
                     <label>{field.label}:</label>
                     <input
@@ -56,10 +57,12 @@ function ItensForm() {
 
             <button type="submit">Cadastrar</button>
 
-            <h3>Usuários Cadastrados:</h3>
+            <h3>Itens Cadastrados:</h3>
             <ul>
-                {itens.map((iten, index) => (
-                    <li key={index}>{iten} - {iten}</li>
+                {itens.map((item, index) => (
+                    <li key={index}>
+                        {item.nome_item} - {item.quantidade} - {item.preco} - {item.data_validade}
+                    </li>
                 ))}
             </ul>
         </form>
