@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Topbar from './components/TopBar/TopBar';
 import Map from './components/Map/Map';
 import Reservations from './components/Reservations/Reservations';
@@ -7,27 +7,28 @@ import Financial from './components/Financial/Financial';
 import Admin from './components/Admin/Admin';
 import Login from './components/auth/Login';
 import usersData from './data/users.json';
+import itensData from './data/itens.json';
 import './app.css';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('map');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Carregar dados iniciais e checar autenticação
   useEffect(() => {
-    // Carrega usuários no localStorage se ainda não estiverem lá
     if (!localStorage.getItem('users')) {
       localStorage.setItem('users', JSON.stringify(usersData));
     }
 
-    // Verifica se há um usuário logado no localStorage
+    if (!localStorage.getItem('itens')) {
+      localStorage.setItem('itens', JSON.stringify(itensData));
+    }
+
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       setIsAuthenticated(true);
     }
   }, []);
 
-  // Função para atualizar o estado de autenticação após o login
   const handleLogin = () => {
     setIsAuthenticated(true);
   };

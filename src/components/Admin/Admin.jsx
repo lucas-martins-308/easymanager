@@ -1,6 +1,6 @@
 import './index.css';
 import React, { useState } from 'react';
-import UserForm from '../../auth/UserForm/UserForm.jsx';
+import UserForm from '../../forms/UserForm/UserForm.jsx';
 
 export default function Admin() {
     const [role, setRole] = useState(null);

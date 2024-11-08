@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 
-function Login({ onLogin }) {
+export default function Login({ onLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -51,5 +51,3 @@ function Login({ onLogin }) {
     </div>
   );
 }
-
-export default Login;
