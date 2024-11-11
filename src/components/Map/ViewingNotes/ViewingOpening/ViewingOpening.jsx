@@ -1,11 +1,11 @@
 import './index.css'
 
-export default function ViewingNotes() {
+export default function ViewingOpening() {
 
     return(
         <>
             <div id='viewing-notes'>
-                <h1>Titulo</h1>
+                <h1>Em aberto</h1>
             </div>
         </>
     )
