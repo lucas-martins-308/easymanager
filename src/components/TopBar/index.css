@@ -22,3 +22,13 @@
     font-family: 'Jomhuria', cursive;
     color: #fff;
 }
+
+.navbar{
+    background-color: #142F0E;
+    font-size: xx-large;
+    font-family: 'Jomhuria', cursive;
+    color: white;
+    margin: 10px;
+    transition: background-color 0.3s, color 0.3s;
+    border: none;
+}   
