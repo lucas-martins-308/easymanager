@@ -1,0 +1,69 @@
+
+.login-container {
+    position: relative;
+    height: 100vh; 
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    flex-direction: column; 
+    background-image: url('/src/assets/Logo.png');
+    background-color: #142f0e;
+    background-size: 75%;
+    background-repeat: no-repeat;
+    background-position: center; 
+  }
+
+  .imgLogin{
+    background-color: white;
+    width: 100px;
+    height: 100px;
+    background-image: url('/src/assets/Logo.png');
+    background-position: center;
+    background-size: 100%;
+    border-radius: 100%;
+    margin-bottom: 20px;
+    display: inline-flex;
+    align-content: center;
+
+  }
+  
+  .login-box label {
+    color: rgb(113, 113, 113);
+    font-weight: bold;
+  }
+
+  .login-box {
+    background: rgba(255, 255, 255, 0.9); 
+    padding: 40px; 
+    border-radius: 20px; 
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4); 
+    width: 300px; 
+    max-width: 100%; 
+    text-align: center; 
+  }
+  
+  .login-box input {
+    width: 80%; 
+    padding: 12px; 
+    margin: 10px; 
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+  }
+  
+  .login-box button {
+    width: 50%;
+    padding: 12px;
+    background-color: #142f0e; 
+    color: white; 
+    border: none;
+    border-radius: 5px; 
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .login-box button:hover {
+    background-color: #45a049; /* Efeito de hover */
+  }
+  
