@@ -1,0 +1,28 @@
+/* DropdownButton.css */
+
+.dropdown-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-button {
+    background-color: #142F0E;
+    font-size: xx-large;
+    font-family: 'Jomhuria', cursive;
+    color: white;
+    margin: 10px;
+    transition: background-color 0.3s, color 0.3s;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .dropdown-content {
+    position: absolute;
+    z-index: 1;
+    display: none; 
+  }
+  
+  .dropdown-content.show {
+    display: block; 
+  }
+  

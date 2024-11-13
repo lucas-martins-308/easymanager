@@ -1,5 +1,5 @@
-import'./index.css'
 import React, { useState } from 'react';
+import './index.css';
 
 const DropdownButton = ({ title, children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -7,14 +7,14 @@ const DropdownButton = ({ title, children }) => {
   const toggleDropdown = () => setIsOpen(!isOpen);
 
   return (
-    <div style={{ position: 'relative', display: 'inline-block' }}>
-      <button onClick={toggleDropdown}>{title}</button>
+    <div className="dropdown-container">
+      <button className="dropdown-button" onMouseEnter={toggleDropdown} >
+        {title}
+      </button>
       
-      {isOpen && (
-        <div style={{ position: 'absolute', top: '100%', left: '0', zIndex: 1, backgroundColor: '#fff', border: '1px solid #ccc', padding: '10px' }}>
-          {children}
-        </div>
-      )}
+      <div className={`dropdown-content ${isOpen ? 'show' : ''}`} onMouseLeave={toggleDropdown}>
+        {children}
+      </div>
     </div>
   );
 };
