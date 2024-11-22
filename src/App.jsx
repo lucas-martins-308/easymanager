@@ -32,12 +32,17 @@ function App() {
   const handleLogin = () => {
     setIsAuthenticated(true);
   };
+  
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem('currentUser');
+  };
 
   return (
     <div className='app-container'>
       {isAuthenticated ? (
         <>
-          <Topbar setCurrentPage={setCurrentPage} />
+          <Topbar setCurrentPage={setCurrentPage} handleLogout={handleLogout} />
           <main>
             {currentPage === 'map' && <Map />}
             {currentPage === 'reservations' && <Reservations />}
