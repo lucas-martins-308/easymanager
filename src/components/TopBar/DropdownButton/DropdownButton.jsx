@@ -7,12 +7,12 @@ const DropdownButton = ({ title, children }) => {
   const toggleDropdown = () => setIsOpen(!isOpen);
 
   return (
-    <div className="dropdown-container">
-      <button className="dropdown-button" onMouseEnter={toggleDropdown} >
+    <div className="dropdown-container" onMouseEnter={toggleDropdown} onMouseLeave={toggleDropdown}>
+      <button className="dropdown-button"  >
         {title}
       </button>
       
-      <div className={`dropdown-content ${isOpen ? 'show' : ''}`} onMouseLeave={toggleDropdown}>
+      <div className={`dropdown-content ${isOpen ? 'show' : ''}`} >
         {children}
       </div>
     </div>
