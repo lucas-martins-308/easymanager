@@ -1,5 +1,3 @@
-/* DropdownButton.css */
-
 .dropdown-container {
     position: relative;
     display: inline-block;
@@ -12,14 +10,15 @@
     color: white;
     margin: 10px;
     transition: background-color 0.3s, color 0.3s;
-    border: none;
     cursor: pointer;
   }
   
   .dropdown-content {
     position: absolute;
     z-index: 1;
-    display: none; 
+    display: none;
+    width: 100%;
+    height: 100%;
   }
   
   .dropdown-content.show {

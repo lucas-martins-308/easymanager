@@ -1,19 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Jomhuria&display=swap');
 
-/* Estilização da top bar */
 .topbar {
     display: flex;
     align-items: center;
     background: #142F0E;
-    top: 0;
     width: 100%;
-    z-index: 1000;
-    
-    justify-content: space-around;
-}
-  
-.topbar-logo {
-    height: 45px;
 }
   
 .topbar h1{
@@ -22,13 +13,3 @@
     font-family: 'Jomhuria', cursive;
     color: #fff;
 }
-
-.navbar{
-    background-color: #142F0E;
-    font-size: xx-large;
-    font-family: 'Jomhuria', cursive;
-    color: white;
-    margin: 10px;
-    transition: background-color 0.3s, color 0.3s;
-    border: none;
-}   

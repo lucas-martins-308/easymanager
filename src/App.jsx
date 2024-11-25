@@ -1,61 +1,51 @@
-import { useState, useEffect } from 'react';
-import Topbar from './components/TopBar/TopBar';
-import Map from './components/Map/Map';
-import Reservations from './components/Reservations/Reservations';
-import Stock from './components/Stock/Stock';
-import Financial from './components/Financial/Financial';
-import Admin from './components/Admin/Admin';
-import Login from './components/auth/Login';
-import usersData from './data/users.json';
-import itensData from './data/itens.json';
 import './app.css';
+import {Outlet} from "react-router-dom";
+import Topbar from "./components/TopBar/TopBar.jsx";
+import Login from "./pages/auth/Login.jsx";
+import {useEffect, useState} from "react";
+import usersData from "./data/users.json";
+import itensData from "./data/itens.json";
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('map');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    if (!localStorage.getItem('users')) {
-      localStorage.setItem('users', JSON.stringify(usersData));
-    }
+    const handleLogin = () => {
+        setIsAuthenticated(true);
+    };
 
-    if (!localStorage.getItem('itens')) {
-      localStorage.setItem('itens', JSON.stringify(itensData));
-    }
+    const handleLogout = () => {
+        setIsAuthenticated(false);
+        localStorage.removeItem('currentUser');
+    };
 
-    const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      setIsAuthenticated(true);
-    }
-  }, []);
+    useEffect(() => {
+        if (!localStorage.getItem('users')) {
+            localStorage.setItem('users', JSON.stringify(usersData));
+        }
 
-  const handleLogin = () => {
-    setIsAuthenticated(true);
-  };
-  
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem('currentUser');
-  };
+        if (!localStorage.getItem('itens')) {
+            localStorage.setItem('itens', JSON.stringify(itensData));
+        }
 
-  return (
-    <div className='app-container'>
-      {isAuthenticated ? (
-        <>
-          <Topbar setCurrentPage={setCurrentPage} handleLogout={handleLogout} />
-          <main>
-            {currentPage === 'map' && <Map />}
-            {currentPage === 'reservations' && <Reservations />}
-            {currentPage === 'stock' && <Stock />}
-            {currentPage === 'financial' && <Financial />}
-            {currentPage === 'admin' && <Admin />}
-          </main>
-        </>
-      ) : (
-        <Login onLogin={handleLogin} />
-      )}
-    </div>
-  );
+        const currentUser = localStorage.getItem('currentUser');
+        if (currentUser) {
+            setIsAuthenticated(true);
+        }
+    }, []);
+
+
+    return (
+        <div className='app-container'>
+            {isAuthenticated ? (
+                <>
+                    <Topbar handleLogout={handleLogout}/>
+                    <Outlet/>
+                </>
+            ) : (
+                <Login onLogin={handleLogin}/>
+            )}
+        </div>
+    );
 }
 
 export default App;
