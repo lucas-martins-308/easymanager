@@ -1,39 +1,39 @@
- /* Centraliza cada tabela */
- .table-container {
-    margin: 20px 0;
-    width: 80%; /* Define a largura da tabela */
-    text-align: center;
-  }
-  
-  table {
+.itens-form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input {
     width: 100%;
-    border-collapse: collapse;
-  }
-  
-  th, td {
+    padding: 8px;
     border: 1px solid #ddd;
-    padding: 12px;
-    background-color: #ffffff; /* Fundo branco estático */
-  }
-  
-  th {
-    background-color: #f4f4f4;
-  }
-  
-  /* Remove as cores alternadas nas linhas e o hover */
-  tr {
-    background-color: #ffffff; /* Garante que todas as linhas tenham fundo branco */
-  }
-  
-  button {
-    background-color: #4CAF50;
+    border-radius: 4px;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
     color: white;
-    padding: 10px 20px;
     border: none;
+    border-radius: 4px;
     cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #45a049;
-  }
-  
+}
+
+.btn-submit:hover {
+    background-color: #0056b3;
+}

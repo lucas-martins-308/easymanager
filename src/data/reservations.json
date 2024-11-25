@@ -1,0 +1,58 @@
+[
+  {
+    "checkIn": "2024-11-30",
+    "checkOut": "2024-12-05",
+    "canal": "Website",
+    "nome": "João Silva",
+    "email": "joao.silva@example.com",
+    "birthDate": "1985-03-15",
+    "phone": "+55 11 98765-4321",
+    "document": "123.456.789-10",
+    "identification": "ID12345",
+    "country": "Brasil",
+    "gender": "Masculino",
+    "notes": "Prefere quarto silencioso."
+  },
+  {
+    "checkIn": "2024-12-10",
+    "checkOut": "2024-12-15",
+    "canal": "Agência",
+    "nome": "Maria Oliveira",
+    "email": "maria.oliveira@example.com",
+    "birthDate": "1990-07-22",
+    "phone": "+55 21 99876-5432",
+    "document": "987.654.321-00",
+    "identification": "ID67890",
+    "country": "Brasil",
+    "gender": "Feminino",
+    "notes": "Solicitou cama extra."
+  },
+  {
+    "checkIn": "2024-12-20",
+    "checkOut": "2024-12-25",
+    "canal": "Telefone",
+    "nome": "Carlos Almeida",
+    "email": "carlos.almeida@example.com",
+    "birthDate": "1975-01-10",
+    "phone": "+55 31 91234-5678",
+    "document": "321.654.987-00",
+    "identification": "ID98765",
+    "country": "Brasil",
+    "gender": "Masculino",
+    "notes": "Vegano, solicita opções no café da manhã."
+  },
+  {
+    "checkIn": "2024-11-28",
+    "checkOut": "2024-12-03",
+    "canal": "Website",
+    "nome": "Ana Costa",
+    "email": "ana.costa@example.com",
+    "birthDate": "1988-05-05",
+    "phone": "+55 19 92345-6789",
+    "document": "456.789.123-10",
+    "identification": "ID45678",
+    "country": "Brasil",
+    "gender": "Feminino",
+    "notes": "Chegada após as 22h."
+  }
+]

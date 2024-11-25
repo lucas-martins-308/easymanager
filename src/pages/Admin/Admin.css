@@ -1,0 +1,40 @@
+/* Estilos para o contêiner principal */
+.Admins {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f9f9f9; /* Fundo claro para contraste */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 50px auto;
+}
+
+/* Estilo para o título */
+.Admins h1 {
+    color: #142F0E; /* Verde escuro */
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+/* Estilo para os botões */
+.Admins button {
+    background-color: #142F0E; /* Verde escuro */
+    color: white;
+    font-size: 1rem;
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.Admins button:hover {
+    background-color: #10400e; /* Tom mais escuro no hover */
+    transform: scale(1.05); /* Leve aumento no hover */
+}
+
+.Admins button:active {
+    transform: scale(0.95); /* Leve redução no clique */
+}
