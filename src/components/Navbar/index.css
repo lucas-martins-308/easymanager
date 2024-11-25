@@ -1,0 +1,25 @@
+#navbar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    z-index: 1000;
+    font-size: xx-large;
+    color: white;
+    transition: background-color 0.3s, color 0.3s;
+    border: none;
+}
+
+.navbar-logo {
+    height: 45px;
+}
+
+.navbar-link {
+    background-color: #142F0E;
+    font-size: xx-large;
+    font-family: 'Jomhuria', cursive;
+    color: white;
+    margin: 10px;
+    transition: background-color 0.3s, color 0.3s;
+    border: none;
+}
