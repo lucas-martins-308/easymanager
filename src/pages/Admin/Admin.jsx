@@ -1,4 +1,4 @@
-import './index.css';
+import './Admin.css';
 import React, {useState} from 'react';
 import UserForm from '../../forms/UserForm/UserForm.jsx';
 

@@ -17,7 +17,8 @@ function Navbar(handleLogout) {
                     <Link to={"reservations"} className="navbar-link">Ação 1</Link>
                 </DropdownButton>
                 <DropdownButton id="navbar" title="Estoque">
-                    <Link to={"stock"} className="navbar-link">Ação 1</Link>
+                    <Link to={"stock"} className="navbar-link">Cadastrar Produto</Link>
+                    <Link to={"itensTable"} className="navbar-link">Inventário</Link>
                 </DropdownButton>
                 <DropdownButton id="navbar" title="Financeiro">
                     <Link to={"financial"} className="navbar-link">Ação 1</Link>

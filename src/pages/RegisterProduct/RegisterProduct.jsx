@@ -1,7 +1,9 @@
+import './RegisterProduct.css';
+
 import { useEffect, useState } from 'react';
 import initialUsers from "../../data/users.json"; // Verifique se isso é realmente um array de itens
 
-function ItensForm() {
+function RegisterProduct() {
     const [formData, setFormData] = useState({});
     const [itens, setItens] = useState([]);
 
@@ -88,7 +90,7 @@ function ItensForm() {
     );
 }
 
-export default ItensForm;
+export default RegisterProduct;
 
 
 

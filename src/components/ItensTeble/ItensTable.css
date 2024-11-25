@@ -1,0 +1,43 @@
+.itens-table {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #ffffff; /* Fundo branco */
+    font-family: Arial, sans-serif;
+    overflow-x: auto; /* Suporte para rolagem horizontal em telas menores */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse; /* Remove espaços entre as células */
+}
+
+thead tr {
+    background-color: #142F0E; /* Cor da primeira linha */
+    color: #ffffff; /* Texto branco */
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+}
+
+tbody tr {
+    border-bottom: 1px solid #dcdcdc; /* Linha cinza entre as linhas */
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* Fundo alternado cinza claro */
+}
+
+tbody tr:hover {
+    background-color: #e8e8e8; /* Destaque ao passar o mouse */
+}
+
+th {
+    font-weight: bold;
+}
+
+td {
+    color: #333333; /* Cor do texto das células */
+}
