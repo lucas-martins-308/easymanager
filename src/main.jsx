@@ -6,9 +6,9 @@ import Admin from "./pages/Admin/Admin.jsx";
 import Financial from "./pages/Financial/Financial.jsx";
 import Stock from "./pages/Stock/Stock.jsx";
 import Reservations from "./pages/Reservations/reservations.jsx";
-
 import App from "./App.jsx";
 import ItensTable from "./components/ItensTeble/ItensTable.jsx";
+import ReservationForm from "./pages/RegisterReservation/RegisterReservation.jsx";
 
 const router = createBrowserRouter([
     {
@@ -36,8 +36,12 @@ const router = createBrowserRouter([
                 element: <Reservations/>
             },
             {
-                path: "itensTable",
+                path: "itens-table",
                 element: <ItensTable/>
+            },
+            {
+                path: "register-reservation",
+                element: <ReservationForm/>
             }
             ]
     }

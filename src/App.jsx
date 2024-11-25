@@ -5,6 +5,7 @@ import Login from "./pages/auth/Login.jsx";
 import {useEffect, useState} from "react";
 import usersData from "./data/users.json";
 import itensData from "./data/itens.json";
+import reservations from './data/reservations.json';
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -25,6 +26,10 @@ function App() {
 
         if (!localStorage.getItem('itens')) {
             localStorage.setItem('itens', JSON.stringify(itensData));
+        }
+
+        if (!localStorage.getItem('reservations')) {
+            localStorage.setItem('reservations', JSON.stringify(reservations));
         }
 
         const currentUser = localStorage.getItem('currentUser');
