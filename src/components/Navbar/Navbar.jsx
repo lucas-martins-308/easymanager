@@ -15,6 +15,7 @@ function Navbar(handleLogout) {
                 </DropdownButton>
                 <DropdownButton id="navbar" title="Reservas">
                     <Link to={"register-reservation"} className="navbar-link">Cadastrar Reserva</Link>
+                    <Link to={"booking-calendar"} className="navbar-link">Calendário de Reservas</Link>
                 </DropdownButton>
                 <DropdownButton id="navbar" title="Estoque">
                     <Link to={"stock"} className="navbar-link">Cadastrar Produto</Link>
