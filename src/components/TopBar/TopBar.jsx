@@ -1,13 +1,12 @@
 import './index.css';
-import Navbar from '../Navbar/Navbar.jsx'
+import Navbar from '../Navbar/Navbar.jsx';
 
- function TopBar() {
-
-  return (
-    <div className="topbar">
-      <Navbar/>
-    </div>
-  );
+function TopBar({ handleLogout }) {
+    return (
+        <div className="topbar">
+            <Navbar handleLogout={handleLogout} />
+        </div>
+    );
 }
 
 export default TopBar;

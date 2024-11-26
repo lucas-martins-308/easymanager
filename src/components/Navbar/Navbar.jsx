@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import DropdownButton from '../TopBar/DropdownButton/DropdownButton.jsx';
 import logo from "../../assets/Logo_Art_Hostel_Abaporu.png";
 
-function Navbar(handleLogout) {
+function Navbar({handleLogout}) {
     return (
         <div id="navbar">
             <div>
