@@ -1,5 +1,4 @@
-import './ReservationForm.css';
-import { useState } from "react";
+import React, { useState } from "react";
 import "./ReservationForm.css";
 
 const ReservationForm = () => {
@@ -18,8 +17,8 @@ const ReservationForm = () => {
         notes: "",
     });
 
-    const channels = ["Website", "Agência", "Telefone"]; // Opções para o select "canal"
-    const genders = ["Masculino", "Feminino", "Outro"]; // Opções para o select "gênero"
+    const channels = ["Website", "Agência", "Telefone"];
+    const genders = ["Masculino", "Feminino", "Outro"];
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -28,8 +27,13 @@ const ReservationForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        alert("Reserva criada com sucesso!");
-        console.log(formData);
+
+        const storedReservations = JSON.parse(localStorage.getItem("reservations")) || [];
+
+        const updatedReservations = [...storedReservations, formData];
+
+        localStorage.setItem("reservations", JSON.stringify(updatedReservations));
+
         setFormData({
             checkIn: "",
             checkOut: "",
@@ -44,12 +48,13 @@ const ReservationForm = () => {
             gender: "",
             notes: "",
         });
+
+        alert("Reserva criada com sucesso!");
     };
 
     return (
         <form className="reservation-form" onSubmit={handleSubmit}>
             <h2>Criar Reserva</h2>
-
             <label>Check-in:</label>
             <input
                 type="date"
@@ -58,7 +63,6 @@ const ReservationForm = () => {
                 onChange={handleChange}
                 required
             />
-
             <label>Check-out:</label>
             <input
                 type="date"
@@ -166,7 +170,6 @@ const ReservationForm = () => {
                 value={formData.notes}
                 onChange={handleChange}
             ></textarea>
-
             <button type="submit">Criar Reserva</button>
         </form>
     );
