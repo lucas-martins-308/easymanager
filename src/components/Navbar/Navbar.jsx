@@ -1,13 +1,14 @@
+import PropTypes from 'prop-types';
 import './index.css';
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import DropdownButton from '../TopBar/DropdownButton/DropdownButton.jsx';
 import logo from "../../assets/Logo_Art_Hostel_Abaporu.png";
 
-function Navbar(handleLogout) {
+function Navbar({ handleLogout }) {
     return (
         <div id="navbar">
             <div>
-                <img src={logo} alt="Logo" className="navbar-logo"/>
+                <img src={logo} alt="Logo" className="navbar-logo" />
             </div>
             <div>
                 <DropdownButton id="navbar" title="Mapa">
@@ -30,11 +31,15 @@ function Navbar(handleLogout) {
             </div>
             <div>
                 <DropdownButton id="navbar" title="Usuário">
-                    <Link onClick={() => handleLogout()} className="navbar-link">Sair</Link>
+                    <Link onClick={handleLogout} className="navbar-link">Sair</Link>
                 </DropdownButton>
             </div>
         </div>
     );
 }
+
+Navbar.propTypes = {
+    handleLogout: PropTypes.func.isRequired, // Validando a prop handleLogout
+};
 
 export default Navbar;
