@@ -1,22 +1,58 @@
-#viewing-notes-booking-history{
-    text-align: center ;
-    justify-content: center;
-    background-color: rgb(0, 0, 0);
-    width: 420px;
-    height: 260px;
-    margin: 10px;
+#viewing-notes-booking-history {
+    text-align: center;
+    background-color: #FFFFFF;
+    width: 420px; 
+    height: 260px; /* Altura fixa */
+    margin: 10px auto; /* Centraliza o container */
     border-radius: 2px;
-    background: #FFFFFF;
-
+    overflow: hidden; /* Esconde conteúdo que ultrapassar o limite */
+    display: flex; /* Garante que o conteúdo respeite o layout flex */
+    flex-direction: column; /* Coloca os itens (h1 e tabela) em colunas */
 }
 
-#viewing-notes-booking-history h1{
+#viewing-notes-booking-history h1 {
     font-weight: 400;
-    padding-top: 5px;
-    background-color: #2E438D;
+    padding: 10px;
+    background-color: #ffffff;
     font-size: 30px;
     font-family: 'Jomhuria', cursive;
-    color: #FFFFFF;
-    margin-top: 0px;
-    border-radius: 2px 2px 0px 0px;
+    color: #000000;
+    margin: 0;
+    border-radius: 2px 2px 0 0;
+    flex-shrink: 0; /* Impede que o título seja redimensionado */
+}
+
+table {
+    width: 100%; /* A tabela ocupará todo o espaço do contêiner */
+    border-collapse: collapse;
+    margin: 0;
+    overflow: auto; /* Adiciona rolagem automática, se necessário */
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle;
+    width: 100%;
+    
+}
+
+th {
+    background-color: #c8c8c8;
+    color: #000000;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+#viewing-notes-booking-history table {
+    flex-grow: 1; /* Faz a tabela ocupar o espaço restante */
+    overflow-y: auto; /* Habilita rolagem vertical */
 }

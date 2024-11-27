@@ -1,0 +1,8 @@
+th {
+    background-color: #ffffff; /* Fundo branco */
+    color: #000000; /* Texto preto */
+    font-weight: bold; /* Mantém o texto em negrito */
+    padding: 10px;
+    border: 1px solid #ddd; /* Bordas cinzas leves */
+    text-align: center;
+}
