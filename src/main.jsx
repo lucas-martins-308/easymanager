@@ -8,7 +8,7 @@ import Stock from "./pages/Stock/Stock.jsx";
 import App from "./App.jsx";
 import ItensTable from "./components/ItensTeble/ItensTable.jsx";
 import ReservationForm from "./pages/RegisterReservation/RegisterReservation.jsx";
-import ReservationCalendar from "./calendars/ReservationCalendar/ReservationCalendar.jsx";
+import BookingCalendar from "./pages/BookingCalendar/BookingCalendar.jsx";
 
 const router = createBrowserRouter([
     {
@@ -41,7 +41,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "booking-calendar",
-                element: <ReservationCalendar/>
+                element: <BookingCalendar/>
             }
             ]
     }

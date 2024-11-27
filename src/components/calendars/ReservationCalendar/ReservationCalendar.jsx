@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./ReservationCalendar.css";
@@ -8,7 +8,6 @@ const ReservationCalendar = () => {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [filteredReservations, setFilteredReservations] = useState([]);
 
-    // Função para carregar as reservas do localStorage
     const loadReservations = () => {
         const storedReservations = JSON.parse(localStorage.getItem("reservations")) || [];
         setReservations(storedReservations);

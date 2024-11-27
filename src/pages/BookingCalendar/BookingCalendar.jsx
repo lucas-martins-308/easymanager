@@ -1,4 +1,4 @@
-import ReservationCalendar from "../../calendars/ReservationCalendar/ReservationCalendar.jsx";
+import ReservationCalendar from "../../components/calendars/ReservationCalendar/ReservationCalendar.jsx";
 
 
 function BookingCalendar(){
@@ -7,4 +7,4 @@ function BookingCalendar(){
     )
 }
 
-export default ReservationCalendar;
+export default BookingCalendar;
