@@ -1,4 +1,4 @@
-import ReservationForm from "../../forms/ReservationForm/ReservationForm.jsx";
+import ReservationForm from "../../components/forms/ReservationForm/ReservationForm.jsx";
 
 
 function RegisterReservation(){

@@ -1,5 +1,5 @@
 import './index.css';
-import ItensForm from "../../forms/ItensForm/ItensForm.jsx";
+import ItensForm from "../../components/forms/ItensForm/ItensForm.jsx";
 
 export default function Stock() {
     return(

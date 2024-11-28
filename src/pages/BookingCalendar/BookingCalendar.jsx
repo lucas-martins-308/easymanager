@@ -7,4 +7,4 @@ function BookingCalendar(){
     )
 }
 
-export default ReservationCalendar;
+export default BookingCalendar;

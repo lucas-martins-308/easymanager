@@ -1,0 +1,38 @@
+[
+  {
+    "nome": "João Silva",
+    "email": "joao.silva@email.com",
+    "birthDate": "1990-05-10",
+    "phone": "123456789",
+    "document": "123.456.789-00",
+    "country": "Brasil",
+    "gender": "Masculino"
+  },
+  {
+    "nome": "Maria Oliveira",
+    "email": "maria.oliveira@email.com",
+    "birthDate": "1985-09-25",
+    "phone": "987654321",
+    "document": "987.654.321-00",
+    "country": "Brasil",
+    "gender": "Feminino"
+  },
+  {
+    "nome": "Carlos Santos",
+    "email": "carlos.santos@email.com",
+    "birthDate": "1975-03-15",
+    "phone": "456789123",
+    "document": "456.789.123-00",
+    "country": "Brasil",
+    "gender": "Masculino"
+  },
+  {
+    "nome": "Ana Souza",
+    "email": "ana.souza@email.com",
+    "birthDate": "1995-11-20",
+    "phone": "789123456",
+    "document": "789.123.456-00",
+    "country": "Brasil",
+    "gender": "Feminino"
+  }
+]

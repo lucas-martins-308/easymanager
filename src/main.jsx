@@ -1,4 +1,4 @@
-import { createRoot } from 'react-dom/client'
+import {createRoot} from 'react-dom/client'
 import './index.css'
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import Map from "./pages/Map/Map.jsx";
@@ -9,6 +9,7 @@ import App from "./App.jsx";
 import ItensTable from "./components/ItensTeble/ItensTable.jsx";
 import ReservationForm from "./pages/RegisterReservation/RegisterReservation.jsx";
 import ReservationCalendar from "./calendars/ReservationCalendar/ReservationCalendar.jsx";
+import RegisterCustomer from "./pages/RegisterCustomer/RegisterCustomer.jsx";
 
 const router = createBrowserRouter([
     {
@@ -42,11 +43,15 @@ const router = createBrowserRouter([
             {
                 path: "booking-calendar",
                 element: <ReservationCalendar/>
+            },
+            {
+                path: "register-customer",
+                element: <RegisterCustomer/>
             }
-            ]
+        ]
     }
 ])
 
 createRoot(document.getElementById('root')).render(
-                <RouterProvider router={router}/>
+    <RouterProvider router={router}/>
 )
