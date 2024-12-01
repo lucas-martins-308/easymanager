@@ -10,7 +10,7 @@ import ItensTable from "./components/ItensTeble/ItensTable.jsx";
 import ReservationForm from "./pages/RegisterReservation/RegisterReservation.jsx";
 import RegisterCustomer from "./pages/RegisterCustomer/RegisterCustomer.jsx";
 import ProtectedRoute from "./auth/ProtectedRoute.jsx";
-import ReservationCalendar from "./calendars/ReservationCalendar/ReservationCalendar.jsx";
+import ReservationCalendar from "./components/calendars/ReservationCalendar/ReservationCalendar.jsx";
 
 const router = createBrowserRouter([
     {
