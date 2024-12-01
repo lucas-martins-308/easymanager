@@ -1,18 +1,19 @@
 import PropTypes from 'prop-types';
 import './index.css';
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import DropdownButton from '../TopBar/DropdownButton/DropdownButton.jsx';
 import logo from "../../assets/Logo_Art_Hostel_Abaporu.png";
+import ProtectedRoute from "../../auth/ProtectedRoute.jsx";
 
-function Navbar({ handleLogout }) {
+function Navbar({handleLogout}) {
     return (
         <div id="navbar">
             <div>
-                <img src={logo} alt="Logo" className="navbar-logo" />
+                <img src={logo} alt="Logo" className="navbar-logo"/>
             </div>
             <div>
                 <DropdownButton id="navbar" title="Mapa">
-                    <Link to={"map"} className="navbar-link">Map</Link>
+                    <Link to={"/"} className="navbar-link">Map</Link>
                 </DropdownButton>
                 <DropdownButton id="navbar" title="Reservas">
                     <Link to={"register-reservation"} className="navbar-link">Cadastrar Reserva</Link>
@@ -26,9 +27,11 @@ function Navbar({ handleLogout }) {
                 <DropdownButton id="navbar" title="Financeiro">
                     <Link to={"financial"} className="navbar-link">Ação 1</Link>
                 </DropdownButton>
-                <DropdownButton id="navbar" title="Admin">
-                    <Link to={"admin"} className="navbar-link">Cadastrar Usuários</Link>
-                </DropdownButton>
+                <ProtectedRoute allowedRoles={['admin']}>
+                    <DropdownButton id="navbar" title="Admin">
+                        <Link to={"admin"} className="navbar-link">Cadastrar Usuários</Link>
+                    </DropdownButton>
+                </ProtectedRoute>
             </div>
             <div>
                 <DropdownButton id="navbar" title="Usuário">
