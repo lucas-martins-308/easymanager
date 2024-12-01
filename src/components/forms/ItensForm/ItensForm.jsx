@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import initialUsers from "../../data/users.json"; // Verifique se isso é realmente um array de itens
+import initialUsers from "../../../data/users.json"; // Verifique se isso é realmente um array de itens
 
 function ItensForm() {
     const [formData, setFormData] = useState({});

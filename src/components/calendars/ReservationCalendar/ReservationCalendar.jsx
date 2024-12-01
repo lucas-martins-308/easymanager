@@ -1,27 +1,21 @@
-import { useState, useEffect } from "react";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
-import "./ReservationCalendar.css";
+import React, { useState, useEffect } from 'react';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import './ReservationCalendar.css';
 
 const ReservationCalendar = () => {
     const [reservations, setReservations] = useState([]);
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [filteredReservations, setFilteredReservations] = useState([]);
 
-    const loadReservations = () => {
-        const storedReservations = JSON.parse(localStorage.getItem("reservations")) || [];
-        setReservations(storedReservations);
-    };
-
     useEffect(() => {
-        loadReservations();
-
-        const interval = setInterval(loadReservations, 500);
-
-        return () => clearInterval(interval);
+        // Carregar reservas do localStorage
+        const storedReservations = JSON.parse(localStorage.getItem('reservations')) || [];
+        setReservations(storedReservations);
     }, []);
 
     useEffect(() => {
+        // Filtrar reservas para o dia selecionado
         const filtered = reservations.filter((reservation) => {
             const checkInDate = new Date(reservation.checkIn);
             const checkOutDate = new Date(reservation.checkOut);
@@ -37,7 +31,11 @@ const ReservationCalendar = () => {
     return (
         <div className="calendar-container">
             <h1>Calendário de Reservas</h1>
-            <Calendar onChange={handleDateChange} value={selectedDate} />
+            <Calendar
+                onChange={handleDateChange}
+                value={selectedDate}
+            />
+
             <h2>Reservas no dia {selectedDate.toLocaleDateString()}</h2>
             {filteredReservations.length > 0 ? (
                 <table className="reservations-table">

@@ -8,7 +8,9 @@ import Stock from "./pages/Stock/Stock.jsx";
 import App from "./App.jsx";
 import ItensTable from "./components/ItensTeble/ItensTable.jsx";
 import ReservationForm from "./pages/RegisterReservation/RegisterReservation.jsx";
-import BookingCalendar from "./pages/BookingCalendar/BookingCalendar.jsx";
+import RegisterCustomer from "./pages/RegisterCustomer/RegisterCustomer.jsx";
+import ProtectedRoute from "./auth/ProtectedRoute.jsx";
+import ReservationCalendar from "./components/calendars/ReservationCalendar/ReservationCalendar.jsx";
 
 const router = createBrowserRouter([
     {
@@ -16,12 +18,16 @@ const router = createBrowserRouter([
         element: <App/>,
         children: [
             {
-                path: "map",
+                path: "/",
                 element: <Map/>
             },
             {
                 path: "admin",
-                element: <Admin/>
+                element: (
+                    <ProtectedRoute allowedRoles={['admin']}>
+                        <Admin/>
+                    </ProtectedRoute>
+                )
             },
             {
                 path: "financial",
@@ -41,9 +47,13 @@ const router = createBrowserRouter([
             },
             {
                 path: "booking-calendar",
-                element: <BookingCalendar/>
+                element: <ReservationCalendar/>
+            },
+            {
+                path: "register-customer",
+                element: <RegisterCustomer/>
             }
-            ]
+        ]
     }
 ])
 

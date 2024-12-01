@@ -1,6 +1,6 @@
 import'./UserForm.css';
 import  { useState, useEffect } from 'react';
-import initialUsers from '../../data/users.json';
+import initialUsers from '../../../data/users.json';
 
 const UserForm = ({ role }) => {
   const [formData, setFormData] = useState({});
