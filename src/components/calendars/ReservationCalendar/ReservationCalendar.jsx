@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './ReservationCalendar.css';
@@ -7,6 +7,8 @@ const ReservationCalendar = () => {
     const [reservations, setReservations] = useState([]);
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [filteredReservations, setFilteredReservations] = useState([]);
+    const [editingIndex, setEditingIndex] = useState(null);
+    const [formData, setFormData] = useState({});
 
     useEffect(() => {
         // Carregar reservas do localStorage
@@ -28,6 +30,34 @@ const ReservationCalendar = () => {
         setSelectedDate(date);
     };
 
+    const handleEditClick = (index) => {
+        setEditingIndex(index);
+        setFormData(filteredReservations[index]);
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+    const handleSaveClick = () => {
+        const updatedReservations = [...reservations];
+        const globalIndex = reservations.findIndex(
+            (res) => res.checkIn === filteredReservations[editingIndex].checkIn
+        );
+        updatedReservations[globalIndex] = formData;
+
+        setReservations(updatedReservations);
+        localStorage.setItem('reservations', JSON.stringify(updatedReservations));
+        setEditingIndex(null);
+        setFormData({});
+    };
+
+    const handleCancelClick = () => {
+        setEditingIndex(null);
+        setFormData({});
+    };
+
     return (
         <div className="calendar-container">
             <h1>Calendário de Reservas</h1>
@@ -46,16 +76,73 @@ const ReservationCalendar = () => {
                         <th>Check-out</th>
                         <th>Canal</th>
                         <th>Notas</th>
+                        <th>Ações</th>
                     </tr>
                     </thead>
                     <tbody>
                     {filteredReservations.map((reservation, index) => (
                         <tr key={index}>
-                            <td>{reservation.nome}</td>
-                            <td>{reservation.checkIn}</td>
-                            <td>{reservation.checkOut}</td>
-                            <td>{reservation.canal}</td>
-                            <td>{reservation.notes || "Sem notas"}</td>
+                            {editingIndex === index ? (
+                                <>
+                                    <td>
+                                        <input
+                                            type="text"
+                                            name="nome"
+                                            value={formData.nome || ''}
+                                            onChange={handleInputChange}
+                                        />
+                                    </td>
+                                    <td>
+                                        <input
+                                            type="date"
+                                            name="checkIn"
+                                            value={formData.checkIn || ''}
+                                            onChange={handleInputChange}
+                                        />
+                                    </td>
+                                    <td>
+                                        <input
+                                            type="date"
+                                            name="checkOut"
+                                            value={formData.checkOut || ''}
+                                            onChange={handleInputChange}
+                                        />
+                                    </td>
+                                    <td>
+                                        <input
+                                            type="text"
+                                            name="canal"
+                                            value={formData.canal || ''}
+                                            onChange={handleInputChange}
+                                        />
+                                    </td>
+                                    <td>
+                                        <input
+                                            type="text"
+                                            name="notes"
+                                            value={formData.notes || ''}
+                                            onChange={handleInputChange}
+                                        />
+                                    </td>
+                                    <td>
+                                        <button onClick={handleSaveClick}>Salvar</button>
+                                        <button onClick={handleCancelClick}>Cancelar</button>
+                                    </td>
+                                </>
+                            ) : (
+                                <>
+                                    <td>{reservation.nome}</td>
+                                    <td>{reservation.checkIn}</td>
+                                    <td>{reservation.checkOut}</td>
+                                    <td>{reservation.canal}</td>
+                                    <td>{reservation.notes || 'Sem notas'}</td>
+                                    <td>
+                                        <button onClick={() => handleEditClick(index)}>
+                                            Editar
+                                        </button>
+                                    </td>
+                                </>
+                            )}
                         </tr>
                     ))}
                     </tbody>
