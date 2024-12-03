@@ -2,19 +2,19 @@
     margin-top: 20px;
     padding: 20px;
     border-radius: 8px;
-    background-color: #ffffff; /* Fundo branco */
+    background-color: #ffffff;
     font-family: Arial, sans-serif;
-    overflow-x: auto; /* Suporte para rolagem horizontal em telas menores */
+    overflow-x: auto;
 }
 
 table {
     width: 100%;
-    border-collapse: collapse; /* Remove espaços entre as células */
+    border-collapse: collapse;
 }
 
 thead tr {
-    background-color: #142F0E; /* Cor da primeira linha */
-    color: #ffffff; /* Texto branco */
+    background-color: #142F0E;
+    color: #ffffff;
 }
 
 th, td {
@@ -23,15 +23,15 @@ th, td {
 }
 
 tbody tr {
-    border-bottom: 1px solid #dcdcdc; /* Linha cinza entre as linhas */
+    border-bottom: 1px solid #dcdcdc;
 }
 
 tbody tr:nth-child(even) {
-    background-color: #f9f9f9; /* Fundo alternado cinza claro */
+    background-color: #f9f9f9; /
 }
 
 tbody tr:hover {
-    background-color: #e8e8e8; /* Destaque ao passar o mouse */
+    background-color: #e8e8e8;
 }
 
 th {
@@ -39,5 +39,37 @@ th {
 }
 
 td {
-    color: #333333; /* Cor do texto das células */
+    color: #333333;
 }
+.itens-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.itens-table th, .itens-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+.itens-table button {
+    margin-right: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    background-color: #142F0E;
+    color: white;
+}
+
+.itens-table button:hover {
+    background-color: rgba(20, 47, 14, 0.87);
+}
+
+.itens-table input {
+    width: 90%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
