@@ -13,7 +13,7 @@ function Navbar({handleLogout}) {
             </div>
             <div>
                 <DropdownButton id="navbar" title="Mapa">
-                    <Link to={"/"} className="navbar-link">Map</Link>
+                    <Link to={"map"} className="navbar-link">Map</Link>
                 </DropdownButton>
                 <DropdownButton id="navbar" title="Reservas">
                     <Link to={"register-reservation"} className="navbar-link">Cadastrar Reserva</Link>
@@ -24,12 +24,10 @@ function Navbar({handleLogout}) {
                     <Link to={"stock"} className="navbar-link">Cadastrar Produto</Link>
                     <Link to={"itens-table"} className="navbar-link">Inventário</Link>
                 </DropdownButton>
-                <DropdownButton id="navbar" title="Financeiro">
-                    <Link to={"financial"} className="navbar-link">Ação 1</Link>
-                </DropdownButton>
                 <ProtectedRoute allowedRoles={['admin']}>
                     <DropdownButton id="navbar" title="Admin">
                         <Link to={"admin"} className="navbar-link">Cadastrar Usuários</Link>
+                        <Link to={"financial"} className="navbar-link">Financeiro</Link>
                     </DropdownButton>
                 </ProtectedRoute>
             </div>

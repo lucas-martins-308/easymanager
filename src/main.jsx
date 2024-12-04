@@ -11,6 +11,8 @@ import ReservationForm from "./pages/RegisterReservation/RegisterReservation.jsx
 import RegisterCustomer from "./pages/RegisterCustomer/RegisterCustomer.jsx";
 import ProtectedRoute from "./auth/ProtectedRoute.jsx";
 import ReservationCalendar from "./components/calendars/ReservationCalendar/ReservationCalendar.jsx";
+import Contact from "./pages/Contact/Contact.jsx";
+import Home from "./pages/Home/Home.jsx";
 
 const router = createBrowserRouter([
     {
@@ -19,6 +21,14 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/",
+                element: <Home/>
+            },
+            {
+                path: "contact",
+                element: <Contact/>
+            },
+            {
+                path: "map",
                 element: <Map/>
             },
             {
