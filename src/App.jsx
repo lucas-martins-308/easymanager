@@ -14,19 +14,19 @@ function App() {
 
     const handleLogin = (user) => {
         localStorage.setItem('currentUser', JSON.stringify(user));
-        setIsAuthenticated(true); // Atualiza o estado de autenticação
+        setIsAuthenticated(true);
     };
 
     const handleLogout = () => {
         setIsAuthenticated(false);
         localStorage.removeItem('currentUser');
-        navigate("/"); // Redireciona para a tela inicial
+        navigate("/");
     };
 
     useEffect(() => {
         const syncAuthState = () => {
             const currentUser = localStorage.getItem('currentUser');
-            setIsAuthenticated(!!currentUser); // Define como true se houver um currentUser
+            setIsAuthenticated(!!currentUser);
         };
 
         syncAuthState();
@@ -40,9 +40,9 @@ function App() {
 
     useEffect(() => {
         if (isAuthenticated) {
-            navigate("/map"); // Redireciona para "/map" quando o usuário estiver autenticado
+            navigate("/map");
         }
-    }, [isAuthenticated, navigate]); // Só executa quando o estado "isAuthenticated" mudar
+    }, [isAuthenticated, navigate]);
 
     useEffect(() => {
         if (!localStorage.getItem('users')) {

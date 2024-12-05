@@ -1,0 +1,41 @@
+#viewing-notes-booking-history {
+}
+
+#viewing-notes-booking-history h1 {
+    background-color: #2E438D;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    overflow: auto;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle;
+    width: 100%;
+    
+}
+
+th {
+    background-color: #c8c8c8;
+    color: #000000;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+#viewing-notes-booking-history table {
+    flex-grow: 1; /* Faz a tabela ocupar o espaço restante */
+    overflow-y: auto; /* Habilita rolagem vertical */
+}

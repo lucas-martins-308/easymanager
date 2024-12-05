@@ -7,7 +7,6 @@ function ItensTable() {
     const [formData, setFormData] = useState({});
 
     useEffect(() => {
-        // Obtém os itens do localStorage ao carregar o componente
         const storedItens = JSON.parse(localStorage.getItem('itens')) || [];
         setItens(storedItens);
     }, []);

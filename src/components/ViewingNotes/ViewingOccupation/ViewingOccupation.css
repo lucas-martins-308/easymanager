@@ -1,0 +1,19 @@
+#viewing-occupation h1{
+  background-color: #4A324E;
+}
+.chart-container {
+  flex: 1;
+  max-width: 80%;
+  max-height: 400px;
+}
+
+.logo-container {
+  width: 30%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.logo-container img {
+  max-width: 100%;
+  height: auto;
+}

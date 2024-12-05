@@ -18,7 +18,7 @@ function Login({ onLogin }) {
 
     if (user) {
       localStorage.setItem("currentUser", JSON.stringify(user));
-      onLogin(user); // Passa o usuário para o App
+      onLogin(user);
     } else {
       setError("Credenciais inválidas. Tente novamente.");
     }
