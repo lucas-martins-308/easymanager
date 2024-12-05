@@ -1,0 +1,34 @@
+.financial-container {
+    min-height: 32em;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.month-selector {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.month-selector label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.month-selector input[type="month"] {
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.chart-container {
+    width: 100%;
+    height: 400px;
+}
