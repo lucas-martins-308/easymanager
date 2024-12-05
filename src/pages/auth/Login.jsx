@@ -1,4 +1,3 @@
-// src/auth/Login.js
 import "./Login.css";
 import { useState } from "react";
 import PropTypes from "prop-types";
@@ -11,20 +10,15 @@ function Login({ onLogin }) {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // Recupera os usuários do localStorage
     const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
 
-    // Encontra o usuário correspondente ao email e senha fornecidos
     const user = storedUsers.find(
         (user) => user.email === email && user.password === password
     );
 
     if (user) {
-      // Armazena o usuário encontrado no localStorage
       localStorage.setItem("currentUser", JSON.stringify(user));
-
-      // Chama a função onLogin para atualizar o estado do App
-      onLogin(user); // Envia o usuário para o App
+      onLogin(user); // Passa o usuário para o App
     } else {
       setError("Credenciais inválidas. Tente novamente.");
     }
@@ -60,7 +54,9 @@ function Login({ onLogin }) {
       </div>
   );
 }
+
 Login.propTypes = {
   onLogin: PropTypes.func.isRequired,
 };
+
 export default Login;
