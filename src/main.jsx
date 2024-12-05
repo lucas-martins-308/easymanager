@@ -13,7 +13,6 @@ import Home from './pages/Home/Home.jsx';
 import ProtectedRoute from './auth/ProtectedRoute.jsx';
 import Login from './pages/auth/Login.jsx';
 import RegisterProduct from "./pages/RegisterProduct/RegisterProduct.jsx";
-import AddCollaboratorForm from "./forms/AddCollaboratorForm/AddCollaboratorForm.jsx";
 import RegisterCollaborator from "./pages/RegisterCollaborator/RegisterCollaborator.jsx";
 
 const isAuthenticated = !!localStorage.getItem('currentUser');
