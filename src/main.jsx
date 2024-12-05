@@ -42,7 +42,7 @@ const router = createBrowserRouter([
             {
                 path: 'map',
                 element: (
-                    <ProtectedRoute isAuthenticated={isAuthenticated} allowedRoles={['admin', 'user']}>
+                    <ProtectedRoute isAuthenticated={isAuthenticated} allowedRoles={['admin', 'employee']}>
                         <Map />
                     </ProtectedRoute>
                 ),
@@ -58,7 +58,7 @@ const router = createBrowserRouter([
             {
                 path: 'financial',
                 element: (
-                    <ProtectedRoute isAuthenticated={isAuthenticated} allowedRoles={['admin', 'user']}>
+                    <ProtectedRoute isAuthenticated={isAuthenticated} allowedRoles={['admin']}>
                         <Financial />
                     </ProtectedRoute>
                 ),
@@ -66,7 +66,7 @@ const router = createBrowserRouter([
             {
                 path: 'stock',
                 element: (
-                    <ProtectedRoute isAuthenticated={isAuthenticated} allowedRoles={['admin', 'user']}>
+                    <ProtectedRoute isAuthenticated={isAuthenticated} allowedRoles={['admin', 'employee']}>
                         <Stock />
                     </ProtectedRoute>
                 ),
@@ -74,7 +74,7 @@ const router = createBrowserRouter([
             {
                 path: 'itens-table',
                 element: (
-                    <ProtectedRoute isAuthenticated={isAuthenticated} allowedRoles={['admin', 'user']}>
+                    <ProtectedRoute isAuthenticated={isAuthenticated} allowedRoles={['admin', 'employee']}>
                         <RegisterProduct />
                     </ProtectedRoute>
                 ),
@@ -82,7 +82,7 @@ const router = createBrowserRouter([
             {
                 path: 'register-reservation',
                 element: (
-                    <ProtectedRoute isAuthenticated={isAuthenticated} allowedRoles={['admin', 'user']}>
+                    <ProtectedRoute isAuthenticated={isAuthenticated} allowedRoles={['admin', 'employee']}>
                         <ReservationForm />
                     </ProtectedRoute>
                 ),
@@ -90,7 +90,7 @@ const router = createBrowserRouter([
             {
                 path: 'booking-calendar',
                 element: (
-                    <ProtectedRoute isAuthenticated={isAuthenticated} allowedRoles={['admin', 'user']}>
+                    <ProtectedRoute isAuthenticated={isAuthenticated} allowedRoles={['admin', 'employee']}>
                         <ReservationCalendar />
                     </ProtectedRoute>
                 ),
@@ -98,7 +98,7 @@ const router = createBrowserRouter([
             {
                 path: 'register-customer',
                 element: (
-                    <ProtectedRoute isAuthenticated={isAuthenticated} allowedRoles={['admin', 'user']}>
+                    <ProtectedRoute isAuthenticated={isAuthenticated} allowedRoles={['admin', 'employee']}>
                         <RegisterCustomer />
                     </ProtectedRoute>
                 ),
