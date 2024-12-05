@@ -1,0 +1,58 @@
+#viewing-notes-booking-history {
+    text-align: center;
+    background-color: #FFFFFF;
+    width: 420px; 
+    height: 260px;
+    margin: 10px auto;
+    border-radius: 2px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+#viewing-notes-booking-history h1 {
+    font-weight: 400;
+    padding: 10px;
+    background-color: #2E438D;
+    font-size: 30px;
+    font-family: 'Jomhuria', cursive;
+    color: #FFFFFF;
+    margin: 0;
+    border-radius: 2px 2px 0 0;
+    flex-shrink: 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    overflow: auto;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle;
+    width: 100%;
+    
+}
+
+th {
+    background-color: #c8c8c8;
+    color: #000000;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+#viewing-notes-booking-history table {
+    flex-grow: 1; /* Faz a tabela ocupar o espaço restante */
+    overflow-y: auto; /* Habilita rolagem vertical */
+}

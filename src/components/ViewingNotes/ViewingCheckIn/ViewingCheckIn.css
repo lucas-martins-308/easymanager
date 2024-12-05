@@ -1,4 +1,4 @@
-#viewing-notes{
+#viewing-checkin{
     text-align: center ;
     justify-content: center;
     background-color: rgb(0, 0, 0);
@@ -10,13 +10,19 @@
 
 }
 
-#viewing-notes h1{
+#viewing-checkin h1{
     font-weight: 400;
     padding-top: 5px;
-    background: #CF7C7C;
+    background-color: #7B9666;
     font-size: 30px;
     font-family: 'Jomhuria', cursive;
     color: #FFFFFF;
-    margin-top: 0px;
+    margin: 0px;
     border-radius: 2px 2px 0px 0px;
+}
+
+th {
+    background-color: #FFFFFF;
+    color: black;
+    font-weight: bold;
 }
