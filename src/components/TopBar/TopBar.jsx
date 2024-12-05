@@ -1,15 +1,19 @@
+import PropTypes from 'prop-types';
 import './index.css';
-import logo from '../../assets/Logo_Art_Hostel_Abaporu.png';
-import Navbar from '../TopBar/Navbar/Navbar.jsx'
+import Navbar from '../Navbar/Navbar.jsx';
 
-
-export default function TopBar({ setCurrentPage }) {
-
-  return (
-    <div className="topbar">
-      <img src={logo} alt="Logo" className="topbar-logo" />
-        <Navbar setCurrentPage={setCurrentPage} />
-      <h1>Usuário</h1>
-    </div>
-  );
+function TopBar({ handleLogout, isAuthenticated }) {
+    return (
+        <div className="topbar">
+            <Navbar
+                isAuthenticated={isAuthenticated}
+                handleLogout={handleLogout}
+            />        </div>
+    );
 }
+
+TopBar.propTypes = {
+    handleLogout: PropTypes.func.isRequired,
+};
+
+export default TopBar;
