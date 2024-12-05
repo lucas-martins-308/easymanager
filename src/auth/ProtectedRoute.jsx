@@ -1,19 +1,25 @@
-import PropTypes from 'prop-types';
+// src/auth/ProtectedRoute.jsx
 import { Navigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-const ProtectedRoute = ({ allowedRoles, children }) => {
-    const user = JSON.parse(localStorage.getItem('currentUser'));
-    const userRole = user?.role;
+function ProtectedRoute({ isAuthenticated, allowedRoles, children }) {
+    // Se o usuário não estiver autenticado, redireciona para o login
+    if (!isAuthenticated) {
+        return <Navigate to="/login" replace />;
+    }
 
-    if (!allowedRoles.includes(userRole)) {
+    // Verifica o role do usuário
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (allowedRoles && (!currentUser || !allowedRoles.includes(currentUser.role))) {
         return <Navigate to="/" replace />;
     }
 
-    return children;
-};
+    return children; // Retorna a rota protegida se o usuário estiver autenticado e com a role permitida
+}
 
 ProtectedRoute.propTypes = {
-    allowedRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
+    isAuthenticated: PropTypes.bool.isRequired,
+    allowedRoles: PropTypes.arrayOf(PropTypes.string),
     children: PropTypes.node.isRequired,
 };
 

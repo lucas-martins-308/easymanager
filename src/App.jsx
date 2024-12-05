@@ -1,18 +1,19 @@
 import './app.css';
-import {Outlet} from "react-router-dom";
+import { Outlet } from 'react-router-dom';
 import Topbar from "./components/TopBar/TopBar.jsx";
-import Login from "./pages/auth/Login.jsx";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import usersData from "./data/users.json";
 import customers from "./data/customers.json";
 import itensData from "./data/itens.json";
 import reservations from './data/reservations.json';
+import Footer from "./components/Footer/Footer.jsx";
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     const handleLogin = () => {
         setIsAuthenticated(true);
+        localStorage.setItem('currentUser', JSON.stringify({ username: 'user' }));
     };
 
     const handleLogout = () => {
@@ -43,17 +44,20 @@ function App() {
         }
     }, []);
 
-
     return (
         <div className='app-container'>
-            {isAuthenticated ? (
+            {!isAuthenticated ? (
                 <>
-                    <Topbar handleLogout={handleLogout}/>
+                    <Topbar handleLogin={handleLogin} />
                     <Outlet/>
+                    <Footer/>
                 </>
             ) : (
-                <Login onLogin={handleLogin}/>
-            )}
+                <>
+                    <Topbar handleLogout={handleLogout} isAuthenticated={isAuthenticated}/>
+                    <Outlet/>
+                    <Footer/>
+                </>            )}
         </div>
     );
 }

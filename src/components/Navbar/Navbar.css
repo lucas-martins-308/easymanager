@@ -1,5 +1,6 @@
 #navbar {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
     width: 100%;
@@ -16,6 +17,7 @@
 }
 
 .navbar-link {
+    text-decoration: none;
     background-color: #142F0E;
     font-size: xx-large;
     font-family: 'Jomhuria', cursive;
@@ -23,4 +25,10 @@
     margin: 10px;
     transition: background-color 0.3s, color 0.3s;
     border: none;
+
+    border-radius: 5px;
+}
+
+.navbar-link:hover {
+    background-color: #10400e;
 }

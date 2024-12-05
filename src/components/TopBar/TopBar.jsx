@@ -2,11 +2,13 @@ import PropTypes from 'prop-types';
 import './index.css';
 import Navbar from '../Navbar/Navbar.jsx';
 
-function TopBar({ handleLogout }) {
+function TopBar({ handleLogout, isAuthenticated }) {
     return (
         <div className="topbar">
-            <Navbar handleLogout={handleLogout} />
-        </div>
+            <Navbar
+                isAuthenticated={isAuthenticated}
+                handleLogout={handleLogout}
+            />        </div>
     );
 }
 
