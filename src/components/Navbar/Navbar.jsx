@@ -28,7 +28,7 @@ function Navbar({isAuthenticated, handleLogout}) {
                         <ProtectedRoute isAuthenticated={isAuthenticated} allowedRoles={['admin']}>
                             <DropdownButton title="Admin">
                                 <Link to="/register-collaborator" className="navbar-link">Cadastrar Usuários</Link>
-                                <Link to="/financial" className="navbar-link">Ação 1</Link>
+                                <Link to="/financial" className="navbar-link">Financeiro</Link>
                             </DropdownButton>
                         </ProtectedRoute>
                     </>
