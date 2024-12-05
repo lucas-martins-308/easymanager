@@ -2,7 +2,7 @@ import './ViewingCheckIn.css';
 
 export default function ViewingCheckIn() {
     return (
-        <div id="viewing-checkin">
+        <div className="viewing" id="viewing-checkin">
             <h1>Check-in</h1>
             <table className="viewing-table" border="1">
                 <thead>

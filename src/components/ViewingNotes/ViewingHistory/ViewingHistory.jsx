@@ -2,9 +2,9 @@ import './ViewingHistory.css';
 
 export default function ViewingCheckIn() {
     return (
-        <div id="viewing-notes-booking-history">
+        <div className="viewing" id="viewing-notes-booking-history">
             <h1>Últimas Reservas</h1>
-            <table border="1">
+            <table className="viewing-table" border="1">
                 <thead>
                     <tr>
                         <th>Nome</th>

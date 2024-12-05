@@ -54,8 +54,8 @@ function Navbar({isAuthenticated, handleLogout}) {
 }
 
 Navbar.propTypes = {
-    isAuthenticated: PropTypes.bool.isRequired, // Define se o usuário está autenticado
-    handleLogout: PropTypes.func.isRequired,   // Função de logout
+    isAuthenticated: PropTypes.bool.isRequired,
+    handleLogout: PropTypes.func.isRequired,
 };
 
 export default Navbar;

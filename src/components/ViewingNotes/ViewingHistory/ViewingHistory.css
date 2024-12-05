@@ -1,25 +1,8 @@
 #viewing-notes-booking-history {
-    text-align: center;
-    background-color: #FFFFFF;
-    width: 420px; 
-    height: 260px;
-    margin: 10px auto;
-    border-radius: 2px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
 }
 
 #viewing-notes-booking-history h1 {
-    font-weight: 400;
-    padding: 10px;
     background-color: #2E438D;
-    font-size: 30px;
-    font-family: 'Jomhuria', cursive;
-    color: #FFFFFF;
-    margin: 0;
-    border-radius: 2px 2px 0 0;
-    flex-shrink: 0;
 }
 
 table {

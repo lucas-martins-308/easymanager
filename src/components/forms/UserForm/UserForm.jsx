@@ -1,18 +1,17 @@
 import'./UserForm.css';
 import  { useState, useEffect } from 'react';
 import initialUsers from '../../../data/users.json';
+import PropTypes from "prop-types";
 
 const UserForm = ({ role }) => {
   const [formData, setFormData] = useState({});
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    // Carregar usuários do localStorage ou do arquivo inicial
     const storedUsers = JSON.parse(localStorage.getItem('users')) || initialUsers;
     setUsers(storedUsers);
   }, []);
 
-  // Define os campos para cada tipo de usuário
   const fields = {
     admin: [
       { label: "Nome Completo", name: "fullName", type: "text" },
@@ -55,7 +54,6 @@ const UserForm = ({ role }) => {
     const newUser = { ...formData, role };
     const updatedUsers = [...users, newUser];
 
-    // Salvar o novo usuário no localStorage
     localStorage.setItem('users', JSON.stringify(updatedUsers));
     setUsers(updatedUsers);
 
@@ -82,7 +80,6 @@ const UserForm = ({ role }) => {
 
         <button type="submit">Cadastrar</button>
 
-        {/* Exibição da lista de usuários do localStorage */}
         <h3>Usuários Cadastrados:</h3>
         <ul>
           {users.map((user, index) => (
@@ -92,5 +89,7 @@ const UserForm = ({ role }) => {
       </form>
   );
 };
-
+UserForm.propTypes = {
+  role: PropTypes.string.isRequired,
+};
 export default UserForm;

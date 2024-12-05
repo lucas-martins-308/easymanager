@@ -2,9 +2,9 @@ import './ViewingCheckOut.css';
 
 export default function ViewingCheckOut() {
     return (
-        <div id="viewing-checkout">
+        <div className="viewing" id="viewing-checkout">
             <h1>Check-out</h1>
-            <table border="1">
+            <table className="viewing-table" border="1">
                 <thead>
                     <tr>
                         <th>Nome</th>

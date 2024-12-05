@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import initialUsers from "../../../data/users.json"; // Verifique se isso é realmente um array de itens
+import initialUsers from "../../../data/users.json";
 
 function ItensForm() {
     const [formData, setFormData] = useState({});
@@ -21,10 +21,8 @@ function ItensForm() {
         const newItens = { ...formData };
         const updatedItens = [...itens, newItens];
 
-        // Salva os itens atualizados no localStorage
         localStorage.setItem('itens', JSON.stringify(updatedItens));
 
-        // Atualiza o estado local com os novos itens e limpa o formulário
         setItens(updatedItens);
         setFormData({});
 
@@ -88,18 +86,4 @@ function ItensForm() {
     );
 }
 
-export default ItensForm;
-
-
-
-
-
-
-{/*<h3>Itens Cadastrados:</h3>*/}
-{/*<ul>*/}
-{/*    {itens.map((item, index) => (*/}
-{/*        <li key={index}>*/}
-{/*            {item.nome_item} - {item.quantidade} - {item.preco} - {item.data_validade}*/}
-{/*        </li>*/}
-{/*    ))}*/}
-{/*</ul>*/}
+    export default ItensForm;

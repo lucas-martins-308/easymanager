@@ -11,13 +11,11 @@ const ReservationCalendar = () => {
     const [formData, setFormData] = useState({});
 
     useEffect(() => {
-        // Carregar reservas do localStorage
         const storedReservations = JSON.parse(localStorage.getItem('reservations')) || [];
         setReservations(storedReservations);
     }, []);
 
     useEffect(() => {
-        // Filtrar reservas para o dia selecionado
         const filtered = reservations.filter((reservation) => {
             const checkInDate = new Date(reservation.checkIn);
             const checkOutDate = new Date(reservation.checkOut);

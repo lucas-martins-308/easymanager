@@ -2,9 +2,9 @@ import './ViewingOpening.css';
 
 export default function ViewingCheckIn() {
     return (
-        <div id="viewing-opening">
+        <div className="viewing" id="viewing-opening">
             <h1>Em aberto</h1>
-            <table border="1">
+            <table className="viewing-table" border="1">
                 <thead>
                     <tr>
                         <th>Nome</th>

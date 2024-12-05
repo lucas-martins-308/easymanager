@@ -65,9 +65,9 @@ export default function ViewingCheckIn() {
   };
 
   return (
-    <div id="viewing-checkin">
+    <div className="viewing" id="viewing-occupation">
       <h1>Taxa de Ocupação Diária</h1>
-      <div style={{ width: '100%', height: '500px' }}>
+      <div style={{ width: '100%',}}>
         <Bar data={data} options={options} />
       </div>
     </div>
