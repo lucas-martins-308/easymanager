@@ -1,11 +1,11 @@
-import './index.css';
-import ItensForm from "../../components/forms/ItensForm/ItensForm.jsx";
+import './Stock.css';
+import ItensTable from "../../components/ItensTeble/ItensTable.jsx";
 
 export default function Stock() {
     return(
-        <>
-            <ItensForm/>
-        </>
+        <div className="stock">
+            <ItensTable/>
+            </div>
 
 
     )

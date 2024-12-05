@@ -2,11 +2,9 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Map from './pages/Map/Map.jsx';
-import Admin from './pages/Admin/Admin.jsx';
 import Financial from './pages/Financial/Financial.jsx';
 import Stock from './pages/Stock/Stock.jsx';
 import App from './App.jsx';
-import ItensTable from './components/ItensTeble/ItensTable.jsx';
 import ReservationForm from './pages/RegisterReservation/RegisterReservation.jsx';
 import RegisterCustomer from './pages/RegisterCustomer/RegisterCustomer.jsx';
 import ReservationCalendar from './components/calendars/ReservationCalendar/ReservationCalendar.jsx';
@@ -14,8 +12,10 @@ import Contact from './pages/Contact/Contact.jsx';
 import Home from './pages/Home/Home.jsx';
 import ProtectedRoute from './auth/ProtectedRoute.jsx';
 import Login from './pages/auth/Login.jsx';
+import RegisterProduct from "./pages/RegisterProduct/RegisterProduct.jsx";
+import AddCollaboratorForm from "./forms/AddCollaboratorForm/AddCollaboratorForm.jsx";
+import RegisterCollaborator from "./pages/RegisterCollaborator/RegisterCollaborator.jsx";
 
-// Verifica se o usuário está autenticado
 const isAuthenticated = !!localStorage.getItem('currentUser');
 
 const handleLogin = (userData) => {
@@ -49,10 +49,10 @@ const router = createBrowserRouter([
                 ),
             },
             {
-                path: 'admin',
+                path: 'register-collaborator',
                 element: (
                     <ProtectedRoute isAuthenticated={isAuthenticated} allowedRoles={['admin']}>
-                        <Admin />
+                        <RegisterCollaborator/>
                     </ProtectedRoute>
                 ),
             },
@@ -76,7 +76,7 @@ const router = createBrowserRouter([
                 path: 'itens-table',
                 element: (
                     <ProtectedRoute isAuthenticated={isAuthenticated} allowedRoles={['admin', 'user']}>
-                        <ItensTable />
+                        <RegisterProduct />
                     </ProtectedRoute>
                 ),
             },

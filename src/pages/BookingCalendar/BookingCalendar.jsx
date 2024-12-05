@@ -1,9 +1,12 @@
+import "./BookingCalendar.css"
 import ReservationCalendar from "../../components/calendars/ReservationCalendar/ReservationCalendar.jsx";
 
 
 function BookingCalendar(){
     return(
-        <ReservationCalendar/>
+        <div className="reservation-calendar">
+            <ReservationCalendar/>
+        </div>
     )
 }
 

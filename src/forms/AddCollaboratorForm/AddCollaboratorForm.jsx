@@ -1,8 +1,8 @@
-import './Admin.css';
-import React, {useState} from 'react';
+import './AddCollaborator.css';
+import {useState} from 'react';
 import UserForm from '../../components/forms/UserForm/UserForm.jsx';
 
-export default function Admin() {
+function AddCollaboratorForm() {
     const [role, setRole] = useState(null);
 
     return (
@@ -15,3 +15,5 @@ export default function Admin() {
         </div>
     )
 }
+
+export default AddCollaboratorForm;

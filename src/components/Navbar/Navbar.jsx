@@ -15,19 +15,19 @@ function Navbar({isAuthenticated, handleLogout}) {
             <div className="navbar-links">
                 {isAuthenticated ? (
                     <>
-                        <Link to="/map" className="navbar-link">Mapa</Link>
+                        <Link to="/map" className="navbar-link" id="navbar-map">Mapa</Link>
                         <DropdownButton title="Reservas">
                             <Link to="/register-reservation" className="navbar-link">Cadastrar Reserva</Link>
                             <Link to="/register-customer" className="navbar-link">Cadastrar Hóspede</Link>
                             <Link to="/booking-calendar" className="navbar-link">Calendário de Reservas</Link>
                         </DropdownButton>
                         <DropdownButton title="Estoque">
-                            <Link to="/stock" className="navbar-link">Cadastrar Produto</Link>
-                            <Link to="/itens-table" className="navbar-link">Inventário</Link>
+                            <Link to="/itens-table" className="navbar-link">Cadastrar Produto</Link>
+                            <Link to="/stock" className="navbar-link">Inventário</Link>
                         </DropdownButton>
                         <ProtectedRoute isAuthenticated={isAuthenticated} allowedRoles={['admin']}>
                             <DropdownButton title="Admin">
-                                <Link to="/admin" className="navbar-link">Cadastrar Usuários</Link>
+                                <Link to="/register-collaborator" className="navbar-link">Cadastrar Usuários</Link>
                                 <Link to="/financial" className="navbar-link">Ação 1</Link>
                             </DropdownButton>
                         </ProtectedRoute>
