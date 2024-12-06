@@ -9,7 +9,7 @@ import {
     Tooltip,
     Legend,
 } from "chart.js";
-import "./index.css";
+import "./Financial.css";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 

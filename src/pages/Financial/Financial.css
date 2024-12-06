@@ -1,4 +1,5 @@
 .financial-container {
+    height: 500px;
     min-height: 32em;
     max-width: 800px;
     margin: 20px auto;
