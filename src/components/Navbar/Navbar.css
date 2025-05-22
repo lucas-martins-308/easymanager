@@ -9,7 +9,6 @@
     color: white;
     transition: background-color 0.3s, color 0.3s;
     border: none;
-    flex-wrap: wrap;
 }
 
 .navbar-logo {
@@ -47,3 +46,4 @@
 #navbar-map:hover {
     background-color: #10400e;
 }
+
