@@ -47,7 +47,6 @@ export default function ViewingCheckIn() {
     plugins: {
       title: {
         display: true,
-        text: 'Taxa de Ocupação Diária',
       },
       legend: {
         position: 'top',

@@ -2,7 +2,7 @@
     min-height: 32em;
     text-align: center;
     margin: 20px;
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 h1 {
@@ -73,7 +73,7 @@ h1 {
     font-size: 14px;
     color: #333;
     resize: none;
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 .contact-form button {
