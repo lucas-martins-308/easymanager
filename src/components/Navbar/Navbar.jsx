@@ -18,8 +18,11 @@ function Navbar({isAuthenticated, handleLogout}) {
                         <Link to="/map" className="navbar-link" id="navbar-map">Mapa</Link>
                         <DropdownButton title="Reservas">
                             <Link to="/register-reservation" className="navbar-link">Cadastrar Reserva</Link>
-                            <Link to="/register-customer" className="navbar-link">Cadastrar Hóspede</Link>
+                            
                             <Link to="/booking-calendar" className="navbar-link">Calendário de Reservas</Link>
+                        </DropdownButton>
+                        <DropdownButton title="Hóspedes">
+                            <Link to="/register-customer" className="navbar-link">Cadastrar Hóspede</Link>
                         </DropdownButton>
                         <DropdownButton title="Estoque">
                             <Link to="/itens-table" className="navbar-link">Cadastrar Produto</Link>
@@ -27,7 +30,8 @@ function Navbar({isAuthenticated, handleLogout}) {
                         </DropdownButton>
                         <ProtectedRoute isAuthenticated={isAuthenticated} allowedRoles={['admin']}>
                             <DropdownButton title="Admin">
-                                <Link to="/register-collaborator" className="navbar-link">Cadastrar Usuários</Link>
+                                <Link to="/register-collaborator" className="navbar-link">Usuários</Link>
+                                <Link to="/register-accommodation" className="navbar-link">Acomodações</Link>
                                 <Link to="/financial" className="navbar-link">Financeiro</Link>
                             </DropdownButton>
                         </ProtectedRoute>
@@ -38,9 +42,9 @@ function Navbar({isAuthenticated, handleLogout}) {
                         <Link to="/contact" className="navbar-link">Contato</Link>
                     </>
                 )}
-            </div>
+            
 
-            <div className="navbar-user">
+            
                 <DropdownButton title="Usuário">
                     {isAuthenticated ? (
                         <button onClick={handleLogout} id="Sair" className="navbar-link">Sair</button>

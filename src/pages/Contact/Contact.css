@@ -2,12 +2,12 @@
     min-height: 32em;
     text-align: center;
     margin: 20px;
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 h1 {
     font-size: 32px;
-    color: #4CAF50;
+    color: #142F0E;
     margin-bottom: 20px;
 }
 
@@ -32,7 +32,7 @@ h1 {
 .contact-info h2 {
     font-size: 24px;
     margin-bottom: 10px;
-    color: #333;
+    color: #142F0E;
 }
 
 .contact-info p {
@@ -47,13 +47,13 @@ h1 {
     background-color: #f9f9f9;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .contact-form h2 {
     font-size: 24px;
     margin-bottom: 15px;
-    color: #333;
+    color: #142F0E;
 }
 
 .contact-form label {
@@ -73,6 +73,7 @@ h1 {
     font-size: 14px;
     color: #333;
     resize: none;
+    font-family: 'Roboto', sans-serif;
 }
 
 .contact-form button {
