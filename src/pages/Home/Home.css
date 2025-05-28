@@ -21,8 +21,9 @@
 
 .home-sections {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: 200px 200px 200px;
     gap: 20px;
+    justify-content: center; /* Centraliza o grid na página */
 }
 
 .home-card {

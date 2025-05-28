@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import './Navbar.css';
 import {Link} from 'react-router-dom';
 import DropdownButton from '../TopBar/DropdownButton/DropdownButton.jsx';
-import logo from "../../assets/Logo_Art_Hostel_Abaporu.png";
+import logo from "../../assets/easy-logo.png";
 import ProtectedRoute from "../../auth/ProtectedRoute.jsx";
 
 function Navbar({isAuthenticated, handleLogout}) {
@@ -42,16 +42,28 @@ function Navbar({isAuthenticated, handleLogout}) {
                         <Link to="/contact" className="navbar-link">Contato</Link>
                     </>
                 )}
-            
-
-            
-                <DropdownButton title="Usuário">
+                            
+                    {isAuthenticated ? (
+                        <button
+                            onClick={() => {
+                            const confirmLogout = window.confirm('Tem certeza que deseja sair?');
+                                if (confirmLogout) {
+                                    handleLogout();
+                                }
+                            }}
+                            className="navbar-link">Sair
+                        </button>
+                    ) : (
+                        <Link to="/login" className="navbar-link">Login</Link>
+                    )}
+                
+                {/*<DropdownButton title="Usuário">
                     {isAuthenticated ? (
                         <button onClick={handleLogout} id="Sair" className="navbar-link">Sair</button>
                     ) : (
                         <Link to="/login" className="navbar-link">Login</Link>
                     )}
-                </DropdownButton>
+                </DropdownButton>*/}
             </div>
         </div>
     );

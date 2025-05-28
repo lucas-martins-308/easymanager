@@ -15,11 +15,10 @@ function Contact() {
 
     return (
         <div id="contact-page">
-            <h1>Contato com o Suporte</h1>
+            <h1>Contato</h1>
             <div className="contact-container">
                 <div className="contact-info">
-                    <h2>Informações de Contato</h2>
-                    <p><strong>E-mail:</strong> suporte@empresa.com</p>
+                    <p><strong>E-mail:</strong> suporte@easymanager.com</p>
                     <p><strong>Telefone:</strong> +55 (11) 98765-4321</p>
                     <p><strong>Horário de Atendimento:</strong> Segunda a Sexta, das 9h às 18h</p>
                 
