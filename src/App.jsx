@@ -21,9 +21,9 @@ function AppContent() {
             localStorage.setItem('reservations', JSON.stringify(reservations));
         }
 
-        if (!localStorage.getItem('customers')) {
-            localStorage.setItem('customers', JSON.stringify(customers));
-        }
+        // if (!localStorage.getItem('customers')) {
+        //     localStorage.setItem('customers', JSON.stringify(customers));
+        // }
     }, []);
 
     return (
