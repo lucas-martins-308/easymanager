@@ -1,14 +1,17 @@
 import "./Login.css";
 import { useState } from "react";
-import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 
-function Login({ onLogin }) {
+function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { handleLogin } = useAuth();
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
@@ -22,18 +25,26 @@ function Login({ onLogin }) {
         body: JSON.stringify({ email, senha }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const data = await response.json();
         setError(data.message || "Erro ao fazer login. Verifique suas credenciais.");
         setLoading(false);
         return;
       }
 
-      const data = await response.json();
-      // Supondo que o backend retorna { usuario, token }
-      localStorage.setItem("currentUser", JSON.stringify(data.usuario));
-      localStorage.setItem("token", data.token);
-      onLogin(data.usuario);
+      if (!data.usuario || !data.usuario.role) {
+        setError("Dados do usuário inválidos. Contate o administrador.");
+        setLoading(false);
+        return;
+      }
+
+      const loginSuccess = handleLogin(data.usuario);
+      if (loginSuccess) {
+        navigate("/map");
+      } else {
+        setError("Erro ao processar login. Tente novamente.");
+      }
     } catch (err) {
       setError("Erro de conexão com o servidor. Tente novamente mais tarde.");
     } finally {
@@ -45,7 +56,7 @@ function Login({ onLogin }) {
     <div className="login-container">
       <div className="login-box">
         <div className="imgLogin"></div>
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleSubmit}>
           <div>
             <label>Usuário:</label>
             <input
@@ -73,9 +84,5 @@ function Login({ onLogin }) {
     </div>
   );
 }
-
-Login.propTypes = {
-  onLogin: PropTypes.func.isRequired,
-};
 
 export default Login;

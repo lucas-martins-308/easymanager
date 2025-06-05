@@ -1,15 +1,21 @@
-import'./UserForm.css';
-import  { useState, useEffect } from 'react';
-import initialUsers from '../../../data/users.json';
+import './UserForm.css';
+import { useState, useEffect } from 'react';
 import PropTypes from "prop-types";
+
+const API_URL = "http://localhost:3000/api/users"; // Altere para a URL do seu backend
 
 const UserForm = ({ role }) => {
   const [formData, setFormData] = useState({});
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const storedUsers = JSON.parse(localStorage.getItem('users')) || initialUsers;
-    setUsers(storedUsers);
+    setLoading(true);
+    fetch(API_URL)
+      .then((res) => res.json())
+      .then((data) => setUsers(data))
+      .catch((err) => console.error("Erro ao buscar usuários:", err))
+      .finally(() => setLoading(false));
   }, []);
 
   const fields = {
@@ -50,43 +56,59 @@ const UserForm = ({ role }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const newUser = { ...formData, role };
-    const updatedUsers = [...users, newUser];
-
-    localStorage.setItem('users', JSON.stringify(updatedUsers));
-    setUsers(updatedUsers);
-
-    alert(`Usuário ${role} cadastrado com sucesso!`);
-    setFormData({});
+    setLoading(true);
+    fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newUser),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Erro ao cadastrar usuário");
+        return res.json();
+      })
+      .then((createdUser) => {
+        setUsers((prev) => [...prev, createdUser]);
+        alert(`Usuário ${role} cadastrado com sucesso!`);
+        setFormData({});
+      })
+      .catch((err) => {
+        alert("Erro ao cadastrar usuário!");
+        console.error(err);
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
-      <form onSubmit={handleSubmit}>
-        <h2>Cadastro de {role === "admin" ? "Admin" : "Funcionário"}</h2>
+    <form onSubmit={handleSubmit}>
+      <h2>Cadastro de {role === "admin" ? "Admin" : "Funcionário"}</h2>
 
-        {fields[role].map((field) => (
-            <div key={field.name}>
-              <label>{field.label}:</label>
-              <input
-                  type={field.type}
-                  name={field.name}
-                  value={formData[field.name] || ""}
-                  onChange={handleChange}
-                  required
-              />
-            </div>
+      {fields[role].map((field) => (
+        <div key={field.name}>
+          <label>{field.label}:</label>
+          <input
+            type={field.type}
+            name={field.name}
+            value={formData[field.name] || ""}
+            onChange={handleChange}
+            required
+            disabled={loading}
+          />
+        </div>
+      ))}
+
+      <button type="submit" disabled={loading}>
+        {loading ? "Salvando..." : "Cadastrar"}
+      </button>
+
+      <h3>Usuários Cadastrados:</h3>
+      {loading && <p>Carregando usuários...</p>}
+      <ul>
+        {users.map((user, index) => (
+          <li key={index}>{user.fullName} - {user.role}</li>
         ))}
-
-        <button type="submit">Cadastrar</button>
-
-        <h3>Usuários Cadastrados:</h3>
-        <ul>
-          {users.map((user, index) => (
-              <li key={index}>{user.fullName} - {user.role}</li>
-          ))}
-        </ul>
-      </form>
+      </ul>
+    </form>
   );
 };
 UserForm.propTypes = {

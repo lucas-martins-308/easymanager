@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
-import initialUsers from "../../../data/users.json";
 
 function ItensForm() {
     const [formData, setFormData] = useState({});
     const [itens, setItens] = useState([]);
 
     useEffect(() => {
-        const storedItens = JSON.parse(localStorage.getItem('itens')) || initialUsers;
+        const storedItens = JSON.parse(localStorage.getItem('itens')) || [];
         setItens(storedItens);
     }, []);
 
@@ -86,4 +85,4 @@ function ItensForm() {
     );
 }
 
-    export default ItensForm;
+export default ItensForm;
