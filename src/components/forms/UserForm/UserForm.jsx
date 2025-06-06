@@ -2,7 +2,7 @@ import './UserForm.css';
 import { useState, useEffect } from 'react';
 import PropTypes from "prop-types";
 
-const API_URL = "http://localhost:3000/api/users"; // Altere para a URL do seu backend
+const API_URL = "http://localhost:3000/api/usuarios"; // Endpoint correto
 
 const UserForm = ({ role }) => {
   const [formData, setFormData] = useState({});
@@ -13,7 +13,10 @@ const UserForm = ({ role }) => {
     setLoading(true);
     fetch(API_URL)
       .then((res) => res.json())
-      .then((data) => setUsers(data))
+      .then((data) => {
+        console.log(data);
+        setUsers(data);
+      })
       .catch((err) => console.error("Erro ao buscar usuários:", err))
       .finally(() => setLoading(false));
   }, []);
@@ -56,7 +59,17 @@ const UserForm = ({ role }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newUser = { ...formData, role };
+    const newUser = {
+      nomeCompleto: formData.fullName,
+      cpf: formData.cpf,
+      dtNascimento: formData.birthDate,
+      telefone: formData.phone,
+      email: formData.email,
+      senha: formData.password,
+      tipoUsuario: role === 'admin' ? 'adm' : 'func',
+      Endereco_idEndereco: 1 // Valor padrão, ajuste conforme necessário
+    };
+
     setLoading(true);
     fetch(API_URL, {
       method: "POST",
@@ -64,16 +77,20 @@ const UserForm = ({ role }) => {
       body: JSON.stringify(newUser),
     })
       .then((res) => {
-        if (!res.ok) throw new Error("Erro ao cadastrar usuário");
+        if (!res.ok) {
+          return res.json().then(err => {
+            throw new Error(err.message || "Erro ao cadastrar usuário");
+          });
+        }
         return res.json();
       })
       .then((createdUser) => {
         setUsers((prev) => [...prev, createdUser]);
-        alert(`Usuário ${role} cadastrado com sucesso!`);
+        alert(`Usuário ${role === 'admin' ? 'Administrador' : 'Funcionário'} cadastrado com sucesso!`);
         setFormData({});
       })
       .catch((err) => {
-        alert("Erro ao cadastrar usuário!");
+        alert(err.message || "Erro ao cadastrar usuário!");
         console.error(err);
       })
       .finally(() => setLoading(false));
@@ -104,8 +121,10 @@ const UserForm = ({ role }) => {
       <h3>Usuários Cadastrados:</h3>
       {loading && <p>Carregando usuários...</p>}
       <ul>
-        {users.map((user, index) => (
-          <li key={index}>{user.fullName} - {user.role}</li>
+        {users.map((user) => (
+          <li key={user.idUsuario}>
+            {user.nomeCompleto} - {user.tipoUsuario === 'adm' ? 'Administrador' : 'Funcionário'}
+          </li>
         ))}
       </ul>
     </form>
