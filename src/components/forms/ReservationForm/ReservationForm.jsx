@@ -7,20 +7,31 @@ const ReservationForm = () => {
         checkOut: "",
         canal: "",
         cliente: "",
+        quarto: "", 
     });
     const [customers, setCustomers] = useState([]);
+    const [rooms, setRooms] = useState([]); 
 
+    
     const loadCustomers = () => {
         const storedCustomers = JSON.parse(localStorage.getItem("customers")) || [];
         setCustomers(storedCustomers);
     };
+    const loadRooms = () => {
+        const storedRooms = JSON.parse(localStorage.getItem("rooms")) || [];
+        setRooms(storedRooms);
+    };
 
     useEffect(() => {
         loadCustomers();
+        loadRooms();
 
         const handleStorageChange = (event) => {
             if (event.key === "customers") {
                 loadCustomers();
+            }
+            if (event.key === "rooms") {
+                loadRooms();
             }
         };
 
@@ -47,6 +58,7 @@ const ReservationForm = () => {
             checkOut: "",
             canal: "",
             cliente: "",
+            quarto: "",
         });
     };
 
@@ -96,6 +108,21 @@ const ReservationForm = () => {
                 {customers.map((customer, index) => (
                     <option key={index} value={customer.nome}>
                         {customer.nome} - {customer.cpf}
+                    </option>
+                ))}
+            </select>
+
+            <label>Quarto:</label>
+            <select
+                name="quarto"
+                value={formData.quarto}
+                onChange={handleChange}
+                required
+            >
+                <option value="">Selecione um quarto</option>
+                {rooms.map((room, index) => (
+                    <option key={index} value={room.numeroQuarto}>
+                        Quarto {room.numeroQuarto} - {room.tipoQuarto}
                     </option>
                 ))}
             </select>
