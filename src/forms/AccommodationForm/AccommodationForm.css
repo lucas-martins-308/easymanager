@@ -1,0 +1,88 @@
+.Rooms {
+    text-align: center;
+    padding: 20px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.Rooms h1 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* ✅ Área dos botões */
+.Rooms .buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.Rooms button {
+    background-color: #28a745;
+    color: white;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-weight: bold;
+}
+
+.Rooms button:hover {
+    background-color: #218838;
+    transform: scale(1.02);
+}
+
+/* ✅ Estilo da listagem dos quartos */
+.room-list {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 700px;
+    margin: 0 auto;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    text-align: left;
+}
+
+.room-list h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.room-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.room-list li {
+    background-color: white;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    transition: box-shadow 0.3s ease;
+}
+
+.room-list li:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+/* ✅ Responsivo */
+@media (max-width: 768px) {
+    .Rooms .buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .room-list {
+        padding: 15px;
+        max-width: 90%;
+    }
+}
