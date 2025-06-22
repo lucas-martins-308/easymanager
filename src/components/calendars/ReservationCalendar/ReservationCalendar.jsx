@@ -1,153 +1,189 @@
 import { useState, useEffect } from 'react';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
 import './ReservationCalendar.css';
 
 const ReservationCalendar = () => {
     const [reservations, setReservations] = useState([]);
-    const [selectedDate, setSelectedDate] = useState(new Date());
-    const [filteredReservations, setFilteredReservations] = useState([]);
-    const [editingIndex, setEditingIndex] = useState(null);
+    const [rooms, setRooms] = useState([]);
+    const [startOfWeek, setStartOfWeek] = useState(getStartOfWeek(new Date()));
+    const [editingCell, setEditingCell] = useState(null);
     const [formData, setFormData] = useState({});
 
     useEffect(() => {
         const storedReservations = JSON.parse(localStorage.getItem('reservations')) || [];
+        const storedRooms = JSON.parse(localStorage.getItem('rooms')) || [];
         setReservations(storedReservations);
+        setRooms(storedRooms);
     }, []);
 
-    useEffect(() => {
-        const filtered = reservations.filter((reservation) => {
-            const checkInDate = new Date(reservation.checkIn);
-            const checkOutDate = new Date(reservation.checkOut);
-            return selectedDate >= checkInDate && selectedDate <= checkOutDate;
-        });
-        setFilteredReservations(filtered);
-    }, [selectedDate, reservations]);
+    function getStartOfWeek(date) {
+        const newDate = new Date(date);
+        newDate.setHours(0, 0, 0, 0);
+        newDate.setDate(newDate.getDate() - newDate.getDay());
+        return newDate;
+    }
 
-    const handleDateChange = (date) => {
-        setSelectedDate(date);
+    function getWeekDays(start) {
+        return Array.from({ length: 7 }, (_, i) => {
+            const d = new Date(start);
+            d.setDate(start.getDate() + i);
+            d.setHours(0, 0, 0, 0);
+            return d;
+        });
+    }
+
+    const weekDays = getWeekDays(startOfWeek);
+
+    const isSameDay = (d1, d2) => d1.getTime() === d2.getTime();
+
+    // Retorna a reserva que está no quarto e cobre o dia da célula
+    const getReservationForCell = (roomNumber, date) => {
+        return reservations.find(res => {
+            const checkIn = new Date(res.checkIn);
+            const checkOut = new Date(res.checkOut);
+            checkIn.setHours(0, 0, 0, 0);
+            checkOut.setHours(0, 0, 0, 0);
+            return (
+                res.quarto === roomNumber &&
+                date >= checkIn &&
+                date <= checkOut
+            );
+        });
     };
 
-    const handleEditClick = (index) => {
-        setEditingIndex(index);
-        setFormData(filteredReservations[index]);
+    const handleEditClick = (roomNumber, date, reservation) => {
+        setEditingCell({ roomNumber, date: date.getTime() }); // usar timestamp para comparação
+        setFormData({ ...reservation });
     };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
 
     const handleSaveClick = () => {
-        const updatedReservations = [...reservations];
-        const globalIndex = reservations.findIndex(
-            (res) => res.checkIn === filteredReservations[editingIndex].checkIn
-        );
-        updatedReservations[globalIndex] = formData;
-
-        setReservations(updatedReservations);
-        localStorage.setItem('reservations', JSON.stringify(updatedReservations));
-        setEditingIndex(null);
+        // Atualiza a reserva na lista, buscando por checkIn, checkOut, quarto e cliente (ou outro id único se tiver)
+        const updated = reservations.map(r => {
+            if (
+                r.checkIn === formData.checkIn &&
+                r.checkOut === formData.checkOut &&
+                r.quarto === formData.quarto &&
+                r.cliente === formData.cliente
+            ) {
+                return formData;
+            }
+            return r;
+        });
+        setReservations(updated);
+        localStorage.setItem('reservations', JSON.stringify(updated));
+        setEditingCell(null);
         setFormData({});
     };
 
     const handleCancelClick = () => {
-        setEditingIndex(null);
+        setEditingCell(null);
         setFormData({});
+    };
+
+    const goToNextWeek = () => {
+        const next = new Date(startOfWeek);
+        next.setDate(startOfWeek.getDate() + 7);
+        setStartOfWeek(next);
+    };
+
+    const goToPrevWeek = () => {
+        const prev = new Date(startOfWeek);
+        prev.setDate(startOfWeek.getDate() - 7);
+        setStartOfWeek(prev);
     };
 
     return (
         <div className="calendar-container">
-            <h1>Calendário de Reservas</h1>
-            <Calendar
-                onChange={handleDateChange}
-                value={selectedDate}
-            />
+            <h1>Calendário Semanal de Reservas</h1>
 
-            <h2>Reservas no dia {selectedDate.toLocaleDateString()}</h2>
-            {filteredReservations.length > 0 ? (
-                <table className="reservations-table">
-                    <thead>
+            <div className="week-navigation">
+                <button onClick={goToPrevWeek}>Semana Anterior</button>
+                <button onClick={goToNextWeek}>Próxima Semana</button>
+            </div>
+
+            <table className="reservation-calendar-table">
+                <thead>
                     <tr>
-                        <th>Nome</th>
-                        <th>Check-in</th>
-                        <th>Check-out</th>
-                        <th>Canal</th>
-                        <th>Notas</th>
-                        <th>Ações</th>
+                        <th>Quarto / Dia</th>
+                        {weekDays.map((day, index) => (
+                            <th key={index}>
+                                {day.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: '2-digit' })}
+                            </th>
+                        ))}
                     </tr>
-                    </thead>
-                    <tbody>
-                    {filteredReservations.map((reservation, index) => (
-                        <tr key={index}>
-                            {editingIndex === index ? (
-                                <>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            name="nome"
-                                            value={formData.nome || ''}
-                                            onChange={handleInputChange}
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="date"
-                                            name="checkIn"
-                                            value={formData.checkIn || ''}
-                                            onChange={handleInputChange}
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="date"
-                                            name="checkOut"
-                                            value={formData.checkOut || ''}
-                                            onChange={handleInputChange}
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            name="canal"
-                                            value={formData.canal || ''}
-                                            onChange={handleInputChange}
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            name="notes"
-                                            value={formData.notes || ''}
-                                            onChange={handleInputChange}
-                                        />
-                                    </td>
-                                    <td>
-                                        <button onClick={handleSaveClick}>Salvar</button>
-                                        <button onClick={handleCancelClick}>Cancelar</button>
-                                    </td>
-                                </>
-                            ) : (
-                                <>
-                                    <td>{reservation.nome}</td>
-                                    <td>{reservation.checkIn}</td>
-                                    <td>{reservation.checkOut}</td>
-                                    <td>{reservation.canal}</td>
-                                    <td>{reservation.notes || 'Sem notas'}</td>
-                                    <td>
-                                        <button onClick={() => handleEditClick(index)}>
-                                            Editar
-                                        </button>
-                                    </td>
-                                </>
-                            )}
+                </thead>
+                <tbody>
+                    {rooms.length === 0 ? (
+                        <tr>
+                            <td colSpan={8} style={{ textAlign: 'center' }}>
+                                Nenhum quarto cadastrado.
+                            </td>
                         </tr>
-                    ))}
-                    </tbody>
-                </table>
-            ) : (
-                <p className="no-reservations">Nenhuma reserva para esta data.</p>
-            )}
+                    ) : (
+                        rooms.map((room, rowIndex) => (
+                            <tr key={rowIndex}>
+                                <td>
+                                    Quarto {room.numeroQuarto}
+                                </td>
+                                {weekDays.map((day, colIndex) => {
+                                    const reservation = getReservationForCell(room.numeroQuarto, day);
+                                    const cellKey = `${room.numeroQuarto}-${day.toISOString()}`;
+                                    const isEditing = editingCell &&
+                                        editingCell.roomNumber === room.numeroQuarto &&
+                                        editingCell.date === day.getTime();
+
+                                    return (
+                                        <td key={cellKey} className="calendar-cell">
+                                            {reservation ? (
+                                                isEditing ? (
+                                                    <div className="edit-cell">
+                                                        <input
+                                                            type="text"
+                                                            name="cliente"
+                                                            value={formData.cliente || ''}
+                                                            onChange={handleInputChange}
+                                                        />
+                                                        <input
+                                                            type="date"
+                                                            name="checkIn"
+                                                            value={formData.checkIn || ''}
+                                                            onChange={handleInputChange}
+                                                        />
+                                                        <input
+                                                            type="date"
+                                                            name="checkOut"
+                                                            value={formData.checkOut || ''}
+                                                            onChange={handleInputChange}
+                                                        />
+                                                        <input
+                                                            type="text"
+                                                            name="canal"
+                                                            value={formData.canal || ''}
+                                                            onChange={handleInputChange}
+                                                        />
+                                                        <button onClick={handleSaveClick}>Salvar</button>
+                                                        <button onClick={handleCancelClick}>Cancelar</button>
+                                                    </div>
+                                                ) : (
+                                                    <div>
+                                                        {reservation.cliente}
+                                                    </div>
+                                                )
+                                            ) : (
+                                                <></>
+                                            )}
+                                        </td>
+                                    );
+                                })}
+                            </tr>
+                        ))
+                    )}
+                </tbody>
+            </table>
         </div>
     );
 };
