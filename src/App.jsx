@@ -1,4 +1,4 @@
-import './app.css';
+import './App.css';
 import { Outlet, useNavigate } from 'react-router-dom';
 import Topbar from "./components/TopBar/TopBar.jsx";
 import { useEffect } from "react";
