@@ -34,13 +34,18 @@ function Login() {
         return;
       }
 
-      if (!data.usuario || !data.usuario.role) {
+      const usuario = {
+        ...data.usuario,
+        role: data.usuario.tipo
+      };
+
+      if (!usuario || !usuario.role) {
         setError("Dados do usuário inválidos. Contate o administrador.");
         setLoading(false);
         return;
       }
 
-      const loginSuccess = handleLogin(data.usuario);
+      const loginSuccess = handleLogin(usuario);
       if (loginSuccess) {
         navigate("/map");
       } else {
