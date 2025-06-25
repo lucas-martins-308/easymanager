@@ -2,7 +2,7 @@ import "./Login.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
-'import { API_URL } from '../../config/constants';
+import { API_URL } from '../../config/constants';
 
 function Login() {
   const [email, setEmail] = useState("");
