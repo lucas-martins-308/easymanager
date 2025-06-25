@@ -1,8 +1,7 @@
 import './UserForm.css';
 import { useState, useEffect } from 'react';
 import PropTypes from "prop-types";
-
-const API_URL = "http://localhost:3000/api/usuarios"; // Endpoint correto
+import { API_URL } from '../../../config/constants';
 
 const UserForm = ({ role }) => {
   const [formData, setFormData] = useState({});
@@ -11,7 +10,7 @@ const UserForm = ({ role }) => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(API_URL)
+    fetch(`${API_URL}/api/usuarios`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -71,7 +70,7 @@ const UserForm = ({ role }) => {
     };
 
     setLoading(true);
-    fetch(API_URL, {
+    fetch(`${API_URL}/api/usuarios`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newUser),
