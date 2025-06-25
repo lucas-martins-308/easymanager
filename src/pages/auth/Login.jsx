@@ -2,6 +2,7 @@ import "./Login.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
+'import { API_URL } from '../../config/constants';
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -16,8 +17,8 @@ function Login() {
     setError("");
     setLoading(true);
     try {
-      console.log("VITE_API_URL:", import.meta.env.VITE_API_URL);
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
+      console.log("API_URL:", API_URL);
+      const response = await fetch(`${API_URL}/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
