@@ -1,89 +1,140 @@
-import { useEffect, useState } from 'react';
-import initialUsers from "../../../data/users.json";
+import { useState } from 'react';
 
 function ItensForm() {
-    const [formData, setFormData] = useState({});
-    const [itens, setItens] = useState([]);
+  const [formData, setFormData] = useState({
+    nomeItem: '',
+    descricao: '',
+    quantidade: '',
+    preco: '',
+    dtValidade: '',
+    Fornecedor_idFornecedor: ''
+  });
 
-    useEffect(() => {
-        const storedItens = JSON.parse(localStorage.getItem('itens')) || initialUsers;
-        setItens(storedItens);
-    }, []);
+  const [itens, setItens] = useState([]);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        const newItens = { ...formData };
-        const updatedItens = [...itens, newItens];
+    try {
+  const response = await fetch(`${import.meta.env.VITE_API}/api/estoque`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(formData),
+  });
 
-        localStorage.setItem('itens', JSON.stringify(updatedItens));
+  const responseData = await response.json();
 
-        setItens(updatedItens);
-        setFormData({});
+  if (!response.ok) {
+    console.error('Erro do backend:', responseData);
+    throw new Error(responseData.error || 'Erro ao cadastrar item no estoque');
+  }
 
-        alert(`Item cadastrado com sucesso!`);
-    };
+  setItens(prev => [...prev, responseData]);
 
-    return (
-        <form onSubmit={handleSubmit} className="itens-form">
-            <h2>Cadastro de item</h2>
+  setFormData({
+    nomeItem: '',
+    descricao: '',
+    quantidade: '',
+    preco: '',
+    dtValidade: '',
+    Fornecedor_idFornecedor: ''
+  });
 
-            <div className="form-group">
-                <label htmlFor="nome_item">Nome item:</label>
-                <input
-                    type="text"
-                    id="nome_item"
-                    name="nome_item"
-                    value={formData.nome_item || ""}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-
-            <div className="form-group">
-                <label htmlFor="quantidade">Quantidade:</label>
-                <input
-                    type="text"
-                    id="quantidade"
-                    name="quantidade"
-                    value={formData.quantidade || ""}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-
-            <div className="form-group">
-                <label htmlFor="preco">Preço:</label>
-                <input
-                    type="text"
-                    id="preco"
-                    name="preco"
-                    value={formData.preco || ""}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-
-            <div className="form-group">
-                <label htmlFor="data_validade">Data validade:</label>
-                <input
-                    type="date"
-                    id="data_validade"
-                    name="data_validade"
-                    value={formData.data_validade || ""}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-
-            <button type="submit" className="btn-submit">Cadastrar</button>
-        </form>
-    );
+  alert('Item cadastrado com sucesso!');
+} catch (error) {
+  alert(error.message);
 }
 
-    export default ItensForm;
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="itens-form">
+      <h2>Cadastro de item no estoque</h2>
+
+      <div className="form-group">
+        <label htmlFor="nomeItem">Nome do item:</label>
+        <input
+          type="text"
+          id="nomeItem"
+          name="nomeItem"
+          value={formData.nomeItem}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="descricao">Descrição:</label>
+        <input
+          type="text"
+          id="descricao"
+          name="descricao"
+          value={formData.descricao}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="quantidade">Quantidade:</label>
+        <input
+          type="number"
+          id="quantidade"
+          name="quantidade"
+          value={formData.quantidade}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="preco">Preço:</label>
+        <input
+          type="number"
+          step="0.01"
+          id="preco"
+          name="preco"
+          value={formData.preco}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="dtValidade">Data de validade:</label>
+        <input
+          type="date"
+          id="dtValidade"
+          name="dtValidade"
+          value={formData.dtValidade}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="Fornecedor_idFornecedor">ID do Fornecedor:</label>
+        <input
+          type="number"
+          id="Fornecedor_idFornecedor"
+          name="Fornecedor_idFornecedor"
+          value={formData.Fornecedor_idFornecedor}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+      <button type="submit" className="btn-submit">Cadastrar</button>
+    </form>
+  );
+}
+
+export default ItensForm;
