@@ -9,7 +9,12 @@ O objetivo da aplicação é permitir gerenciar reservas, check-ins/check-outs, 
 - MySQL (Banco de dados)
 
 # Autenticação
-auth
-admin
-    email:admin@example.com
-    senha:admin123
+- auth
+- admin
+    - email:admin@example.com
+    - senha:admin123
+
+# Autoria
+- Lucas Martins
+- Isadora Peixoto
+- Wagner Cabral
