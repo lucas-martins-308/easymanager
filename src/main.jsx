@@ -14,6 +14,7 @@ import ProtectedRoute from './auth/ProtectedRoute.jsx';
 import Login from './pages/auth/Login.jsx';
 import RegisterProduct from "./pages/RegisterProduct/RegisterProduct.jsx";
 import RegisterCollaborator from "./pages/RegisterCollaborator/RegisterCollaborator.jsx";
+import RegisterAccommodation from "./pages/RegisterAccommodation/RegisterAccommodation.jsx"
 
 const router = createBrowserRouter([
     {
@@ -84,6 +85,14 @@ const router = createBrowserRouter([
                 element: (
                     <ProtectedRoute allowedRoles={['adm', 'func']}>
                         <RegisterCustomer />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'register-accommodation',
+                element: (
+                    <ProtectedRoute isAuthenticated={isAuthenticated} allowedRoles={['admin']}>
+                        <RegisterAccommodation />
                     </ProtectedRoute>
                 ),
             },
