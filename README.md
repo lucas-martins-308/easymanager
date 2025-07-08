@@ -29,7 +29,7 @@ Para mais detalhes, consulte [API_CONFIG.md](./API_CONFIG.md).
 # Autenticação
 - auth
 - admin
-    - email:admin@example.com
+    - email:admin@admin.com
     - senha:admin123
 
 # Autoria
