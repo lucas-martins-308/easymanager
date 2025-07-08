@@ -204,7 +204,7 @@ const ReservationCalendar = () => {
                                                 ) : (
                                                     <div>
                                                         {reservation.Hospede?.nome || '-'}<br/>
-                                                        {reservation.dataCheckin ? new Date(reservation.dataCheckin).toLocaleDateString() : ''} - {reservation.dataCheckout ? new Date(reservation.dataCheckout).toLocaleDateString() : ''}<br/>
+                                                        {reservation.dataCheckin ? new Date(reservation.dataCheckin + 'T00:00:00').toLocaleDateString() : ''} - {reservation.dataCheckout ? new Date(reservation.dataCheckout + 'T00:00:00').toLocaleDateString() : ''}<br/>
                                                         {reservation.canal || ''}
                                                     </div>
                                                 )

@@ -55,8 +55,8 @@ export default function ViewingCheckIn() {
                             checkins.map((reserva) => (
                                 <tr key={reserva.id}>
                                     <td>{reserva.Hospede?.nome || '-'}</td>
-                                    <td>{new Date(reserva.dataCheckin).toLocaleDateString()}</td>
-                                    <td>{reserva.observacoes || '-'}</td>
+                                    <td>{new Date(reserva.dataCheckin + 'T00:00:00').toLocaleDateString()}</td>
+                                    <td>{reserva.canal || reserva.canalReserva || '-'}</td>
                                 </tr>
                             ))
                         )}
