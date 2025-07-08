@@ -34,6 +34,11 @@ function Login() {
         return;
       }
 
+      // Salvar o token se fornecido
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+      }
+
       const usuario = {
         ...data.usuario,
         role: data.usuario.tipo

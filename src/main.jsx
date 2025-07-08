@@ -14,7 +14,8 @@ import ProtectedRoute from './auth/ProtectedRoute.jsx';
 import Login from './pages/auth/Login.jsx';
 import RegisterProduct from "./pages/RegisterProduct/RegisterProduct.jsx";
 import RegisterCollaborator from "./pages/RegisterCollaborator/RegisterCollaborator.jsx";
-import RegisterAccommodation from "./pages/RegisterAccommodation/RegisterAccommodation.jsx"
+import RegisterAccommodation from "./pages/RegisterAccommodation/RegisterAccommodation.jsx";
+import Fornecedores from "./pages/Fornecedores/Fornecedores.jsx";
 
 const router = createBrowserRouter([
     {
@@ -65,6 +66,14 @@ const router = createBrowserRouter([
                 ),
             },
             {
+                path: 'fornecedores',
+                element: (
+                    <ProtectedRoute allowedRoles={['adm', 'func']}>
+                        <Fornecedores />
+                    </ProtectedRoute>
+                ),
+            },
+            {
                 path: 'register-reservation',
                 element: (
                     <ProtectedRoute allowedRoles={['adm', 'func']}>
@@ -91,7 +100,7 @@ const router = createBrowserRouter([
             {
                 path: 'register-accommodation',
                 element: (
-                    <ProtectedRoute isAuthenticated={isAuthenticated} allowedRoles={['admin']}>
+                    <ProtectedRoute allowedRoles={['adm', 'func']}>
                         <RegisterAccommodation />
                     </ProtectedRoute>
                 ),

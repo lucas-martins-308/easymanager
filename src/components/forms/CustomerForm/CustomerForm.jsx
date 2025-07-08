@@ -1,16 +1,20 @@
 import { useState } from "react";
 import "./CustomerForm.css";
+import { customerService } from '../../../services/customer/customerService';
 
 const CustomerForm = () => {
     const [customerData, setCustomerData] = useState({
         nome: "",
+        sobrenome: "",
         email: "",
         birthDate: "",
         phone: "",
         document: "",
+        tipoDocumento: "CPF",
         country: "",
         gender: "",
     });
+    const [loading, setLoading] = useState(false);
 
     const genders = ["Masculino", "Feminino", "Outro"];
 
@@ -19,25 +23,32 @@ const CustomerForm = () => {
         setCustomerData({ ...customerData, [name]: value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const existingCustomers = JSON.parse(localStorage.getItem("customers")) || [];
-        const updatedCustomers = [...existingCustomers, customerData];
+        try {
+            setLoading(true);
+            await customerService.create(customerData);
 
-        localStorage.setItem("customers", JSON.stringify(updatedCustomers));
+            alert("Cliente cadastrado com sucesso!");
 
-        alert("Cliente cadastrado com sucesso!");
-
-        setCustomerData({
-            nome: "",
-            email: "",
-            birthDate: "",
-            phone: "",
-            document: "",
-            country: "",
-            gender: "",
-        });
+            setCustomerData({
+                nome: "",
+                sobrenome: "",
+                email: "",
+                birthDate: "",
+                phone: "",
+                document: "",
+                tipoDocumento: "CPF",
+                country: "",
+                gender: "",
+            });
+        } catch (error) {
+            console.error('Erro ao cadastrar cliente:', error);
+            alert(error.message || 'Erro ao cadastrar cliente');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -49,6 +60,15 @@ const CustomerForm = () => {
                 type="text"
                 name="nome"
                 value={customerData.nome}
+                onChange={handleChange}
+                required
+            />
+
+            <label>Sobrenome:</label>
+            <input
+                type="text"
+                name="sobrenome"
+                value={customerData.sobrenome}
                 onChange={handleChange}
                 required
             />
@@ -89,6 +109,19 @@ const CustomerForm = () => {
                 required
             />
 
+            <label>Tipo de Documento:</label>
+            <select
+                name="tipoDocumento"
+                value={customerData.tipoDocumento}
+                onChange={handleChange}
+                required
+            >
+                <option value="CPF">CPF</option>
+                <option value="RG">RG</option>
+                <option value="CNH">CNH</option>
+                <option value="Passaporte">Passaporte</option>
+            </select>
+
             <label>País:</label>
             <input
                 type="text"
@@ -113,7 +146,9 @@ const CustomerForm = () => {
                 ))}
             </select>
 
-            <button type="submit">Cadastrar Cliente</button>
+            <button type="submit" disabled={loading}>
+                {loading ? 'Cadastrando...' : 'Cadastrar Cliente'}
+            </button>
         </form>
     );
 };

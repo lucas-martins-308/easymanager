@@ -1,10 +1,7 @@
 import './RoomForm.css';
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import "./RoomForm.css"
-
-// Dados iniciais simulados, pode estar vazio ou preenchido manualmente
-const initialRooms = JSON.parse(localStorage.getItem('rooms')) || [];
+import { roomService } from '../../../services/room/roomService';
 
 const RoomForm = () => {
   const [formData, setFormData] = useState({
@@ -16,38 +13,58 @@ const RoomForm = () => {
   });
 
   const [rooms, setRooms] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const storedRooms = JSON.parse(localStorage.getItem('rooms')) || [];
-    setRooms(storedRooms);
+    loadRooms();
   }, []);
+
+  const loadRooms = async () => {
+    try {
+      setLoading(true);
+      const data = await roomService.getAll();
+      setRooms(data);
+    } catch (error) {
+      console.error('Erro ao carregar quartos:', error);
+      alert('Erro ao carregar quartos');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const newRoom = { ...formData };
-    const updatedRooms = [...rooms, newRoom];
-
-    localStorage.setItem('rooms', JSON.stringify(updatedRooms));
-    setRooms(updatedRooms);
-
-    alert(`Quarto ${formData.numeroQuarto} cadastrado com sucesso!`);
-    setFormData({
-      numeroQuarto: '',
-      tipoQuarto: '',
-      precoDiaria: '',
-      capacidade: '',
-      statusQuarto: 'disponivel',
-    });
+    try {
+      setLoading(true);
+      await roomService.create(formData);
+      
+      // Recarregar a lista de quartos
+      await loadRooms();
+      
+      alert(`Quarto ${formData.numeroQuarto} cadastrado com sucesso!`);
+      setFormData({
+        numeroQuarto: '',
+        tipoQuarto: '',
+        precoDiaria: '',
+        capacidade: '',
+        statusQuarto: 'disponivel',
+      });
+    } catch (error) {
+      console.error('Erro ao cadastrar quarto:', error);
+      alert(error.message || 'Erro ao cadastrar quarto');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="RoomForm">
+    <div className="room-form">
       <h2>Cadastro de Acomodações</h2>
 
       <form onSubmit={handleSubmit}>
@@ -64,13 +81,19 @@ const RoomForm = () => {
 
         <div>
           <label>Tipo de Quarto:</label>
-          <input
-            type="text"
+          <select
             name="tipoQuarto"
             value={formData.tipoQuarto}
             onChange={handleChange}
             required
-          />
+          >
+            <option value="">Selecione o tipo</option>
+            <option value="Simples">Simples</option>
+            <option value="Duplo">Duplo</option>
+            <option value="Triplo">Triplo</option>
+            <option value="Suite">Suite</option>
+            <option value="Luxo">Luxo</option>
+          </select>
         </div>
 
         <div>
@@ -110,17 +133,23 @@ const RoomForm = () => {
           </select>
         </div>
 
-        <button type="submit">Cadastrar Quarto</button>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Cadastrando...' : 'Cadastrar Quarto'}
+        </button>
       </form>
 
       <h3>Acomodações Cadastradas:</h3>
-      <ul>
-        {rooms.map((room, index) => (
-          <li key={index}>
-            Quarto {room.numeroQuarto} - {room.tipoQuarto} - R${room.precoDiaria} - Capacidade: {room.capacidade} - Status: {room.statusQuarto}
-          </li>
-        ))}
-      </ul>
+      {loading ? (
+        <p>Carregando quartos...</p>
+      ) : (
+        <ul>
+          {rooms.map((room) => (
+            <li key={room.idQuarto}>
+              Quarto {room.numeroQuarto} - {room.tipoQuarto} - R${room.precoDiaria} - Capacidade: {room.capacidade} - Status: {room.statusQuarto}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };

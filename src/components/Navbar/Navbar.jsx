@@ -26,6 +26,7 @@ function Navbar({isAuthenticated, handleLogout}) {
                         </DropdownButton>
                         <DropdownButton title="Estoque">
                             <Link to="/itens-table" className="navbar-link">Cadastrar Produto</Link>
+                            <Link to="/fornecedores" className="navbar-link">Fornecedores</Link>
                             <Link to="/stock" className="navbar-link">Inventário</Link>
                         </DropdownButton>
                         <ProtectedRoute allowedRoles={['adm']}>

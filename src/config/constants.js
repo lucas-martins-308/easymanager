@@ -1,4 +1,4 @@
-export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 export const ROLES = {
     ADMIN: 'adm',
@@ -12,6 +12,7 @@ export const ROUTES = {
     FINANCIAL: '/financial',
     STOCK: '/stock',
     ITEMS_TABLE: '/itens-table',
+    FORNECEDORES: '/fornecedores',
     REGISTER_RESERVATION: '/register-reservation',
     BOOKING_CALENDAR: '/booking-calendar',
     REGISTER_CUSTOMER: '/register-customer',

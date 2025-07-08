@@ -2,21 +2,25 @@ import './UserForm.css';
 import { useState, useEffect } from 'react';
 import PropTypes from "prop-types";
 import { API_URL } from '../../../config/constants';
+import { userService } from '../../../services/user/userService';
 
 const UserForm = ({ role }) => {
   const [formData, setFormData] = useState({});
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     setLoading(true);
-    fetch(`${API_URL}/api/usuarios`)
-      .then((res) => res.json())
+    setError(null);
+    userService.getAll()
       .then((data) => {
-        console.log(data);
         setUsers(data);
       })
-      .catch((err) => console.error("Erro ao buscar usuários:", err))
+      .catch((err) => {
+        setError(err.message || 'Erro ao buscar usuários');
+        setUsers([]);
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -56,7 +60,7 @@ const UserForm = ({ role }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newUser = {
       nomeCompleto: formData.fullName,
@@ -70,29 +74,19 @@ const UserForm = ({ role }) => {
     };
 
     setLoading(true);
-    fetch(`${API_URL}/api/usuarios`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newUser),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          return res.json().then(err => {
-            throw new Error(err.message || "Erro ao cadastrar usuário");
-          });
-        }
-        return res.json();
-      })
-      .then((createdUser) => {
-        setUsers((prev) => [...prev, createdUser]);
-        alert(`Usuário ${role === 'admin' ? 'Administrador' : 'Funcionário'} cadastrado com sucesso!`);
-        setFormData({});
-      })
-      .catch((err) => {
-        alert(err.message || "Erro ao cadastrar usuário!");
-        console.error(err);
-      })
-      .finally(() => setLoading(false));
+    setError(null);
+    try {
+      const createdUser = await userService.create(newUser);
+      setUsers((prev) => [...prev, createdUser]);
+      alert(`Usuário ${role === 'admin' ? 'Administrador' : 'Funcionário'} cadastrado com sucesso!`);
+      setFormData({});
+    } catch (err) {
+      setError(err.message || 'Erro ao cadastrar usuário!');
+      alert(err.message || 'Erro ao cadastrar usuário!');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -119,13 +113,18 @@ const UserForm = ({ role }) => {
 
       <h3>Usuários Cadastrados:</h3>
       {loading && <p>Carregando usuários...</p>}
-      <ul>
-        {users.map((user) => (
-          <li key={user.idUsuario}>
-            {user.nomeCompleto} - {user.tipoUsuario === 'adm' ? 'Administrador' : 'Funcionário'}
-          </li>
-        ))}
-      </ul>
+      {error && <p style={{color: 'red'}}>{error}</p>}
+      {!loading && !error && (!Array.isArray(users) ? (
+        <p>Erro ao carregar usuários: resposta inesperada da API</p>
+      ) : (
+        <ul>
+          {users.map((user) => (
+            <li key={user.idUsuario}>
+              {user.nomeCompleto} - {user.tipoUsuario === 'adm' ? 'Administrador' : 'Funcionário'}
+            </li>
+          ))}
+        </ul>
+      ))}
     </form>
   );
 };

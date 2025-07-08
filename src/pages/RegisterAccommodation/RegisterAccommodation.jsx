@@ -1,5 +1,5 @@
 import "./RegisterAccommodation.css"
-import AccommodationForm from "../../forms/AccommodationForm/AccommodationForm"
+import AccommodationForm from "../../components/forms/AccommodationForm/AccommodationForm"
 
 
 function RegisterAccommodation(){

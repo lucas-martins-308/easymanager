@@ -21,6 +21,11 @@ class AuthService {
                 throw new Error("Dados do usuário inválidos");
             }
 
+            // Salvar o token se fornecido
+            if (data.token) {
+                localStorage.setItem('token', data.token);
+            }
+
             return data.usuario;
         } catch (error) {
             throw error;
@@ -29,6 +34,7 @@ class AuthService {
 
     logout() {
         localStorage.removeItem('currentUser');
+        localStorage.removeItem('token');
     }
 
     getCurrentUser() {
