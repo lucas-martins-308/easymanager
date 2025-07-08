@@ -1,6 +1,6 @@
 import './AddCollaborator.css';
 import {useState} from 'react';
-import UserForm from '../../components/forms/UserForm/UserForm.jsx';
+import UserForm from '../UserForm/UserForm';
 
 function AddCollaboratorForm() {
     const [role, setRole] = useState(null);

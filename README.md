@@ -8,6 +8,24 @@ O objetivo da aplicação é permitir gerenciar reservas, check-ins/check-outs, 
 - Node.js (Backend)
 - MySQL (Banco de dados)
 
+# Configuração da API
+
+O sistema usa a variável de ambiente `VITE_API_URL` para configurar a URL do backend.
+
+## Configuração Rápida
+
+1. Crie um arquivo `.env.local` na raiz do projeto:
+```bash
+VITE_API_URL=http://localhost:3001
+```
+
+2. Reinicie o servidor de desenvolvimento:
+```bash
+npm run dev
+```
+
+Para mais detalhes, consulte [API_CONFIG.md](./API_CONFIG.md).
+
 # Autenticação
 - auth
 - admin

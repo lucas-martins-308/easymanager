@@ -1,5 +1,5 @@
 import "./RegisterCollaborator.css"
-import AddCollaboratorForm from "../../forms/AddCollaboratorForm/AddCollaboratorForm.jsx";
+import AddCollaboratorForm from "../../components/forms/AddCollaboratorForm/AddCollaboratorForm";
 
 function RegisterCollaborator(){
     return(

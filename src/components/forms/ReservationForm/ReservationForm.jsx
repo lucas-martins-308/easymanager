@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./ReservationForm.css";
+import { customerService } from '../../../services/customer/customerService';
+import { roomService } from '../../../services/room/roomService';
+import { reservationService } from '../../../services/reservation/reservationService';
 
 const ReservationForm = () => {
     const [formData, setFormData] = useState({
@@ -11,35 +14,31 @@ const ReservationForm = () => {
     });
     const [customers, setCustomers] = useState([]);
     const [rooms, setRooms] = useState([]); 
+    const [loading, setLoading] = useState(false);
 
     
-    const loadCustomers = () => {
-        const storedCustomers = JSON.parse(localStorage.getItem("customers")) || [];
-        setCustomers(storedCustomers);
+    const loadCustomers = async () => {
+        try {
+            const data = await customerService.getAll();
+            setCustomers(data);
+        } catch (error) {
+            console.error('Erro ao carregar clientes:', error);
+        }
     };
-    const loadRooms = () => {
-        const storedRooms = JSON.parse(localStorage.getItem("rooms")) || [];
-        setRooms(storedRooms);
+    
+    const loadRooms = async () => {
+        try {
+            const data = await roomService.getAll();
+            console.log('Quartos carregados:', data);
+            setRooms(data);
+        } catch (error) {
+            console.error('Erro ao carregar quartos:', error);
+        }
     };
 
     useEffect(() => {
         loadCustomers();
         loadRooms();
-
-        const handleStorageChange = (event) => {
-            if (event.key === "customers") {
-                loadCustomers();
-            }
-            if (event.key === "rooms") {
-                loadRooms();
-            }
-        };
-
-        window.addEventListener("storage", handleStorageChange);
-
-        return () => {
-            window.removeEventListener("storage", handleStorageChange);
-        };
     }, []);
 
     const handleChange = (e) => {
@@ -47,19 +46,73 @@ const ReservationForm = () => {
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = (e) => {
+    const calculateTotalValue = (checkIn, checkOut, selectedRoom) => {
+        if (!checkIn || !checkOut || !selectedRoom) return 0;
+        
+        const startDate = new Date(checkIn);
+        const endDate = new Date(checkOut);
+        const daysDiff = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+        
+        return daysDiff * selectedRoom.precoDiaria;
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        alert("Reserva criada com sucesso!");
-        const storedReservations = JSON.parse(localStorage.getItem("reservations")) || [];
-        const updatedReservations = [...storedReservations, formData];
-        localStorage.setItem("reservations", JSON.stringify(updatedReservations));
-        setFormData({
-            checkIn: "",
-            checkOut: "",
-            canal: "",
-            cliente: "",
-            quarto: "",
-        });
+        
+        try {
+            setLoading(true);
+            
+            console.log('Dados do formulário:', formData);
+            console.log('Quartos disponíveis:', rooms);
+            console.log('Clientes disponíveis:', customers);
+            
+            // Encontrar o cliente selecionado
+            const selectedCustomer = customers.find(customer => customer.nome === formData.cliente);
+            if (!selectedCustomer) {
+                throw new Error('Cliente não encontrado');
+            }
+            console.log('Cliente selecionado:', selectedCustomer);
+
+            // Encontrar o quarto selecionado
+            const selectedRoom = rooms.find(room => room.numeroQuarto.toString() === formData.quarto);
+            if (!selectedRoom) {
+                console.log('Tentando encontrar quarto com valor:', formData.quarto);
+                console.log('Tipos de dados dos quartos:', rooms.map(r => ({ numero: r.numeroQuarto, tipo: typeof r.numeroQuarto })));
+                throw new Error('Quarto não encontrado');
+            }
+            console.log('Quarto selecionado:', selectedRoom);
+
+            // Calcular valor total
+            const valorTotal = calculateTotalValue(formData.checkIn, formData.checkOut, selectedRoom);
+
+            // Mapear dados para o formato esperado pelo backend
+            const reservationData = {
+                dtCheckin: formData.checkIn,
+                dtCheckout: formData.checkOut,
+                valorReserva: valorTotal,
+                canalReserva: formData.canal,
+                statusReserva: 'pendente',
+                hospedeId: selectedCustomer.idHospede
+            };
+
+            console.log('Dados da reserva sendo enviados:', reservationData);
+            
+            await reservationService.create(reservationData);
+            
+            alert("Reserva criada com sucesso!");
+            setFormData({
+                checkIn: "",
+                checkOut: "",
+                canal: "",
+                cliente: "",
+                quarto: "",
+            });
+        } catch (error) {
+            console.error('Erro ao criar reserva:', error);
+            alert(`Erro ao criar reserva: ${error.message}`);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -105,9 +158,9 @@ const ReservationForm = () => {
                 required
             >
                 <option value="">Selecione um cliente</option>
-                {customers.map((customer, index) => (
-                    <option key={index} value={customer.nome}>
-                        {customer.nome} - {customer.cpf}
+                {customers.map((customer) => (
+                    <option key={customer.idHospede} value={customer.nome}>
+                        {customer.nome} - {customer.documento}
                     </option>
                 ))}
             </select>
@@ -120,14 +173,24 @@ const ReservationForm = () => {
                 required
             >
                 <option value="">Selecione um quarto</option>
-                {rooms.map((room, index) => (
-                    <option key={index} value={room.numeroQuarto}>
-                        Quarto {room.numeroQuarto} - {room.tipoQuarto}
+                {rooms.map((room) => (
+                    <option key={room.idQuarto} value={room.numeroQuarto.toString()}>
+                        Quarto {room.numeroQuarto} - {room.tipoQuarto} (R$ {room.precoDiaria}/dia)
                     </option>
                 ))}
             </select>
 
-            <button type="submit">Criar Reserva</button>
+            {formData.checkIn && formData.checkOut && formData.quarto && (
+                <div className="reservation-summary">
+                    <h3>Resumo da Reserva</h3>
+                    <p>Valor Total: R$ {calculateTotalValue(formData.checkIn, formData.checkOut, 
+                        rooms.find(room => room.numeroQuarto === formData.quarto))}</p>
+                </div>
+            )}
+
+            <button type="submit" disabled={loading}>
+                {loading ? 'Criando...' : 'Criar Reserva'}
+            </button>
         </form>
     );
 };

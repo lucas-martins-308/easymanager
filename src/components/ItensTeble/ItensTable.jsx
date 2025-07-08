@@ -1,15 +1,29 @@
 import './ItensTable.css';
 import { useEffect, useState } from 'react';
+import { itemService } from '../../services/item/itemService';
 
 function ItensTable() {
     const [itens, setItens] = useState([]);
     const [editingIndex, setEditingIndex] = useState(null);
     const [formData, setFormData] = useState({});
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        const storedItens = JSON.parse(localStorage.getItem('itens')) || [];
-        setItens(storedItens);
+        loadItens();
     }, []);
+
+    const loadItens = async () => {
+        try {
+            setLoading(true);
+            const data = await itemService.getAll();
+            setItens(data);
+        } catch (error) {
+            console.error('Erro ao carregar itens:', error);
+            alert('Erro ao carregar itens');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleEditClick = (index) => {
         setEditingIndex(index);
@@ -21,13 +35,24 @@ function ItensTable() {
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSaveClick = () => {
-        const updatedItens = [...itens];
-        updatedItens[editingIndex] = formData;
-        setItens(updatedItens);
-        localStorage.setItem('itens', JSON.stringify(updatedItens));
-        setEditingIndex(null);
-        setFormData({});
+    const handleSaveClick = async () => {
+        try {
+            setLoading(true);
+            const itemToUpdate = itens[editingIndex];
+            await itemService.update(itemToUpdate.idItem, formData);
+            
+            // Recarregar a lista de itens
+            await loadItens();
+            
+            setEditingIndex(null);
+            setFormData({});
+            alert('Item atualizado com sucesso!');
+        } catch (error) {
+            console.error('Erro ao atualizar item:', error);
+            alert('Erro ao atualizar item');
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleCancelClick = () => {
@@ -38,7 +63,9 @@ function ItensTable() {
     return (
         <div className="itens-table">
             <h2>Itens Cadastrados</h2>
-            {itens.length > 0 ? (
+            {loading ? (
+                <p>Carregando itens...</p>
+            ) : itens.length > 0 ? (
                 <table>
                     <thead>
                     <tr>
@@ -51,14 +78,14 @@ function ItensTable() {
                     </thead>
                     <tbody>
                     {itens.map((item, index) => (
-                        <tr key={index}>
+                        <tr key={item.idItem}>
                             {editingIndex === index ? (
                                 <>
                                     <td>
                                         <input
                                             type="text"
-                                            name="nome_item"
-                                            value={formData.nome_item || ''}
+                                            name="nomeItem"
+                                            value={formData.nomeItem || ''}
                                             onChange={handleInputChange}
                                         />
                                     </td>
@@ -72,7 +99,8 @@ function ItensTable() {
                                     </td>
                                     <td>
                                         <input
-                                            type="text"
+                                            type="number"
+                                            step="0.01"
                                             name="preco"
                                             value={formData.preco || ''}
                                             onChange={handleInputChange}
@@ -81,22 +109,24 @@ function ItensTable() {
                                     <td>
                                         <input
                                             type="date"
-                                            name="data_validade"
-                                            value={formData.data_validade || ''}
+                                            name="dtValidade"
+                                            value={formData.dtValidade || ''}
                                             onChange={handleInputChange}
                                         />
                                     </td>
                                     <td>
-                                        <button onClick={handleSaveClick}>Salvar</button>
-                                        <button onClick={handleCancelClick}>Cancelar</button>
+                                        <button onClick={handleSaveClick} disabled={loading}>
+                                            {loading ? 'Salvando...' : 'Salvar'}
+                                        </button>
+                                        <button onClick={handleCancelClick} disabled={loading}>Cancelar</button>
                                     </td>
                                 </>
                             ) : (
                                 <>
-                                    <td>{item.nome_item}</td>
+                                    <td>{item.nomeItem}</td>
                                     <td>{item.quantidade}</td>
                                     <td>R$ {parseFloat(item.preco).toFixed(2)}</td>
-                                    <td>{item.data_validade}</td>
+                                    <td>{item.dtValidade}</td>
                                     <td>
                                         <button onClick={() => handleEditClick(index)}>Editar</button>
                                     </td>

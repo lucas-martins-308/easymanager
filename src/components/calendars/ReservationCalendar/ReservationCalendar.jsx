@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import './ReservationCalendar.css';
+import { reservationService } from '../../../services/reservation/reservationService';
+import { roomService } from '../../../services/room/roomService';
 
 const ReservationCalendar = () => {
     const [reservations, setReservations] = useState([]);
@@ -7,13 +9,28 @@ const ReservationCalendar = () => {
     const [startOfWeek, setStartOfWeek] = useState(getStartOfWeek(new Date()));
     const [editingCell, setEditingCell] = useState(null);
     const [formData, setFormData] = useState({});
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        const storedReservations = JSON.parse(localStorage.getItem('reservations')) || [];
-        const storedRooms = JSON.parse(localStorage.getItem('rooms')) || [];
-        setReservations(storedReservations);
-        setRooms(storedRooms);
+        loadData();
     }, []);
+
+    const loadData = async () => {
+        try {
+            setLoading(true);
+            const [reservationsData, roomsData] = await Promise.all([
+                reservationService.getAll(),
+                roomService.getAll()
+            ]);
+            setReservations(reservationsData);
+            setRooms(roomsData);
+        } catch (error) {
+            console.error('Erro ao carregar dados:', error);
+            alert('Erro ao carregar dados do calendário');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     function getStartOfWeek(date) {
         const newDate = new Date(date);
@@ -38,8 +55,8 @@ const ReservationCalendar = () => {
     // Retorna a reserva que está no quarto e cobre o dia da célula
     const getReservationForCell = (roomNumber, date) => {
         return reservations.find(res => {
-            const checkIn = new Date(res.checkIn);
-            const checkOut = new Date(res.checkOut);
+            const checkIn = new Date(res.dataCheckin);
+            const checkOut = new Date(res.dataCheckout);
             checkIn.setHours(0, 0, 0, 0);
             checkOut.setHours(0, 0, 0, 0);
             return (
@@ -60,23 +77,31 @@ const ReservationCalendar = () => {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSaveClick = () => {
-        // Atualiza a reserva na lista, buscando por checkIn, checkOut, quarto e cliente (ou outro id único se tiver)
-        const updated = reservations.map(r => {
-            if (
+    const handleSaveClick = async () => {
+        try {
+            setLoading(true);
+            // Encontrar a reserva que está sendo editada
+            const reservationToUpdate = reservations.find(r => 
                 r.checkIn === formData.checkIn &&
                 r.checkOut === formData.checkOut &&
                 r.quarto === formData.quarto &&
                 r.cliente === formData.cliente
-            ) {
-                return formData;
+            );
+            
+            if (reservationToUpdate) {
+                await reservationService.update(reservationToUpdate.idReserva, formData);
+                await loadData(); // Recarregar dados
+                alert('Reserva atualizada com sucesso!');
             }
-            return r;
-        });
-        setReservations(updated);
-        localStorage.setItem('reservations', JSON.stringify(updated));
-        setEditingCell(null);
-        setFormData({});
+            
+            setEditingCell(null);
+            setFormData({});
+        } catch (error) {
+            console.error('Erro ao atualizar reserva:', error);
+            alert('Erro ao atualizar reserva');
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleCancelClick = () => {
@@ -117,7 +142,13 @@ const ReservationCalendar = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {rooms.length === 0 ? (
+                    {loading ? (
+                        <tr>
+                            <td colSpan={8} style={{ textAlign: 'center' }}>
+                                Carregando dados...
+                            </td>
+                        </tr>
+                    ) : rooms.length === 0 ? (
                         <tr>
                             <td colSpan={8} style={{ textAlign: 'center' }}>
                                 Nenhum quarto cadastrado.
@@ -125,7 +156,7 @@ const ReservationCalendar = () => {
                         </tr>
                     ) : (
                         rooms.map((room, rowIndex) => (
-                            <tr key={rowIndex}>
+                            <tr key={room.idQuarto}>
                                 <td>
                                     Quarto {room.numeroQuarto}
                                 </td>
@@ -144,19 +175,19 @@ const ReservationCalendar = () => {
                                                         <input
                                                             type="text"
                                                             name="cliente"
-                                                            value={formData.cliente || ''}
+                                                            value={formData.Hospede?.nome || ''}
                                                             onChange={handleInputChange}
                                                         />
                                                         <input
                                                             type="date"
-                                                            name="checkIn"
-                                                            value={formData.checkIn || ''}
+                                                            name="dataCheckin"
+                                                            value={formData.dataCheckin || ''}
                                                             onChange={handleInputChange}
                                                         />
                                                         <input
                                                             type="date"
-                                                            name="checkOut"
-                                                            value={formData.checkOut || ''}
+                                                            name="dataCheckout"
+                                                            value={formData.dataCheckout || ''}
                                                             onChange={handleInputChange}
                                                         />
                                                         <input
@@ -165,12 +196,16 @@ const ReservationCalendar = () => {
                                                             value={formData.canal || ''}
                                                             onChange={handleInputChange}
                                                         />
-                                                        <button onClick={handleSaveClick}>Salvar</button>
-                                                        <button onClick={handleCancelClick}>Cancelar</button>
+                                                        <button onClick={handleSaveClick} disabled={loading}>
+                                                            {loading ? 'Salvando...' : 'Salvar'}
+                                                        </button>
+                                                        <button onClick={handleCancelClick} disabled={loading}>Cancelar</button>
                                                     </div>
                                                 ) : (
                                                     <div>
-                                                        {reservation.cliente}
+                                                        {reservation.Hospede?.nome || '-'}<br/>
+                                                        {reservation.dataCheckin ? new Date(reservation.dataCheckin).toLocaleDateString() : ''} - {reservation.dataCheckout ? new Date(reservation.dataCheckout).toLocaleDateString() : ''}<br/>
+                                                        {reservation.canal || ''}
                                                     </div>
                                                 )
                                             ) : (

@@ -1,15 +1,27 @@
-import'./UserForm.css';
-import  { useState, useEffect } from 'react';
-import initialUsers from '../../../data/users.json';
+import './UserForm.css';
+import { useState, useEffect } from 'react';
 import PropTypes from "prop-types";
+import { API_URL } from '../../../config/constants';
+import { userService } from '../../../services/user/userService';
 
 const UserForm = ({ role }) => {
   const [formData, setFormData] = useState({});
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const storedUsers = JSON.parse(localStorage.getItem('users')) || initialUsers;
-    setUsers(storedUsers);
+    setLoading(true);
+    setError(null);
+    userService.getAll()
+      .then((data) => {
+        setUsers(data);
+      })
+      .catch((err) => {
+        setError(err.message || 'Erro ao buscar usuários');
+        setUsers([]);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const fields = {
@@ -48,45 +60,72 @@ const UserForm = ({ role }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const newUser = {
+      nomeCompleto: formData.fullName,
+      cpf: formData.cpf,
+      dtNascimento: formData.birthDate,
+      telefone: formData.phone,
+      email: formData.email,
+      senha: formData.password,
+      tipoUsuario: role === 'admin' ? 'adm' : 'func',
+      Endereco_idEndereco: 1 // Valor padrão, ajuste conforme necessário
+    };
 
-    const newUser = { ...formData, role };
-    const updatedUsers = [...users, newUser];
-
-    localStorage.setItem('users', JSON.stringify(updatedUsers));
-    setUsers(updatedUsers);
-
-    alert(`Usuário ${role} cadastrado com sucesso!`);
-    setFormData({});
+    setLoading(true);
+    setError(null);
+    try {
+      const createdUser = await userService.create(newUser);
+      setUsers((prev) => [...prev, createdUser]);
+      alert(`Usuário ${role === 'admin' ? 'Administrador' : 'Funcionário'} cadastrado com sucesso!`);
+      setFormData({});
+    } catch (err) {
+      setError(err.message || 'Erro ao cadastrar usuário!');
+      alert(err.message || 'Erro ao cadastrar usuário!');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-      <form onSubmit={handleSubmit}>
-        <h2>Cadastro de {role === "admin" ? "Admin" : "Funcionário"}</h2>
+    <form onSubmit={handleSubmit}>
+      <h2>Cadastro de {role === "admin" ? "Admin" : "Funcionário"}</h2>
 
-        {fields[role].map((field) => (
-            <div key={field.name}>
-              <label>{field.label}:</label>
-              <input
-                  type={field.type}
-                  name={field.name}
-                  value={formData[field.name] || ""}
-                  onChange={handleChange}
-                  required
-              />
-            </div>
-        ))}
+      {fields[role].map((field) => (
+        <div key={field.name}>
+          <label>{field.label}:</label>
+          <input
+            type={field.type}
+            name={field.name}
+            value={formData[field.name] || ""}
+            onChange={handleChange}
+            required
+            disabled={loading}
+          />
+        </div>
+      ))}
 
-        <button type="submit">Cadastrar</button>
+      <button type="submit" disabled={loading}>
+        {loading ? "Salvando..." : "Cadastrar"}
+      </button>
 
-        <h3>Usuários Cadastrados:</h3>
+      <h3>Usuários Cadastrados:</h3>
+      {loading && <p>Carregando usuários...</p>}
+      {error && <p style={{color: 'red'}}>{error}</p>}
+      {!loading && !error && (!Array.isArray(users) ? (
+        <p>Erro ao carregar usuários: resposta inesperada da API</p>
+      ) : (
         <ul>
-          {users.map((user, index) => (
-              <li key={index}>{user.fullName} - {user.role}</li>
+          {users.map((user) => (
+            <li key={user.idUsuario}>
+              {user.nomeCompleto} - {user.tipoUsuario === 'adm' ? 'Administrador' : 'Funcionário'}
+            </li>
           ))}
         </ul>
-      </form>
+      ))}
+    </form>
   );
 };
 UserForm.propTypes = {

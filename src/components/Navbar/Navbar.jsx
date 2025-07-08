@@ -26,9 +26,10 @@ function Navbar({isAuthenticated, handleLogout}) {
                         </DropdownButton>
                         <DropdownButton title="Estoque">
                             <Link to="/itens-table" className="navbar-link">Cadastrar Produto</Link>
+                            <Link to="/fornecedores" className="navbar-link">Fornecedores</Link>
                             <Link to="/stock" className="navbar-link">Inventário</Link>
                         </DropdownButton>
-                        <ProtectedRoute isAuthenticated={isAuthenticated} allowedRoles={['admin']}>
+                        <ProtectedRoute allowedRoles={['adm']}>
                             <DropdownButton title="Admin">
                                 <Link to="/register-collaborator" className="navbar-link">Usuários</Link>
                                 <Link to="/register-accommodation" className="navbar-link">Acomodações</Link>
@@ -43,27 +44,19 @@ function Navbar({isAuthenticated, handleLogout}) {
                     </>
                 )}
                             
-                    {isAuthenticated ? (
-                        <button
-                            onClick={() => {
+                {isAuthenticated ? (
+                    <button
+                        onClick={() => {
                             const confirmLogout = window.confirm('Tem certeza que deseja sair?');
-                                if (confirmLogout) {
-                                    handleLogout();
-                                }
-                            }}
-                            className="navbar-link">Sair
-                        </button>
-                    ) : (
-                        <Link to="/login" className="navbar-link">Login</Link>
-                    )}
-                
-                {/*<DropdownButton title="Usuário">
-                    {isAuthenticated ? (
-                        <button onClick={handleLogout} id="Sair" className="navbar-link">Sair</button>
-                    ) : (
-                        <Link to="/login" className="navbar-link">Login</Link>
-                    )}
-                </DropdownButton>*/}
+                            if (confirmLogout) {
+                                handleLogout();
+                            }
+                        }}
+                        className="navbar-link">Sair
+                    </button>
+                ) : (
+                    <Link to="/login" className="navbar-link">Login</Link>
+                )}
             </div>
         </div>
     );

@@ -1,16 +1,40 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { itemService } from '../../../services/item/itemService';
+import { fornecedorService } from '../../../services/fornecedor/fornecedorService';
 
 function ItensForm() {
-  const [formData, setFormData] = useState({
-    nomeItem: '',
-    descricao: '',
-    quantidade: '',
-    preco: '',
-    dtValidade: '',
-    Fornecedor_idFornecedor: ''
-  });
+    const [formData, setFormData] = useState({});
+    const [itens, setItens] = useState([]);
+    const [fornecedores, setFornecedores] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-  const [itens, setItens] = useState([]);
+    useEffect(() => {
+        loadItens();
+        loadFornecedores();
+    }, []);
+
+    const loadItens = async () => {
+        try {
+            setLoading(true);
+            const data = await itemService.getAll();
+            setItens(data);
+        } catch (error) {
+            console.error('Erro ao carregar itens:', error);
+            alert('Erro ao carregar itens');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const loadFornecedores = async () => {
+        try {
+            const data = await fornecedorService.getAll();
+            console.log('Fornecedores carregados:', data);
+            setFornecedores(data);
+        } catch (error) {
+            console.error('Erro ao carregar fornecedores:', error);
+        }
+    };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,35 +48,28 @@ function ItensForm() {
     e.preventDefault();
 
     try {
-  const response = await fetch(`${import.meta.env.VITE_API}/api/estoque`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(formData),
-  });
+        setLoading(true);
+        
+        // Verificar se um fornecedor foi selecionado
+        if (!formData.Fornecedor_idFornecedor) {
+            throw new Error('Por favor, selecione um fornecedor');
+        }
 
-  const responseData = await response.json();
-
-  if (!response.ok) {
-    console.error('Erro do backend:', responseData);
-    throw new Error(responseData.error || 'Erro ao cadastrar item no estoque');
-  }
-
-  setItens(prev => [...prev, responseData]);
-
-  setFormData({
-    nomeItem: '',
-    descricao: '',
-    quantidade: '',
-    preco: '',
-    dtValidade: '',
-    Fornecedor_idFornecedor: ''
-  });
-
-  alert('Item cadastrado com sucesso!');
-} catch (error) {
-  alert(error.message);
-}
-
+        console.log('Dados do formulário sendo enviados:', formData);
+        
+        await itemService.create(formData);
+        
+        // Recarregar a lista de itens
+        await loadItens();
+        
+        setFormData({});
+        alert('Item cadastrado com sucesso!');
+    } catch (error) {
+        console.error('Erro ao cadastrar item:', error);
+        alert(`Erro ao cadastrar item: ${error.message}`);
+    } finally {
+        setLoading(false);
+    }
   };
 
   return (
@@ -65,7 +82,7 @@ function ItensForm() {
           type="text"
           id="nomeItem"
           name="nomeItem"
-          value={formData.nomeItem}
+          value={formData.nomeItem || ''}
           onChange={handleChange}
           required
         />
@@ -77,7 +94,7 @@ function ItensForm() {
           type="text"
           id="descricao"
           name="descricao"
-          value={formData.descricao}
+          value={formData.descricao || ''}
           onChange={handleChange}
           required
         />
@@ -89,7 +106,7 @@ function ItensForm() {
           type="number"
           id="quantidade"
           name="quantidade"
-          value={formData.quantidade}
+          value={formData.quantidade || ''}
           onChange={handleChange}
           required
         />
@@ -102,7 +119,7 @@ function ItensForm() {
           step="0.01"
           id="preco"
           name="preco"
-          value={formData.preco}
+          value={formData.preco || ''}
           onChange={handleChange}
           required
         />
@@ -114,25 +131,33 @@ function ItensForm() {
           type="date"
           id="dtValidade"
           name="dtValidade"
-          value={formData.dtValidade}
+          value={formData.dtValidade || ''}
           onChange={handleChange}
           required
         />
       </div>
 
       <div className="form-group">
-        <label htmlFor="Fornecedor_idFornecedor">ID do Fornecedor:</label>
-        <input
-          type="number"
+        <label htmlFor="Fornecedor_idFornecedor">Fornecedor:</label>
+        <select
           id="Fornecedor_idFornecedor"
           name="Fornecedor_idFornecedor"
-          value={formData.Fornecedor_idFornecedor}
+          value={formData.Fornecedor_idFornecedor || ''}
           onChange={handleChange}
           required
-        />
+        >
+          <option value="">Selecione um fornecedor</option>
+          {fornecedores.map((fornecedor) => (
+            <option key={fornecedor.idFornecedor} value={fornecedor.idFornecedor}>
+              {fornecedor.nome} - {fornecedor.email}
+            </option>
+          ))}
+        </select>
       </div>
 
-      <button type="submit" className="btn-submit">Cadastrar</button>
+      <button type="submit" className="btn-submit" disabled={loading}>
+        {loading ? 'Cadastrando...' : 'Cadastrar'}
+      </button>
     </form>
   );
 }
