@@ -183,8 +183,11 @@ const ReservationForm = () => {
             {formData.checkIn && formData.checkOut && formData.quarto && (
                 <div className="reservation-summary">
                     <h3>Resumo da Reserva</h3>
-                    <p>Valor Total: R$ {calculateTotalValue(formData.checkIn, formData.checkOut, 
-                        rooms.find(room => room.numeroQuarto === formData.quarto))}</p>
+                    <p>Valor Total: R$ {(() => {
+                        const selectedRoom = rooms.find(room => room.numeroQuarto.toString() === formData.quarto.toString());
+                        const value = calculateTotalValue(formData.checkIn, formData.checkOut, selectedRoom);
+                        return value.toFixed(2);
+                    })()}</p>
                 </div>
             )}
 

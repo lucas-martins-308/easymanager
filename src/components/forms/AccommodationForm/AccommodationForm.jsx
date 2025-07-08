@@ -8,6 +8,7 @@ function AddAccommodationForm() {
     const [showRooms, setShowRooms] = useState(false);
     const [rooms, setRooms] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [editingRoom, setEditingRoom] = useState(null);
 
     // Carrega os quartos da API sempre que abrir a tela de visualizar
     useEffect(() => {
@@ -29,6 +30,23 @@ function AddAccommodationForm() {
         }
     };
 
+    const handleEditRoom = (room) => {
+        setEditingRoom(room);
+        setShowForm(true);
+        setShowRooms(false);
+    };
+
+    const handleCancelEdit = () => {
+        setEditingRoom(null);
+        setShowForm(false);
+    };
+
+    const handleSaveEdit = () => {
+        setEditingRoom(null);
+        setShowForm(false);
+        loadRooms();
+    };
+
     return (
         <div className="Rooms">
             <h1>Acomodações</h1>
@@ -37,6 +55,7 @@ function AddAccommodationForm() {
                 <button onClick={() => {
                     setShowForm(!showForm);
                     setShowRooms(false); // Fecha a listagem se estiver aberta
+                    setEditingRoom(null);
                 }}>
                     {showForm ? 'Voltar' : 'Cadastrar Quarto'}
                 </button>
@@ -44,12 +63,19 @@ function AddAccommodationForm() {
                 <button onClick={() => {
                     setShowRooms(!showRooms);
                     setShowForm(false); // Fecha o form se estiver aberto
+                    setEditingRoom(null);
                 }}>
                     {showRooms ? 'Fechar Lista' : 'Visualizar Quartos'}
                 </button>
             </div>
 
-            {showForm && <RoomForm />}
+            {showForm && (
+                <RoomForm
+                    editingRoom={editingRoom}
+                    onCancelEdit={handleCancelEdit}
+                    onSaveEdit={handleSaveEdit}
+                />
+            )}
 
             {showRooms && (
                 <div className="room-list">
@@ -61,10 +87,11 @@ function AddAccommodationForm() {
                     ) : (
                         <ul>
                             {rooms.map((room) => (
-                                <li key={room.idQuarto}>
+                                <li key={room.idQuarto} style={{cursor: 'pointer'}} onClick={() => handleEditRoom(room)}>
                                     <strong>Quarto {room.numeroQuarto}</strong> - {room.tipoQuarto} - 
                                     R$ {room.precoDiaria} - Capacidade: {room.capacidade} - 
                                     Status: {room.statusQuarto}
+                                    {editingRoom && editingRoom.idQuarto === room.idQuarto && ' (Editando...)'}
                                 </li>
                             ))}
                         </ul>
