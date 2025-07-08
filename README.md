@@ -39,3 +39,6 @@ Para mais detalhes, consulte [API_CONFIG.md](./API_CONFIG.md).
 
 # Documentação
 📄 [Clique aqui para visualizar ou baixar a Documentação do Projeto (PDF)](https://github.com/lucas-martins-308/easymanager/raw/f3f8f230c9f105986c2e07b0ca6f73a1821cb13e/Projeto%20Aplicado%20III%20-%20Documenta%C3%A7%C3%A3o%20EasyManager.pdf)
+
+# Projeto:
+https://easymanager-production.up.railway.app/
