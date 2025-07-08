@@ -92,7 +92,8 @@ const ReservationForm = () => {
                 valorReserva: valorTotal,
                 canalReserva: formData.canal,
                 statusReserva: 'pendente',
-                hospedeId: selectedCustomer.idHospede
+                hospedeId: selectedCustomer.idHospede,
+                quartoId: selectedRoom.idQuarto // Adicionar o ID do quarto
             };
 
             console.log('Dados da reserva sendo enviados:', reservationData);
