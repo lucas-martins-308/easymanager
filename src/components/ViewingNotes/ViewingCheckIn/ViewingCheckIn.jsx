@@ -52,7 +52,7 @@ export default function ViewingCheckIn() {
                         {checkins.length === 0 ? (
                             <tr key="no-checkins"><td colSpan={3}>Nenhum check-in encontrado</td></tr>
                         ) : (
-                            checkins.map((reserva) => (
+                            checkins.slice(0, 3).map((reserva) => (
                                 <tr key={reserva.id}>
                                     <td>{reserva.Hospede?.nome || '-'}</td>
                                     <td>{new Date(reserva.dataCheckin + 'T00:00:00').toLocaleDateString()}</td>

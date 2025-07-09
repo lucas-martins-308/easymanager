@@ -120,12 +120,6 @@
     margin: 8px 0;
     color: #333;
     font-size: 0.95rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-height: 5.2em;
 }
 
 .endereco-info {

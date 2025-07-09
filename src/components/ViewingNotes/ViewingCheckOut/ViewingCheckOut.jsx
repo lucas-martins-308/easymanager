@@ -49,7 +49,7 @@ export default function ViewingCheckOut() {
                         {checkouts.length === 0 ? (
                             <tr key="no-checkouts"><td colSpan={2}>Nenhum check-out encontrado</td></tr>
                         ) : (
-                            checkouts.map((reserva) => (
+                            checkouts.slice(0, 3).map((reserva) => (
                                 <tr key={reserva.id}>
                                     <td>{reserva.Hospede?.nome || '-'}</td>
                                     <td>{new Date(reserva.dataCheckout + 'T00:00:00').toLocaleDateString()}</td>
