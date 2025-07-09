@@ -44,6 +44,12 @@
 .home-card p {
     color: #555;
     font-size: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 5.2em;
 }
 
 .home-card:hover {
