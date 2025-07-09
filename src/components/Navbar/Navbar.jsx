@@ -23,6 +23,7 @@ function Navbar({isAuthenticated, handleLogout}) {
                         </DropdownButton>
                         <DropdownButton title="Hóspedes">
                             <Link to="/register-customer" className="navbar-link">Cadastrar Hóspede</Link>
+                            <Link to="/hospedes" className="navbar-link">Listar Hóspedes</Link>
                         </DropdownButton>
                         <DropdownButton title="Estoque">
                             <Link to="/itens-table" className="navbar-link">Cadastrar Produto</Link>

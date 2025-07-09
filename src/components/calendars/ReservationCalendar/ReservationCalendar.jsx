@@ -143,16 +143,18 @@ const ReservationCalendar = () => {
     };
 
     const handleCheckOut = async (reservation) => {
-        try {
-            setLoading(true);
-            await reservationService.checkout(reservation.idReserva);
-            await loadData();
-            console.log('Check-out realizado com sucesso!');
-        } catch (error) {
-            console.error('Erro ao fazer check-out:', error);
-            console.error('Erro ao fazer check-out');
-        } finally {
-            setLoading(false);
+        if (window.confirm('Tem certeza que deseja realizar o check-out desta reserva?')) {
+            try {
+                setLoading(true);
+                await reservationService.checkout(reservation.idReserva);
+                await loadData();
+                console.log('Check-out realizado com sucesso!');
+            } catch (error) {
+                console.error('Erro ao fazer check-out:', error);
+                console.error('Erro ao fazer check-out');
+            } finally {
+                setLoading(false);
+            }
         }
     };
 
@@ -380,7 +382,7 @@ const ReservationCalendar = () => {
                                                                 </button>
                                                             )}
                                                             
-                                                            {reservation.status === 'confirmada' && isCheckOutDay(reservation, day) && (
+                                                            {reservation.status === 'confirmada' && (
                                                                 <button 
                                                                     className="checkout-btn"
                                                                     onClick={(e) => {

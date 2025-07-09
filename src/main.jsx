@@ -16,6 +16,7 @@ import RegisterProduct from "./pages/RegisterProduct/RegisterProduct.jsx";
 import RegisterCollaborator from "./pages/RegisterCollaborator/RegisterCollaborator.jsx";
 import RegisterAccommodation from "./pages/RegisterAccommodation/RegisterAccommodation.jsx";
 import Fornecedores from "./pages/Fornecedores/Fornecedores.jsx";
+import Hospedes from "./pages/Hospedes/Hospedes.jsx";
 
 const router = createBrowserRouter([
     {
@@ -102,6 +103,14 @@ const router = createBrowserRouter([
                 element: (
                     <ProtectedRoute allowedRoles={['adm', 'func']}>
                         <RegisterAccommodation />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'hospedes',
+                element: (
+                    <ProtectedRoute allowedRoles={['adm', 'func']}>
+                        <Hospedes />
                     </ProtectedRoute>
                 ),
             },
