@@ -67,8 +67,13 @@ const ReservationForm = () => {
             console.log('Clientes disponíveis:', customers);
             
             // Encontrar o cliente selecionado
-            const selectedCustomer = customers.find(customer => customer.nome === formData.cliente);
+            console.log('Procurando cliente com nome:', formData.cliente);
+            console.log('Clientes disponíveis:', customers.map(c => ({ id: c.idHospede, nome: c.nomeCompleto, documento: c.documento })));
+            
+            const selectedCustomer = customers.find(customer => customer.nomeCompleto === formData.cliente);
             if (!selectedCustomer) {
+                console.error('Cliente não encontrado. Valor procurado:', formData.cliente);
+                console.error('Clientes disponíveis:', customers.map(c => c.nomeCompleto));
                 throw new Error('Cliente não encontrado');
             }
             console.log('Cliente selecionado:', selectedCustomer);
@@ -160,8 +165,8 @@ const ReservationForm = () => {
             >
                 <option value="">Selecione um cliente</option>
                 {customers.map((customer) => (
-                    <option key={customer.idHospede} value={customer.nome}>
-                        {customer.nome} - {customer.documento}
+                    <option key={customer.idHospede} value={customer.nomeCompleto}>
+                        {customer.nomeCompleto} - {customer.documento}
                     </option>
                 ))}
             </select>

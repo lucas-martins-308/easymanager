@@ -23,7 +23,9 @@ class CustomerService {
                 throw new Error('Erro ao buscar hóspedes');
             }
             
-            return await response.json();
+            const data = await response.json();
+            console.log('Dados dos hóspedes carregados:', data);
+            return data;
         } catch (error) {
             console.error('Erro ao buscar hóspedes:', error);
             return [];
