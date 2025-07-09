@@ -160,7 +160,7 @@ const ReservationCalendar = () => {
         if (window.confirm('Tem certeza que deseja cancelar esta reserva?')) {
             try {
                 setLoading(true);
-                await reservationService.delete(reservation.idReserva);
+                await reservationService.cancelar(reservation.idReserva);
                 await loadData();
                 console.log('Reserva cancelada com sucesso!');
             } catch (error) {

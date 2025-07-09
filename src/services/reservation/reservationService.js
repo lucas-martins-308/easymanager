@@ -124,6 +124,26 @@ class ReservationService {
             throw error;
         }
     }
+
+    async cancelar(id) {
+        try {
+            const response = await fetch(`${API_URL}/api/reservas/${id}/cancelar`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Erro ao cancelar reserva');
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error('Erro ao cancelar reserva:', error);
+            throw error;
+        }
+    }
 }
 
 export const reservationService = new ReservationService(); 
