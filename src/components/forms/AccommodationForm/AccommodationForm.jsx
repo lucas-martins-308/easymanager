@@ -24,7 +24,7 @@ function AddAccommodationForm() {
             setRooms(data);
         } catch (error) {
             console.error('Erro ao carregar quartos:', error);
-            alert('Erro ao carregar quartos');
+            console.log('Erro ao carregar quartos');
         } finally {
             setLoading(false);
         }

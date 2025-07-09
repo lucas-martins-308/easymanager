@@ -46,7 +46,7 @@ const RoomForm = ({ editingRoom, onCancelEdit, onSaveEdit }) => {
       setRooms(data);
     } catch (error) {
       console.error('Erro ao carregar quartos:', error);
-      alert('Erro ao carregar quartos');
+      console.log('Erro ao carregar quartos');
     } finally {
       setLoading(false);
     }
@@ -65,12 +65,12 @@ const RoomForm = ({ editingRoom, onCancelEdit, onSaveEdit }) => {
       if (editingRoom) {
         await roomService.update(editingRoom.idQuarto, formData);
         await loadRooms();
-        alert(`Quarto ${formData.numeroQuarto} atualizado com sucesso!`);
+        console.log(`Quarto ${formData.numeroQuarto} atualizado com sucesso!`);
         if (onSaveEdit) onSaveEdit();
       } else {
         await roomService.create(formData);
         await loadRooms();
-        alert(`Quarto ${formData.numeroQuarto} cadastrado com sucesso!`);
+        console.log(`Quarto ${formData.numeroQuarto} cadastrado com sucesso!`);
       }
       setFormData({
         numeroQuarto: '',
@@ -81,7 +81,7 @@ const RoomForm = ({ editingRoom, onCancelEdit, onSaveEdit }) => {
       });
     } catch (error) {
       console.error('Erro ao cadastrar/atualizar quarto:', error);
-      alert(error.message || 'Erro ao cadastrar/atualizar quarto');
+      console.log(error.message || 'Erro ao cadastrar/atualizar quarto');
     } finally {
       setLoading(false);
     }

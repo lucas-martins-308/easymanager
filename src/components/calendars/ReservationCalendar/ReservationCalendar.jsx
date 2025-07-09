@@ -28,7 +28,7 @@ const ReservationCalendar = () => {
             setRooms(roomsData);
         } catch (error) {
             console.error('Erro ao carregar dados:', error);
-            alert('Erro ao carregar dados do calendário');
+            console.error('Erro ao carregar dados do calendário');
         } finally {
             setLoading(false);
         }
@@ -110,14 +110,14 @@ const ReservationCalendar = () => {
                 
                 await reservationService.update(reservationToUpdate.idReserva, updateData);
                 await loadData(); // Recarregar dados
-                alert('Reserva atualizada com sucesso!');
+                console.log('Reserva atualizada com sucesso!');
             }
             
             setEditingCell(null);
             setFormData({});
         } catch (error) {
             console.error('Erro ao atualizar reserva:', error);
-            alert('Erro ao atualizar reserva');
+            console.error('Erro ao atualizar reserva');
         } finally {
             setLoading(false);
         }
@@ -133,10 +133,10 @@ const ReservationCalendar = () => {
             setLoading(true);
             await reservationService.checkin(reservation.idReserva);
             await loadData();
-            alert('Check-in realizado com sucesso!');
+            console.log('Check-in realizado com sucesso!');
         } catch (error) {
             console.error('Erro ao fazer check-in:', error);
-            alert('Erro ao fazer check-in');
+            console.error('Erro ao fazer check-in');
         } finally {
             setLoading(false);
         }
@@ -147,10 +147,10 @@ const ReservationCalendar = () => {
             setLoading(true);
             await reservationService.checkout(reservation.idReserva);
             await loadData();
-            alert('Check-out realizado com sucesso!');
+            console.log('Check-out realizado com sucesso!');
         } catch (error) {
             console.error('Erro ao fazer check-out:', error);
-            alert('Erro ao fazer check-out');
+            console.error('Erro ao fazer check-out');
         } finally {
             setLoading(false);
         }
@@ -162,10 +162,10 @@ const ReservationCalendar = () => {
                 setLoading(true);
                 await reservationService.delete(reservation.idReserva);
                 await loadData();
-                alert('Reserva cancelada com sucesso!');
+                console.log('Reserva cancelada com sucesso!');
             } catch (error) {
                 console.error('Erro ao cancelar reserva:', error);
-                alert('Erro ao cancelar reserva');
+                console.error('Erro ao cancelar reserva');
             } finally {
                 setLoading(false);
             }
@@ -198,6 +198,8 @@ const ReservationCalendar = () => {
                 return '#ffd93d';
             case 'cancelada':
                 return '#ff6b6b';
+            case 'finalizada':
+                return '#b0b0b0'; // cinza para finalizada
             default:
                 return '#76c893';
         }
@@ -211,6 +213,8 @@ const ReservationCalendar = () => {
                 return 'Pendente';
             case 'cancelada':
                 return 'Cancelada';
+            case 'finalizada':
+                return 'Finalizada';
             default:
                 return 'Confirmada';
         }
@@ -265,6 +269,10 @@ const ReservationCalendar = () => {
                 <div className="legend-item">
                     <div className="legend-color" style={{ backgroundColor: '#ff6b6b' }}></div>
                     <span>Cancelada</span>
+                </div>
+                <div className="legend-item">
+                    <div className="legend-color" style={{ backgroundColor: '#b0b0b0' }}></div>
+                    <span>Finalizada</span>
                 </div>
             </div>
 

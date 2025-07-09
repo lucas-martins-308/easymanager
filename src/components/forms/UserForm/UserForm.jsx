@@ -104,18 +104,17 @@ const UserForm = ({ role }) => {
         // Atualizar usuário existente
         const updatedUser = await userService.update(editingUser.idUsuario, newUser);
         setUsers((prev) => prev.map(u => u.idUsuario === editingUser.idUsuario ? updatedUser : u));
-        alert('Usuário atualizado com sucesso!');
+        console.log('Usuário atualizado com sucesso!');
         setEditingUser(null);
       } else {
         // Criar novo usuário
         const createdUser = await userService.create(newUser);
         setUsers((prev) => [...prev, createdUser]);
-        alert(`Usuário ${role === 'admin' ? 'Administrador' : 'Funcionário'} cadastrado com sucesso!`);
+        console.log(`Usuário ${role === 'admin' ? 'Administrador' : 'Funcionário'} cadastrado com sucesso!`);
       }
       setFormData({});
     } catch (err) {
       setError(err.message || 'Erro ao cadastrar/atualizar usuário!');
-      alert(err.message || 'Erro ao cadastrar/atualizar usuário!');
       console.error(err);
     } finally {
       setLoading(false);

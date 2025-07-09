@@ -30,7 +30,7 @@ const CustomerForm = () => {
             setLoading(true);
             await customerService.create(customerData);
 
-            alert("Cliente cadastrado com sucesso!");
+            console.log("Cliente cadastrado com sucesso!");
 
             setCustomerData({
                 nome: "",
@@ -45,7 +45,7 @@ const CustomerForm = () => {
             });
         } catch (error) {
             console.error('Erro ao cadastrar cliente:', error);
-            alert(error.message || 'Erro ao cadastrar cliente');
+            console.log(error.message || 'Erro ao cadastrar cliente');
         } finally {
             setLoading(false);
         }

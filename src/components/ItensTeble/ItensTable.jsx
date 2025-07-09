@@ -19,7 +19,7 @@ function ItensTable() {
             setItens(data);
         } catch (error) {
             console.error('Erro ao carregar itens:', error);
-            alert('Erro ao carregar itens');
+            console.log('Erro ao carregar itens');
         } finally {
             setLoading(false);
         }
@@ -46,10 +46,10 @@ function ItensTable() {
             
             setEditingIndex(null);
             setFormData({});
-            alert('Item atualizado com sucesso!');
+            console.log('Item atualizado com sucesso!');
         } catch (error) {
             console.error('Erro ao atualizar item:', error);
-            alert('Erro ao atualizar item');
+            console.log('Erro ao atualizar item');
         } finally {
             setLoading(false);
         }

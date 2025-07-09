@@ -100,7 +100,7 @@ const ReservationForm = () => {
             
             await reservationService.create(reservationData);
             
-            alert("Reserva criada com sucesso!");
+            console.log("Reserva criada com sucesso!");
             setFormData({
                 checkIn: "",
                 checkOut: "",
@@ -110,7 +110,7 @@ const ReservationForm = () => {
             });
         } catch (error) {
             console.error('Erro ao criar reserva:', error);
-            alert(`Erro ao criar reserva: ${error.message}`);
+            console.error(`Erro ao criar reserva: ${error.message}`);
         } finally {
             setLoading(false);
         }
