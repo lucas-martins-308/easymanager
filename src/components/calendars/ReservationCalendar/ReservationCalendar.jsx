@@ -326,7 +326,7 @@ const ReservationCalendar = () => {
                                                         <input
                                                             type="text"
                                                             name="cliente"
-                                                            value={formData.Hospede?.nome || ''}
+                                                            value={formData.Hospede?.nomeCompleto || ''}
                                                             onChange={handleInputChange}
                                                             placeholder="Nome do cliente"
                                                             disabled
@@ -358,7 +358,7 @@ const ReservationCalendar = () => {
                                                         style={{ backgroundColor: getStatusColor(reservation.status) }}
                                                     >
                                                         <div className="guest-name">
-                                                            {reservation.Hospede?.nome || 'Cliente não informado'}
+                                                            {reservation.Hospede?.nomeCompleto || 'Cliente não informado'}
                                                         </div>
                                                         <div className="dates">
                                                             {formatDate(reservation.dataCheckin)} - {formatDate(reservation.dataCheckout)}

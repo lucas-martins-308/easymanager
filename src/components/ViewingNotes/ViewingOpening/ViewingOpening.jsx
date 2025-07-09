@@ -53,7 +53,7 @@ export default function ViewingOpening() {
                         ) : (
                             abertas.slice(0, 3).map((reserva) => (
                                 <tr key={reserva.id}>
-                                    <td>{reserva.Hospede?.nome || '-'}</td>
+                                    <td>{reserva.Hospede?.nomeCompleto || '-'}</td>
                                     <td>R$ {Number(reserva.valorTotal).toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
                                 </tr>
                             ))

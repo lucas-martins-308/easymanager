@@ -47,7 +47,7 @@ export default function ViewingHistory() {
                         ) : (
                             reservas.slice(0, 3).map((reserva, idx) => (
                                 <tr key={reserva.idReserva || reserva.id || idx}>
-                                    <td>{reserva.Hospede?.nome || '-'}</td>
+                                    <td>{reserva.Hospede?.nomeCompleto || '-'}</td>
                                     <td>R$ {Number(reserva.valorTotal).toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
                                     <td>{reserva.status}</td>
                                 </tr>

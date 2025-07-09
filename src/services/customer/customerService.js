@@ -39,8 +39,7 @@ class CustomerService {
 
             // Mapear os dados do formulário para o formato esperado pelo banco
             const hospedeData = {
-                nome: customerData.nome,
-                sobrenome: customerData.sobrenome,
+                nomeCompleto: customerData.nomeCompleto,
                 documento: customerData.document,
                 tipoDocumento: customerData.tipoDocumento,
                 dtNascimento: customerData.birthDate,
@@ -99,7 +98,16 @@ class CustomerService {
             });
 
             if (!response.ok) {
-                throw new Error('Erro ao atualizar hóspede');
+                let errorMessage = 'Erro ao atualizar hóspede';
+                try {
+                    const errorData = await response.json();
+                    errorMessage = errorData.message || errorData.error || errorMessage;
+                } catch (parseError) {
+                    console.error('Erro ao fazer parse da resposta:', parseError);
+                }
+                
+                console.error('Resposta do servidor:', response.status, response.statusText);
+                throw new Error(errorMessage);
             }
 
             return await response.json();

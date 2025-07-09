@@ -5,7 +5,20 @@ import { API_URL } from '../../../config/constants';
 import { userService } from '../../../services/user/userService';
 
 const UserForm = ({ role }) => {
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({
+    fullName: '',
+    cpf: '',
+    birthDate: '',
+    phone: '',
+    email: '',
+    cep: '',
+    street: '',
+    number: '',
+    neighborhood: '',
+    city: '',
+    state: '',
+    password: ''
+  });
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -81,7 +94,20 @@ const UserForm = ({ role }) => {
 
   const handleCancelEdit = () => {
     setEditingUser(null);
-    setFormData({});
+    setFormData({
+      fullName: '',
+      cpf: '',
+      birthDate: '',
+      phone: '',
+      email: '',
+      cep: '',
+      street: '',
+      number: '',
+      neighborhood: '',
+      city: '',
+      state: '',
+      password: ''
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -112,7 +138,20 @@ const UserForm = ({ role }) => {
         setUsers((prev) => [...prev, createdUser]);
         console.log(`Usuário ${role === 'admin' ? 'Administrador' : 'Funcionário'} cadastrado com sucesso!`);
       }
-      setFormData({});
+      setFormData({
+        fullName: '',
+        cpf: '',
+        birthDate: '',
+        phone: '',
+        email: '',
+        cep: '',
+        street: '',
+        number: '',
+        neighborhood: '',
+        city: '',
+        state: '',
+        password: ''
+      });
     } catch (err) {
       setError(err.message || 'Erro ao cadastrar/atualizar usuário!');
       console.error(err);

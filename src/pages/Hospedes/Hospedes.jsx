@@ -18,6 +18,11 @@ const Hospedes = () => {
         try {
             setLoading(true);
             const data = await customerService.getAll();
+            console.log('Dados carregados dos hóspedes:', data);
+            if (data.length > 0) {
+                console.log('Primeiro hóspede:', data[0]);
+                console.log('Campos disponíveis:', Object.keys(data[0]));
+            }
             setHospedes(data);
             setError(null);
         } catch (err) {
@@ -31,8 +36,7 @@ const Hospedes = () => {
     const handleEdit = (hospede) => {
         setEditingHospede(hospede);
         setFormData({
-            nome: hospede.nome || '',
-            sobrenome: hospede.sobrenome || '',
+            nomeCompleto: hospede.nomeCompleto || '',
             documento: hospede.documento || '',
             tipoDocumento: hospede.tipoDocumento || 'CPF',
             dtNascimento: hospede.dtNascimento ? hospede.dtNascimento.split('T')[0] : '',
@@ -45,7 +49,24 @@ const Hospedes = () => {
     const handleSave = async () => {
         try {
             setLoading(true);
-            await customerService.update(editingHospede.idHospede, formData);
+            
+            console.log('ID do hóspede sendo editado:', editingHospede.idHospede);
+            console.log('Dados do formulário:', formData);
+            
+            // Mapear os dados para o formato esperado pelo backend
+            const hospedeData = {
+                nomeCompleto: formData.nomeCompleto,
+                documento: formData.documento,
+                tipoDocumento: formData.tipoDocumento || 'CPF',
+                dtNascimento: formData.dtNascimento,
+                telefone: formData.telefone,
+                email: formData.email,
+                genero: formData.genero === 'Masculino' ? 'M' : formData.genero === 'Feminino' ? 'F' : 'O'
+            };
+            
+            console.log('Dados mapeados para envio:', hospedeData);
+            
+            await customerService.update(editingHospede.idHospede, hospedeData);
             await loadHospedes();
             setEditingHospede(null);
             setFormData({});
@@ -86,8 +107,7 @@ const Hospedes = () => {
     };
 
     const filteredHospedes = hospedes.filter(hospede =>
-        hospede.nome?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        hospede.sobrenome?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        hospede.nomeCompleto?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         hospede.documento?.includes(searchTerm) ||
         hospede.email?.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -136,7 +156,7 @@ const Hospedes = () => {
                 <table className="hospedes-table">
                     <thead>
                         <tr>
-                            <th>Nome</th>
+                            <th>Nome Completo</th>
                             <th>Documento</th>
                             <th>Telefone</th>
                             <th>Email</th>
@@ -160,8 +180,8 @@ const Hospedes = () => {
                                             <td>
                                                 <input
                                                     type="text"
-                                                    name="nome"
-                                                    value={formData.nome}
+                                                    name="nomeCompleto"
+                                                    value={formData.nomeCompleto}
                                                     onChange={handleInputChange}
                                                     className="edit-input"
                                                 />
@@ -235,7 +255,7 @@ const Hospedes = () => {
                                         </>
                                     ) : (
                                         <>
-                                            <td>{`${hospede.nome || ''} ${hospede.sobrenome || ''}`}</td>
+                                            <td>{hospede.nomeCompleto}</td>
                                             <td>{hospede.documento}</td>
                                             <td>{formatPhone(hospede.telefone)}</td>
                                             <td>{hospede.email}</td>
