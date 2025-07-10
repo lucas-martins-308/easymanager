@@ -51,6 +51,15 @@ const FornecedorForm = ({ onSubmit, initialData, onCancel }) => {
         }));
     };
 
+    // Função para tratar o número: só números e máximo 6 dígitos
+    const handleNumeroChange = (e) => {
+        const value = e.target.value.replace(/\D/g, '').slice(0, 6); // só números, máximo 6 dígitos
+        setFormData(prev => ({
+            ...prev,
+            numero: value
+        }));
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         
@@ -132,6 +141,13 @@ const FornecedorForm = ({ onSubmit, initialData, onCancel }) => {
         }
     };
 
+    // Lista de estados brasileiros (siglas)
+    const estados = [
+        'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA',
+        'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN',
+        'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'
+    ];
+
     return (
         <form className="fornecedor-form" onSubmit={handleSubmit}>
             <h2>{initialData ? 'Editar Fornecedor' : 'Cadastro de Fornecedor'}</h2>
@@ -211,7 +227,8 @@ const FornecedorForm = ({ onSubmit, initialData, onCancel }) => {
                         id="numero"
                         name="numero"
                         value={formData.numero}
-                        onChange={handleChange}
+                        onChange={handleNumeroChange}
+                        maxLength={6}
                         required
                     />
                 </div>
@@ -241,14 +258,18 @@ const FornecedorForm = ({ onSubmit, initialData, onCancel }) => {
 
                 <div className="form-group">
                     <label htmlFor="estado">Estado:</label>
-                    <input
-                        type="text"
+                    <select
                         id="estado"
                         name="estado"
                         value={formData.estado}
                         onChange={handleChange}
                         required
-                    />
+                    >
+                        <option value="">Selecione o estado</option>
+                        {estados.map(uf => (
+                            <option key={uf} value={uf}>{uf}</option>
+                        ))}
+                    </select>
                 </div>
 
                 <div className="form-group">
