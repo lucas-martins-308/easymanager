@@ -42,6 +42,15 @@ const FornecedorForm = ({ onSubmit, initialData, onCancel }) => {
         }));
     };
 
+    // Função para tratar o CEP: só números e máximo 8 dígitos
+    const handleCepChange = (e) => {
+        const value = e.target.value.replace(/\D/g, '').slice(0, 8); // só números, máximo 8 dígitos
+        setFormData(prev => ({
+            ...prev,
+            cep: value
+        }));
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         
@@ -177,7 +186,8 @@ const FornecedorForm = ({ onSubmit, initialData, onCancel }) => {
                         id="cep"
                         name="cep"
                         value={formData.cep}
-                        onChange={handleChange}
+                        onChange={handleCepChange}
+                        maxLength={8}
                         required
                     />
                 </div>
