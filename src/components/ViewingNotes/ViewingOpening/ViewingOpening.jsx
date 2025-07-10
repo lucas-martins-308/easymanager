@@ -51,9 +51,9 @@ export default function ViewingOpening() {
                         {abertas.length === 0 ? (
                             <tr key="no-abertas"><td colSpan={2}>Nenhuma reserva em aberto</td></tr>
                         ) : (
-                            abertas.map((reserva) => (
+                            abertas.slice(0, 3).map((reserva) => (
                                 <tr key={reserva.id}>
-                                    <td>{reserva.Hospede?.nome || '-'}</td>
+                                    <td>{reserva.Hospede?.nomeCompleto || '-'}</td>
                                     <td>R$ {Number(reserva.valorTotal).toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
                                 </tr>
                             ))

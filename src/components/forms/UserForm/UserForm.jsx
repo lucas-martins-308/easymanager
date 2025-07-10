@@ -5,10 +5,24 @@ import { API_URL } from '../../../config/constants';
 import { userService } from '../../../services/user/userService';
 
 const UserForm = ({ role }) => {
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({
+    fullName: '',
+    cpf: '',
+    birthDate: '',
+    phone: '',
+    email: '',
+    cep: '',
+    street: '',
+    number: '',
+    neighborhood: '',
+    city: '',
+    state: '',
+    password: ''
+  });
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [editingUser, setEditingUser] = useState(null);
 
   useEffect(() => {
     setLoading(true);
@@ -60,6 +74,42 @@ const UserForm = ({ role }) => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleEdit = (user) => {
+    setEditingUser(user);
+    setFormData({
+      fullName: user.nomeCompleto || '',
+      cpf: user.cpf || '',
+      birthDate: user.dtNascimento ? user.dtNascimento.split('T')[0] : '',
+      phone: user.telefone || '',
+      email: user.email || '',
+      cep: user.cep || '',
+      street: user.rua || '',
+      number: user.numero || '',
+      neighborhood: user.bairro || '',
+      city: user.cidade || '',
+      state: user.estado || '',
+      password: '' // senha não é retornada por segurança
+    });
+  };
+
+  const handleCancelEdit = () => {
+    setEditingUser(null);
+    setFormData({
+      fullName: '',
+      cpf: '',
+      birthDate: '',
+      phone: '',
+      email: '',
+      cep: '',
+      street: '',
+      number: '',
+      neighborhood: '',
+      city: '',
+      state: '',
+      password: ''
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newUser = {
@@ -76,13 +126,34 @@ const UserForm = ({ role }) => {
     setLoading(true);
     setError(null);
     try {
-      const createdUser = await userService.create(newUser);
-      setUsers((prev) => [...prev, createdUser]);
-      alert(`Usuário ${role === 'admin' ? 'Administrador' : 'Funcionário'} cadastrado com sucesso!`);
-      setFormData({});
+      if (editingUser) {
+        // Atualizar usuário existente
+        const updatedUser = await userService.update(editingUser.idUsuario, newUser);
+        setUsers((prev) => prev.map(u => u.idUsuario === editingUser.idUsuario ? updatedUser : u));
+        console.log('Usuário atualizado com sucesso!');
+        setEditingUser(null);
+      } else {
+        // Criar novo usuário
+        const createdUser = await userService.create(newUser);
+        setUsers((prev) => [...prev, createdUser]);
+        console.log(`Usuário ${role === 'admin' ? 'Administrador' : 'Funcionário'} cadastrado com sucesso!`);
+      }
+      setFormData({
+        fullName: '',
+        cpf: '',
+        birthDate: '',
+        phone: '',
+        email: '',
+        cep: '',
+        street: '',
+        number: '',
+        neighborhood: '',
+        city: '',
+        state: '',
+        password: ''
+      });
     } catch (err) {
-      setError(err.message || 'Erro ao cadastrar usuário!');
-      alert(err.message || 'Erro ao cadastrar usuário!');
+      setError(err.message || 'Erro ao cadastrar/atualizar usuário!');
       console.error(err);
     } finally {
       setLoading(false);
@@ -108,8 +179,13 @@ const UserForm = ({ role }) => {
       ))}
 
       <button type="submit" disabled={loading}>
-        {loading ? "Salvando..." : "Cadastrar"}
+        {editingUser ? (loading ? "Salvando..." : "Salvar") : (loading ? "Salvando..." : "Cadastrar")}
       </button>
+      {editingUser && (
+        <button type="button" onClick={handleCancelEdit} disabled={loading} style={{marginLeft: 8}}>
+          Cancelar edição
+        </button>
+      )}
 
       <h3>Usuários Cadastrados:</h3>
       {loading && <p>Carregando usuários...</p>}
@@ -119,8 +195,9 @@ const UserForm = ({ role }) => {
       ) : (
         <ul>
           {users.map((user) => (
-            <li key={user.idUsuario}>
+            <li key={user.idUsuario} style={{cursor: 'pointer'}} onClick={() => handleEdit(user)}>
               {user.nomeCompleto} - {user.tipoUsuario === 'adm' ? 'Administrador' : 'Funcionário'}
+              {editingUser && editingUser.idUsuario === user.idUsuario && ' (Editando...)'}
             </li>
           ))}
         </ul>

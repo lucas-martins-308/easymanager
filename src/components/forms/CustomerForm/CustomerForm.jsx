@@ -4,8 +4,7 @@ import { customerService } from '../../../services/customer/customerService';
 
 const CustomerForm = () => {
     const [customerData, setCustomerData] = useState({
-        nome: "",
-        sobrenome: "",
+        nomeCompleto: "",
         email: "",
         birthDate: "",
         phone: "",
@@ -30,11 +29,10 @@ const CustomerForm = () => {
             setLoading(true);
             await customerService.create(customerData);
 
-            alert("Cliente cadastrado com sucesso!");
+            console.log("Cliente cadastrado com sucesso!");
 
             setCustomerData({
-                nome: "",
-                sobrenome: "",
+                nomeCompleto: "",
                 email: "",
                 birthDate: "",
                 phone: "",
@@ -45,7 +43,7 @@ const CustomerForm = () => {
             });
         } catch (error) {
             console.error('Erro ao cadastrar cliente:', error);
-            alert(error.message || 'Erro ao cadastrar cliente');
+            console.log(error.message || 'Erro ao cadastrar cliente');
         } finally {
             setLoading(false);
         }
@@ -55,20 +53,11 @@ const CustomerForm = () => {
         <form className="customer-form" onSubmit={handleSubmit}>
             <h2>Cadastro de Cliente</h2>
 
-            <label>Nome:</label>
+            <label>Nome Completo:</label>
             <input
                 type="text"
-                name="nome"
-                value={customerData.nome}
-                onChange={handleChange}
-                required
-            />
-
-            <label>Sobrenome:</label>
-            <input
-                type="text"
-                name="sobrenome"
-                value={customerData.sobrenome}
+                name="nomeCompleto"
+                value={customerData.nomeCompleto}
                 onChange={handleChange}
                 required
             />

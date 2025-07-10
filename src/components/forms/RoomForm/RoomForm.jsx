@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { roomService } from '../../../services/room/roomService';
 
-const RoomForm = () => {
+const RoomForm = ({ editingRoom, onCancelEdit, onSaveEdit }) => {
   const [formData, setFormData] = useState({
     numeroQuarto: '',
     tipoQuarto: '',
@@ -19,6 +19,26 @@ const RoomForm = () => {
     loadRooms();
   }, []);
 
+  useEffect(() => {
+    if (editingRoom) {
+      setFormData({
+        numeroQuarto: editingRoom.numeroQuarto,
+        tipoQuarto: editingRoom.tipoQuarto,
+        precoDiaria: editingRoom.precoDiaria,
+        capacidade: editingRoom.capacidade,
+        statusQuarto: editingRoom.statusQuarto,
+      });
+    } else {
+      setFormData({
+        numeroQuarto: '',
+        tipoQuarto: '',
+        precoDiaria: '',
+        capacidade: '',
+        statusQuarto: 'disponivel',
+      });
+    }
+  }, [editingRoom]);
+
   const loadRooms = async () => {
     try {
       setLoading(true);
@@ -26,7 +46,7 @@ const RoomForm = () => {
       setRooms(data);
     } catch (error) {
       console.error('Erro ao carregar quartos:', error);
-      alert('Erro ao carregar quartos');
+      console.log('Erro ao carregar quartos');
     } finally {
       setLoading(false);
     }
@@ -42,12 +62,16 @@ const RoomForm = () => {
 
     try {
       setLoading(true);
-      await roomService.create(formData);
-      
-      // Recarregar a lista de quartos
-      await loadRooms();
-      
-      alert(`Quarto ${formData.numeroQuarto} cadastrado com sucesso!`);
+      if (editingRoom) {
+        await roomService.update(editingRoom.idQuarto, formData);
+        await loadRooms();
+        console.log(`Quarto ${formData.numeroQuarto} atualizado com sucesso!`);
+        if (onSaveEdit) onSaveEdit();
+      } else {
+        await roomService.create(formData);
+        await loadRooms();
+        console.log(`Quarto ${formData.numeroQuarto} cadastrado com sucesso!`);
+      }
       setFormData({
         numeroQuarto: '',
         tipoQuarto: '',
@@ -56,8 +80,8 @@ const RoomForm = () => {
         statusQuarto: 'disponivel',
       });
     } catch (error) {
-      console.error('Erro ao cadastrar quarto:', error);
-      alert(error.message || 'Erro ao cadastrar quarto');
+      console.error('Erro ao cadastrar/atualizar quarto:', error);
+      console.log(error.message || 'Erro ao cadastrar/atualizar quarto');
     } finally {
       setLoading(false);
     }
@@ -133,9 +157,16 @@ const RoomForm = () => {
           </select>
         </div>
 
-        <button type="submit" disabled={loading}>
-          {loading ? 'Cadastrando...' : 'Cadastrar Quarto'}
-        </button>
+        <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+          <button type="submit" disabled={loading}>
+            {editingRoom ? (loading ? 'Salvando...' : 'Salvar Alterações') : (loading ? 'Cadastrando...' : 'Cadastrar Quarto')}
+          </button>
+          {editingRoom && (
+            <button type="button" onClick={onCancelEdit} disabled={loading}>
+              Cancelar Edição
+            </button>
+          )}
+        </div>
       </form>
 
       <h3>Acomodações Cadastradas:</h3>
@@ -155,3 +186,9 @@ const RoomForm = () => {
 };
 
 export default RoomForm;
+
+RoomForm.propTypes = {
+  editingRoom: PropTypes.object,
+  onCancelEdit: PropTypes.func,
+  onSaveEdit: PropTypes.func,
+};

@@ -67,8 +67,13 @@ const ReservationForm = () => {
             console.log('Clientes disponíveis:', customers);
             
             // Encontrar o cliente selecionado
-            const selectedCustomer = customers.find(customer => customer.nome === formData.cliente);
+            console.log('Procurando cliente com nome:', formData.cliente);
+            console.log('Clientes disponíveis:', customers.map(c => ({ id: c.idHospede, nome: c.nomeCompleto, documento: c.documento })));
+            
+            const selectedCustomer = customers.find(customer => customer.nomeCompleto === formData.cliente);
             if (!selectedCustomer) {
+                console.error('Cliente não encontrado. Valor procurado:', formData.cliente);
+                console.error('Clientes disponíveis:', customers.map(c => c.nomeCompleto));
                 throw new Error('Cliente não encontrado');
             }
             console.log('Cliente selecionado:', selectedCustomer);
@@ -92,14 +97,15 @@ const ReservationForm = () => {
                 valorReserva: valorTotal,
                 canalReserva: formData.canal,
                 statusReserva: 'pendente',
-                hospedeId: selectedCustomer.idHospede
+                hospedeId: selectedCustomer.idHospede,
+                quartoId: selectedRoom.idQuarto // Adicionar o ID do quarto
             };
 
             console.log('Dados da reserva sendo enviados:', reservationData);
             
             await reservationService.create(reservationData);
             
-            alert("Reserva criada com sucesso!");
+            console.log("Reserva criada com sucesso!");
             setFormData({
                 checkIn: "",
                 checkOut: "",
@@ -109,7 +115,7 @@ const ReservationForm = () => {
             });
         } catch (error) {
             console.error('Erro ao criar reserva:', error);
-            alert(`Erro ao criar reserva: ${error.message}`);
+            console.error(`Erro ao criar reserva: ${error.message}`);
         } finally {
             setLoading(false);
         }
@@ -159,8 +165,8 @@ const ReservationForm = () => {
             >
                 <option value="">Selecione um cliente</option>
                 {customers.map((customer) => (
-                    <option key={customer.idHospede} value={customer.nome}>
-                        {customer.nome} - {customer.documento}
+                    <option key={customer.idHospede} value={customer.nomeCompleto}>
+                        {customer.nomeCompleto} - {customer.documento}
                     </option>
                 ))}
             </select>
@@ -183,8 +189,11 @@ const ReservationForm = () => {
             {formData.checkIn && formData.checkOut && formData.quarto && (
                 <div className="reservation-summary">
                     <h3>Resumo da Reserva</h3>
-                    <p>Valor Total: R$ {calculateTotalValue(formData.checkIn, formData.checkOut, 
-                        rooms.find(room => room.numeroQuarto === formData.quarto))}</p>
+                    <p>Valor Total: R$ {(() => {
+                        const selectedRoom = rooms.find(room => room.numeroQuarto.toString() === formData.quarto.toString());
+                        const value = calculateTotalValue(formData.checkIn, formData.checkOut, selectedRoom);
+                        return value.toFixed(2);
+                    })()}</p>
                 </div>
             )}
 

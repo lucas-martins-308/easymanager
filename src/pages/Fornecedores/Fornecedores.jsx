@@ -21,7 +21,7 @@ const Fornecedores = () => {
             setFornecedores(data);
         } catch (error) {
             console.error('Erro ao carregar fornecedores:', error);
-            alert('Erro ao carregar fornecedores');
+            console.log('Erro ao carregar fornecedores');
         } finally {
             setLoading(false);
         }
@@ -32,11 +32,11 @@ const Fornecedores = () => {
         if (confirmDelete) {
             try {
                 await fornecedorService.delete(id);
-                alert('Fornecedor excluído com sucesso!');
+                console.log('Fornecedor excluído com sucesso!');
                 loadFornecedores();
             } catch (error) {
                 console.error('Erro ao excluir fornecedor:', error);
-                alert(`Erro ao excluir fornecedor: ${error.message}`);
+                console.log(`Erro ao excluir fornecedor: ${error.message}`);
             }
         }
     };
@@ -50,17 +50,17 @@ const Fornecedores = () => {
         try {
             if (editingFornecedor) {
                 await fornecedorService.update(editingFornecedor.idFornecedor, fornecedorData);
-                alert('Fornecedor atualizado com sucesso!');
+                console.log('Fornecedor atualizado com sucesso!');
             } else {
                 await fornecedorService.create(fornecedorData);
-                alert('Fornecedor cadastrado com sucesso!');
+                console.log('Fornecedor cadastrado com sucesso!');
             }
             setShowForm(false);
             setEditingFornecedor(null);
             loadFornecedores();
         } catch (error) {
             console.error('Erro ao salvar fornecedor:', error);
-            alert(`Erro ao salvar fornecedor: ${error.message}`);
+            console.log(`Erro ao salvar fornecedor: ${error.message}`);
         }
     };
 

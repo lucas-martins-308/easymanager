@@ -101,7 +101,7 @@ const FornecedorForm = ({ onSubmit, initialData, onCancel }) => {
                 await onSubmit(fornecedorData);
             } else {
                 await fornecedorService.create(fornecedorData);
-                alert('Fornecedor cadastrado com sucesso!');
+                console.log('Fornecedor cadastrado com sucesso!');
                 setFormData({
                     nome: '',
                     telefone: '',
@@ -117,7 +117,7 @@ const FornecedorForm = ({ onSubmit, initialData, onCancel }) => {
             }
         } catch (error) {
             console.error('Erro ao cadastrar fornecedor:', error);
-            alert(`Erro ao cadastrar fornecedor: ${error.message}`);
+            console.error(`Erro ao cadastrar fornecedor: ${error.message}`);
         } finally {
             setLoading(false);
         }

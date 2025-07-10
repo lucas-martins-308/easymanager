@@ -20,7 +20,7 @@ function ItensForm() {
             setItens(data);
         } catch (error) {
             console.error('Erro ao carregar itens:', error);
-            alert('Erro ao carregar itens');
+            console.log('Erro ao carregar itens');
         } finally {
             setLoading(false);
         }
@@ -63,10 +63,10 @@ function ItensForm() {
         await loadItens();
         
         setFormData({});
-        alert('Item cadastrado com sucesso!');
+        console.log('Item cadastrado com sucesso!');
     } catch (error) {
         console.error('Erro ao cadastrar item:', error);
-        alert(`Erro ao cadastrar item: ${error.message}`);
+        console.log(`Erro ao cadastrar item: ${error.message}`);
     } finally {
         setLoading(false);
     }
