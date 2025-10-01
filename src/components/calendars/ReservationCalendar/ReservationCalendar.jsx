@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './ReservationCalendar.css';
 import { reservationService } from '../../../services/reservation/reservationService';
 import { roomService } from '../../../services/room/roomService';
 
 const ReservationCalendar = () => {
+    const navigate = useNavigate();
     const [reservations, setReservations] = useState([]);
     const [rooms, setRooms] = useState([]);
     const [startOfWeek, setStartOfWeek] = useState(getStartOfWeek(new Date()));
@@ -52,7 +54,16 @@ const ReservationCalendar = () => {
 
     const weekDays = getWeekDays(startOfWeek);
 
-    const isSameDay = (d1, d2) => d1.getTime() === d2.getTime();
+    // Função para normalizar data (remover timezone e garantir meia-noite local)
+    const normalizeDate = (dateString) => {
+        if (!dateString) return null;
+        // Pega apenas a parte da data (YYYY-MM-DD) e cria uma data local
+        const datePart = dateString.split('T')[0];
+        const [year, month, day] = datePart.split('-').map(Number);
+        const date = new Date(year, month - 1, day);
+        date.setHours(0, 0, 0, 0);
+        return date;
+    };
 
     // Retorna a reserva que está no quarto e cobre o dia da célula
     const getReservationForCell = (roomNumber, date) => {
@@ -61,17 +72,15 @@ const ReservationCalendar = () => {
                 return false;
             }
             
-            const checkIn = new Date(res.dataCheckin);
-            const checkOut = new Date(res.dataCheckout);
+            // Usar normalizeDate para evitar problemas de timezone
+            const checkIn = normalizeDate(res.dataCheckin);
+            const checkOut = normalizeDate(res.dataCheckout);
             const currentDate = new Date(date);
-            
-            // Normalizar todas as datas para meia-noite
-            checkIn.setHours(0, 0, 0, 0);
-            checkOut.setHours(0, 0, 0, 0);
             currentDate.setHours(0, 0, 0, 0);
             
-            const isInDateRange = currentDate >= checkIn && currentDate <= checkOut;
-            // Converter ambos para string para garantir comparação correta
+            // A reserva aparece desde o dia do check-in até o dia ANTERIOR ao checkout
+            // Exemplo: Check-in 01/10, Check-out 03/10 -> aparece nos dias 01/10 e 02/10
+            const isInDateRange = currentDate >= checkIn && currentDate < checkOut;
             const isCorrectRoom = String(res.quarto) === String(roomNumber);
             
             return isInDateRange && isCorrectRoom;
@@ -96,7 +105,6 @@ const ReservationCalendar = () => {
         try {
             setLoading(true);
             
-            // Encontrar a reserva que está sendo editada
             const reservationToUpdate = reservations.find(r => 
                 r.idReserva === formData.idReserva
             );
@@ -109,7 +117,7 @@ const ReservationCalendar = () => {
                 };
                 
                 await reservationService.update(reservationToUpdate.idReserva, updateData);
-                await loadData(); // Recarregar dados
+                await loadData();
                 console.log('Reserva atualizada com sucesso!');
             }
             
@@ -174,6 +182,17 @@ const ReservationCalendar = () => {
         }
     };
 
+    const handleCellClick = (roomNumber, date) => {
+        // Formatar a data para YYYY-MM-DD
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+        
+        // Navegar para a página de registro com parâmetros
+        navigate(`/register-reservation?quarto=${roomNumber}&dataCheckin=${formattedDate}`);
+    };
+
     const goToNextWeek = () => {
         const next = new Date(startOfWeek);
         next.setDate(startOfWeek.getDate() + 7);
@@ -188,7 +207,7 @@ const ReservationCalendar = () => {
 
     const formatDate = (dateString) => {
         if (!dateString) return '';
-        const date = new Date(dateString);
+        const date = normalizeDate(dateString);
         return date.toLocaleDateString('pt-BR');
     };
 
@@ -201,7 +220,7 @@ const ReservationCalendar = () => {
             case 'cancelada':
                 return '#ff6b6b';
             case 'finalizada':
-                return '#b0b0b0'; // cinza para finalizada
+                return '#b0b0b0';
             default:
                 return '#76c893';
         }
@@ -225,24 +244,25 @@ const ReservationCalendar = () => {
     const isToday = (date) => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-        date.setHours(0, 0, 0, 0);
-        return date.getTime() === today.getTime();
+        const compareDate = new Date(date);
+        compareDate.setHours(0, 0, 0, 0);
+        return compareDate.getTime() === today.getTime();
     };
 
     const isCheckInDay = (reservation, date) => {
         if (!reservation.dataCheckin) return false;
-        const checkInDate = new Date(reservation.dataCheckin);
-        checkInDate.setHours(0, 0, 0, 0);
-        date.setHours(0, 0, 0, 0);
-        return date.getTime() === checkInDate.getTime();
+        const checkInDate = normalizeDate(reservation.dataCheckin);
+        const compareDate = new Date(date);
+        compareDate.setHours(0, 0, 0, 0);
+        return compareDate.getTime() === checkInDate.getTime();
     };
 
     const isCheckOutDay = (reservation, date) => {
         if (!reservation.dataCheckout) return false;
-        const checkOutDate = new Date(reservation.dataCheckout);
-        checkOutDate.setHours(0, 0, 0, 0);
-        date.setHours(0, 0, 0, 0);
-        return date.getTime() === checkOutDate.getTime();
+        const checkOutDate = normalizeDate(reservation.dataCheckout);
+        const compareDate = new Date(date);
+        compareDate.setHours(0, 0, 0, 0);
+        return compareDate.getTime() === checkOutDate.getTime();
     };
 
     return (
@@ -278,162 +298,175 @@ const ReservationCalendar = () => {
                 </div>
             </div>
 
-            <table className="reservation-calendar-table">
-                <thead>
-                    <tr>
-                        <th>Quarto / Dia</th>
-                        {weekDays.map((day, index) => (
-                            <th key={index} className={isToday(day) ? 'today' : ''}>
-                                {day.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: '2-digit' })}
-                                {isToday(day) && <div className="today-indicator">Hoje</div>}
-                            </th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {loading ? (
+            <div className="calendar-wrapper">
+                <table className="reservation-calendar-table">
+                    <thead>
                         <tr>
-                            <td colSpan={8} style={{ textAlign: 'center' }}>
-                                Carregando dados...
-                            </td>
+                            <th></th>
+                            {weekDays.map((day, index) => (
+                                <th key={index} className={isToday(day) ? 'today' : ''}>
+                                    <div className="header-content">
+                                        <span className="day-name">
+                                            {day.toLocaleDateString('pt-BR', { weekday: 'short' })}
+                                        </span>
+                                        <span className="day-date">
+                                            {day.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}
+                                        </span>
+                                        {isToday(day) && <div className="today-indicator">Hoje</div>}
+                                    </div>
+                                </th>
+                            ))}
                         </tr>
-                    ) : rooms.length === 0 ? (
-                        <tr>
-                            <td colSpan={8} style={{ textAlign: 'center' }}>
-                                Nenhum quarto cadastrado.
-                            </td>
-                        </tr>
-                    ) : (
-                        rooms.map((room, rowIndex) => (
-                            <tr key={room.idQuarto}>
-                                <td className="room-cell">
-                                    Quarto {room.numeroQuarto}
-                                    <br />
-                                    <small>{room.tipoQuarto}</small>
+                    </thead>
+                    <tbody>
+                        {loading ? (
+                            <tr>
+                                <td colSpan={8} style={{ textAlign: 'center' }}>
+                                    Carregando dados...
                                 </td>
-                                {weekDays.map((day, colIndex) => {
-                                    const reservation = getReservationForCell(room.numeroQuarto, day);
-                                    const cellKey = `${room.numeroQuarto}-${day.toISOString()}`;
-                                    const isEditing = editingCell &&
-                                        editingCell.roomNumber === room.numeroQuarto &&
-                                        editingCell.date === day.getTime();
+                            </tr>
+                        ) : rooms.length === 0 ? (
+                            <tr>
+                                <td colSpan={8} style={{ textAlign: 'center' }}>
+                                    Nenhum quarto cadastrado.
+                                </td>
+                            </tr>
+                        ) : (
+                            rooms.map((room) => (
+                                <tr key={room.idQuarto}>
+                                    <td className="room-cell">
+                                        <div className="room-info">
+                                            <span className="room-number">Quarto {room.numeroQuarto}</span>
+                                            <p></p>
+                                            <small className="room-type">{room.tipoQuarto}</small>
+                                        </div>
+                                    </td>
+                                    {weekDays.map((day) => {
+                                        const reservation = getReservationForCell(room.numeroQuarto, day);
+                                        const cellKey = `${room.numeroQuarto}-${day.toISOString()}`;
+                                        const isEditing = editingCell &&
+                                            editingCell.roomNumber === room.numeroQuarto &&
+                                            editingCell.date === day.getTime();
 
-                                    return (
-                                        <td key={cellKey} className="calendar-cell">
-                                            {reservation ? (
-                                                isEditing ? (
-                                                    <div className="edit-cell">
-                                                        <input
-                                                            type="text"
-                                                            name="cliente"
-                                                            value={formData.Hospede?.nomeCompleto || ''}
-                                                            onChange={handleInputChange}
-                                                            placeholder="Nome do cliente"
-                                                            disabled
-                                                        />
-                                                        <input
-                                                            type="date"
-                                                            name="dataCheckin"
-                                                            value={formData.dataCheckin || ''}
-                                                            onChange={handleInputChange}
-                                                        />
-                                                        <input
-                                                            type="date"
-                                                            name="dataCheckout"
-                                                            value={formData.dataCheckout || ''}
-                                                            onChange={handleInputChange}
-                                                        />
-                                                        <div className="edit-buttons">
-                                                            <button onClick={handleSaveClick} disabled={loading} className="save-btn">
-                                                                {loading ? 'Salvando...' : 'Salvar'}
-                                                            </button>
-                                                            <button onClick={handleCancelClick} disabled={loading} className="cancel-btn">
-                                                                Cancelar
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                ) : (
-                                                    <div 
-                                                        className="reservation-info"
-                                                        style={{ backgroundColor: getStatusColor(reservation.status) }}
-                                                    >
-                                                        <div className="guest-name">
-                                                            {reservation.Hospede?.nomeCompleto || 'Cliente não informado'}
-                                                        </div>
-                                                        <div className="dates">
-                                                            {formatDate(reservation.dataCheckin)} - {formatDate(reservation.dataCheckout)}
-                                                        </div>
-                                                        <div className="status">
-                                                            {getStatusText(reservation.status)}
-                                                        </div>
-                                                        
-                                                        {/* Botões de ação */}
-                                                        <div className="action-buttons">
-                                                            {reservation.status === 'pendente' && isCheckInDay(reservation, day) && (
-                                                                <button 
-                                                                    className="checkin-btn"
-                                                                    onClick={(e) => {
-                                                                        e.stopPropagation();
-                                                                        handleCheckIn(reservation);
-                                                                    }}
-                                                                    disabled={loading}
-                                                                >
-                                                                    Check-in
+                                        return (
+                                            <td key={cellKey} className="calendar-cell">
+                                                {reservation ? (
+                                                    isEditing ? (
+                                                        <div className="edit-cell">
+                                                            <input
+                                                                type="text"
+                                                                name="cliente"
+                                                                value={formData.Hospede?.nomeCompleto || ''}
+                                                                onChange={handleInputChange}
+                                                                placeholder="Nome do cliente"
+                                                                disabled
+                                                            />
+                                                            <input
+                                                                type="date"
+                                                                name="dataCheckin"
+                                                                value={formData.dataCheckin || ''}
+                                                                onChange={handleInputChange}
+                                                            />
+                                                            <input
+                                                                type="date"
+                                                                name="dataCheckout"
+                                                                value={formData.dataCheckout || ''}
+                                                                onChange={handleInputChange}
+                                                            />
+                                                            <div className="edit-buttons">
+                                                                <button onClick={handleSaveClick} disabled={loading} className="save-btn">
+                                                                    {loading ? 'Salvando...' : 'Salvar'}
                                                                 </button>
-                                                            )}
-                                                            
-                                                            {reservation.status === 'confirmada' && (
-                                                                <button 
-                                                                    className="checkout-btn"
-                                                                    onClick={(e) => {
-                                                                        e.stopPropagation();
-                                                                        handleCheckOut(reservation);
-                                                                    }}
-                                                                    disabled={loading}
-                                                                >
-                                                                    Check-out
-                                                                </button>
-                                                            )}
-                                                            
-                                                            <button 
-                                                                className="edit-btn"
-                                                                onClick={(e) => {
-                                                                    e.stopPropagation();
-                                                                    handleEditClick(room.numeroQuarto, day, reservation);
-                                                                }}
-                                                                disabled={loading}
-                                                            >
-                                                                Editar
-                                                            </button>
-                                                            
-                                                            {reservation.status === 'pendente' && (
-                                                                <button 
-                                                                    className="cancel-reservation-btn"
-                                                                    onClick={(e) => {
-                                                                        e.stopPropagation();
-                                                                        handleCancelReservation(reservation);
-                                                                    }}
-                                                                    disabled={loading}
-                                                                >
+                                                                <button onClick={handleCancelClick} disabled={loading} className="cancel-btn">
                                                                     Cancelar
                                                                 </button>
-                                                            )}
+                                                            </div>
                                                         </div>
+                                                    ) : (
+                                                        <div 
+                                                            className="reservation-info"
+                                                            style={{ backgroundColor: getStatusColor(reservation.status) }}
+                                                        >
+                                                            <div className="guest-name">
+                                                                {reservation.Hospede?.nomeCompleto || 'Cliente não informado'}
+                                                            </div>
+                                                            <div className="dates">
+                                                                {formatDate(reservation.dataCheckin)} - {formatDate(reservation.dataCheckout)}
+                                                            </div>
+                                                            <div className="status">
+                                                                {getStatusText(reservation.status)}
+                                                            </div>
+                                                            
+                                                            <div className="action-buttons">
+                                                                {reservation.status === 'pendente' && isCheckInDay(reservation, day) && (
+                                                                    <button 
+                                                                        className="checkin-btn"
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            handleCheckIn(reservation);
+                                                                        }}
+                                                                        disabled={loading}
+                                                                    >
+                                                                        Check-in
+                                                                    </button>
+                                                                )}
+                                                                
+                                                                {reservation.status === 'confirmada' && (
+                                                                    <button 
+                                                                        className="checkout-btn"
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            handleCheckOut(reservation);
+                                                                        }}
+                                                                        disabled={loading}
+                                                                    >
+                                                                        Check-out
+                                                                    </button>
+                                                                )}
+                                                                
+                                                                <button 
+                                                                    className="edit-btn"
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        handleEditClick(room.numeroQuarto, day, reservation);
+                                                                    }}
+                                                                    disabled={loading}
+                                                                >
+                                                                    Editar
+                                                                </button>
+                                                                
+                                                                {reservation.status === 'pendente' && (
+                                                                    <button 
+                                                                        className="cancel-reservation-btn"
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            handleCancelReservation(reservation);
+                                                                        }}
+                                                                        disabled={loading}
+                                                                    >
+                                                                        Cancelar
+                                                                    </button>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                ) : (
+                                                    <div 
+                                                        className="empty-cell"
+                                                        onClick={() => handleCellClick(room.numeroQuarto, day)}
+                                                    >
+                                                        <span className="add-reservation-hint">+</span>
                                                     </div>
-                                                )
-                                            ) : (
-                                                <div className="empty-cell">
-                                                    {/* Célula vazia sem botão de adicionar reserva */}
-                                                </div>
-                                            )}
-                                        </td>
-                                    );
-                                })}
-                            </tr>
-                        ))
-                    )}
-                </tbody>
-            </table>
+                                                )}
+                                            </td>
+                                        );
+                                    })}
+                                </tr>
+                            ))
+                        )}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };

@@ -1,22 +1,28 @@
 import React, { useState, useEffect } from "react";
+import { useSearchParams } from 'react-router-dom';
 import "./ReservationForm.css";
 import { customerService } from '../../../services/customer/customerService';
 import { roomService } from '../../../services/room/roomService';
 import { reservationService } from '../../../services/reservation/reservationService';
 
 const ReservationForm = () => {
+    const [searchParams] = useSearchParams();
+    
+    // Pegar parâmetros da URL
+    const quartoFromUrl = searchParams.get('quarto');
+    const dataCheckinFromUrl = searchParams.get('dataCheckin');
+    
     const [formData, setFormData] = useState({
-        checkIn: "",
+        checkIn: dataCheckinFromUrl || "",
         checkOut: "",
         canal: "",
         cliente: "",
-        quarto: "", 
+        quarto: quartoFromUrl || "", 
     });
     const [customers, setCustomers] = useState([]);
     const [rooms, setRooms] = useState([]); 
     const [loading, setLoading] = useState(false);
 
-    
     const loadCustomers = async () => {
         try {
             const data = await customerService.getAll();
@@ -40,6 +46,16 @@ const ReservationForm = () => {
         loadCustomers();
         loadRooms();
     }, []);
+
+    // Atualizar campos quando os parâmetros da URL mudarem
+    useEffect(() => {
+        if (quartoFromUrl) {
+            setFormData(prev => ({ ...prev, quarto: quartoFromUrl }));
+        }
+        if (dataCheckinFromUrl) {
+            setFormData(prev => ({ ...prev, checkIn: dataCheckinFromUrl }));
+        }
+    }, [quartoFromUrl, dataCheckinFromUrl]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -98,7 +114,7 @@ const ReservationForm = () => {
                 canalReserva: formData.canal,
                 statusReserva: 'pendente',
                 hospedeId: selectedCustomer.idHospede,
-                quartoId: selectedRoom.idQuarto // Adicionar o ID do quarto
+                quartoId: selectedRoom.idQuarto
             };
 
             console.log('Dados da reserva sendo enviados:', reservationData);
@@ -106,6 +122,8 @@ const ReservationForm = () => {
             await reservationService.create(reservationData);
             
             console.log("Reserva criada com sucesso!");
+            alert("Reserva criada com sucesso!");
+            
             setFormData({
                 checkIn: "",
                 checkOut: "",
@@ -115,7 +133,7 @@ const ReservationForm = () => {
             });
         } catch (error) {
             console.error('Erro ao criar reserva:', error);
-            console.error(`Erro ao criar reserva: ${error.message}`);
+            alert(`Erro ao criar reserva: ${error.message}`);
         } finally {
             setLoading(false);
         }
@@ -125,6 +143,28 @@ const ReservationForm = () => {
         <form className="reservation-form" onSubmit={handleSubmit}>
             <h2>Cadastrar Reserva</h2>
 
+            {(quartoFromUrl || dataCheckinFromUrl) && (
+                <div className="url-params-info">
+                    <p>✓ Preenchimento automático a partir do calendário</p>
+                </div>
+            )}
+
+            <label>Quarto:</label>
+            <select
+                name="quarto"
+                value={formData.quarto}
+                onChange={handleChange}
+                required
+                className={quartoFromUrl ? 'field-from-calendar' : ''}
+            >
+                <option value="">Selecione um quarto</option>
+                {rooms.map((room) => (
+                    <option key={room.idQuarto} value={room.numeroQuarto.toString()}>
+                        Quarto {room.numeroQuarto} - {room.tipoQuarto} (R$ {room.precoDiaria}/dia)
+                    </option>
+                ))}
+            </select>
+
             <label>Check-in:</label>
             <input
                 type="date"
@@ -132,6 +172,7 @@ const ReservationForm = () => {
                 value={formData.checkIn}
                 onChange={handleChange}
                 required
+                className={dataCheckinFromUrl ? 'field-from-calendar' : ''}
             />
 
             <label>Check-out:</label>
@@ -141,6 +182,7 @@ const ReservationForm = () => {
                 value={formData.checkOut}
                 onChange={handleChange}
                 required
+                min={formData.checkIn}
             />
 
             <label>Canal:</label>
@@ -167,21 +209,6 @@ const ReservationForm = () => {
                 {customers.map((customer) => (
                     <option key={customer.idHospede} value={customer.nomeCompleto}>
                         {customer.nomeCompleto} - {customer.documento}
-                    </option>
-                ))}
-            </select>
-
-            <label>Quarto:</label>
-            <select
-                name="quarto"
-                value={formData.quarto}
-                onChange={handleChange}
-                required
-            >
-                <option value="">Selecione um quarto</option>
-                {rooms.map((room) => (
-                    <option key={room.idQuarto} value={room.numeroQuarto.toString()}>
-                        Quarto {room.numeroQuarto} - {room.tipoQuarto} (R$ {room.precoDiaria}/dia)
                     </option>
                 ))}
             </select>
