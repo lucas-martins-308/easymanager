@@ -16,26 +16,11 @@ function Navbar({isAuthenticated, handleLogout}) {
                 {isAuthenticated ? (
                     <>
                         <Link to="/map" className="navbar-link" id="navbar-map">Mapa</Link>
-                        <DropdownButton title="Reservas">
-                            <Link to="/register-reservation" className="navbar-link">Cadastrar Reserva</Link>
-                            
-                            <Link to="/booking-calendar" className="navbar-link">Calendário de Reservas</Link>
-                        </DropdownButton>
-                        <DropdownButton title="Hóspedes">
-                            <Link to="/register-customer" className="navbar-link">Cadastrar Hóspede</Link>
-                            <Link to="/hospedes" className="navbar-link">Listar Hóspedes</Link>
-                        </DropdownButton>
-                        <DropdownButton title="Estoque">
-                            <Link to="/itens-table" className="navbar-link">Cadastrar Produto</Link>
-                            <Link to="/fornecedores" className="navbar-link">Fornecedores</Link>
-                            <Link to="/stock" className="navbar-link">Inventário</Link>
-                        </DropdownButton>
+                        <Link to="/reservas" className="navbar-link">Reservas</Link>
+                        <Link to="/hospedes" className="navbar-link">Hóspedes</Link>
+                        <Link to="/estoque" className="navbar-link">Estoque</Link>
                         <ProtectedRoute allowedRoles={['adm']}>
-                            <DropdownButton title="Admin">
-                                <Link to="/register-collaborator" className="navbar-link">Usuários</Link>
-                                <Link to="/register-accommodation" className="navbar-link">Acomodações</Link>
-                                <Link to="/financial" className="navbar-link">Financeiro</Link>
-                            </DropdownButton>
+                            <Link to="/admin" className="navbar-link">Admin</Link>
                         </ProtectedRoute>
                     </>
                 ) : (

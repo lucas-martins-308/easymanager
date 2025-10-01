@@ -17,6 +17,10 @@ import RegisterCollaborator from "./pages/RegisterCollaborator/RegisterCollabora
 import RegisterAccommodation from "./pages/RegisterAccommodation/RegisterAccommodation.jsx";
 import Fornecedores from "./pages/Fornecedores/Fornecedores.jsx";
 import Hospedes from "./pages/Hospedes/Hospedes.jsx";
+import Estoque from "./pages/Estoque/Estoque.jsx";
+import Admin from "./pages/Admin/Admin.jsx";
+import HospedesList from "./pages/HospedesList/HospedesList.jsx";
+import Reservas from "./pages/Reservas/Reservas.jsx";
 
 const router = createBrowserRouter([
     {
@@ -107,10 +111,42 @@ const router = createBrowserRouter([
                 ),
             },
             {
+                path: 'reservas',
+                element: (
+                    <ProtectedRoute allowedRoles={['adm', 'func']}>
+                        <Reservas />
+                    </ProtectedRoute>
+                ),
+            },
+            {
                 path: 'hospedes',
                 element: (
                     <ProtectedRoute allowedRoles={['adm', 'func']}>
                         <Hospedes />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'hospedes-list',
+                element: (
+                    <ProtectedRoute allowedRoles={['adm', 'func']}>
+                        <HospedesList />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'estoque',
+                element: (
+                    <ProtectedRoute allowedRoles={['adm', 'func']}>
+                        <Estoque />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'admin',
+                element: (
+                    <ProtectedRoute allowedRoles={['adm']}>
+                        <Admin />
                     </ProtectedRoute>
                 ),
             },

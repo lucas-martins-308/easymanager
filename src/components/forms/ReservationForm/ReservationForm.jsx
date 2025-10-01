@@ -123,7 +123,7 @@ const ReservationForm = () => {
 
     return (
         <form className="reservation-form" onSubmit={handleSubmit}>
-            <h2>Criar Reserva</h2>
+            <h2>Cadastrar Reserva</h2>
 
             <label>Check-in:</label>
             <input

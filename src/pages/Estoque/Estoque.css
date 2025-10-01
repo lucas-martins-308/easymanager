@@ -6,7 +6,7 @@
     min-height: 32em;
 }
 
-.page-container > h2 {
+.page-container h2 {
     color: #142F0E;
     margin-bottom: 20px;
     font-size: 2rem;
@@ -14,7 +14,7 @@
     text-align: center;
 }
 
-.hospedes-sections {
+.estoque-sections {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
@@ -22,7 +22,7 @@
     justify-content: center;
 }
 
-.hospedes-card {
+.estoque-card {
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -35,23 +35,23 @@
     text-align: center;
 }
 
-.hospedes-card:hover {
+.estoque-card:hover {
     transform: scale(1.05);
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.hospedes-card:hover h2 {
+.estoque-card:hover h2 {
     color: #25591a;
 }
 
-.hospedes-card > h2 {
+.estoque-card h2 {
     color: #142F0E;
     margin: 0 0 10px 0;
     font-size: 1.5rem !important;
     font-weight: bold;
 }
 
-.hospedes-card p {
+.estoque-card p {
     color: #555;
     margin: 0;
     line-height: 1.5;
@@ -59,7 +59,7 @@
 }
 
 @media (max-width: 768px) {
-    .hospedes-sections {
+    .estoque-sections {
         grid-template-columns: 1fr;
     }
     
@@ -67,7 +67,7 @@
         padding: 15px;
     }
     
-    .page-container > h2 {
+    .page-container h2 {
         font-size: 1.8rem;
     }
-} 
+}

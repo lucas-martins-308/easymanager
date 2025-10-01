@@ -51,7 +51,7 @@ const CustomerForm = () => {
 
     return (
         <form className="customer-form" onSubmit={handleSubmit}>
-            <h2>Cadastro de Cliente</h2>
+            <h2>Cadastrar Hóspede</h2>
 
             <label>Nome Completo:</label>
             <input
