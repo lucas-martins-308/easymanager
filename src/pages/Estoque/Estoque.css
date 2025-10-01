@@ -47,7 +47,7 @@
 .estoque-card h2 {
     color: #142F0E;
     margin: 0 0 10px 0;
-    font-size: 1.5rem;
+    font-size: 1.5rem !important;
     font-weight: bold;
 }
 

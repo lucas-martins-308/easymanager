@@ -6,7 +6,7 @@
     min-height: 32em;
 }
 
-.page-container h2 {
+.page-container > h2 {
     color: #142F0E;
     margin-bottom: 20px;
     font-size: 2rem;
@@ -44,10 +44,10 @@
     color: #25591a;
 }
 
-.reservas-card h2 {
+.reservas-card > h2 {
     color: #142F0E;
     margin: 0 0 10px 0;
-    font-size: 1.5rem;
+    font-size: 1.5rem !important;
     font-weight: bold;
 }
 
@@ -67,7 +67,7 @@
         padding: 15px;
     }
     
-    .page-container h2 {
+    .page-container > h2 {
         font-size: 1.8rem;
     }
 }
