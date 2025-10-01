@@ -15,6 +15,21 @@
     font-size: 1.8rem;
 }
 
+.url-params-info {
+    background-color: #e3f2fd;
+    border-left: 4px solid #4a90e2;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.url-params-info p {
+    margin: 0;
+    color: #1565c0;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
 .reservation-form label {
     display: block;
     margin-bottom: 5px;
@@ -32,7 +47,7 @@
     border: 1px solid #ddd;
     border-radius: 5px;
     box-sizing: border-box;
-    transition: border-color 0.3s ease;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
 .reservation-form input:focus,
@@ -40,6 +55,17 @@
 .reservation-form textarea:focus {
     border-color: #142F0E;
     outline: none;
+}
+
+/* Destaque para campos preenchidos automaticamente do calendário */
+.field-from-calendar {
+    background-color: #e8f5e9;
+    border-color: #4caf50;
+}
+
+.field-from-calendar:focus {
+    background-color: #e8f5e9;
+    border-color: #142F0E;
 }
 
 .reservation-form button {
@@ -53,11 +79,19 @@
     transition: background-color 0.3s ease, transform 0.2s ease;
     display: block;
     margin: 0 auto;
+    width: 100%;
+    max-width: 200px;
 }
 
-.reservation-form button:hover {
+.reservation-form button:hover:not(:disabled) {
     background-color: #10400e;
     transform: scale(1.05);
+}
+
+.reservation-form button:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+    transform: none;
 }
 
 .reservation-summary {
@@ -80,4 +114,68 @@
     font-size: 1.1rem;
     font-weight: bold;
     margin: 0;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .reservation-form {
+        padding: 15px;
+        margin: 15px;
+    }
+
+    .reservation-form h2 {
+        font-size: 1.5rem;
+    }
+
+    .reservation-form input,
+    .reservation-form select,
+    .reservation-form textarea {
+        font-size: 0.95rem;
+    }
+
+    .reservation-form button {
+        font-size: 0.95rem;
+        max-width: 100%;
+    }
+
+    .url-params-info p {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .reservation-form {
+        padding: 12px;
+        margin: 10px;
+    }
+
+    .reservation-form h2 {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+    }
+
+    .reservation-form input,
+    .reservation-form select,
+    .reservation-form textarea {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+
+    .reservation-form button {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+    }
+
+    .reservation-summary {
+        padding: 12px;
+        margin: 12px 0;
+    }
+
+    .reservation-summary h3 {
+        font-size: 1.1rem;
+    }
+
+    .reservation-summary p {
+        font-size: 1rem;
+    }
 }

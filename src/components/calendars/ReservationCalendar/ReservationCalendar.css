@@ -58,6 +58,7 @@ h1 {
     background-color: #f8f9fa;
     border-radius: 8px;
     border: 1px solid #e0e0e0;
+    
 }
 
 .legend-item {
@@ -79,9 +80,10 @@ h1 {
     width: 100%;
     border-collapse: collapse;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
+    border-radius: 0px;
     overflow: hidden;
     background-color: white;
+    
 }
 
 .reservation-calendar-table th {
@@ -92,8 +94,9 @@ h1 {
     font-weight: 600;
     border: 1px solid #0f1f0a;
     text-transform: capitalize;
-    min-width: 140px;
+    min-width: 110px;
     position: relative;
+    
 }
 
 .reservation-calendar-table th.today {
@@ -397,5 +400,29 @@ h1 {
     .action-buttons button {
         font-size: 8px;
         padding: 2px 4px;
+    }
+}
+
+.calendar-wrapper {
+    overflow-x: auto;
+    width: 100%;
+}
+
+/* Responsividade para tabela */
+@media (max-width: 900px) {
+    .reservation-calendar-table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        box-shadow: none;
+        border-radius: 0;
+    }
+    .reservation-calendar-table thead, 
+    .reservation-calendar-table tbody, 
+    .reservation-calendar-table th, 
+    .reservation-calendar-table td, 
+    .reservation-calendar-table tr {
+        display: table;
+        width: auto;
     }
 }

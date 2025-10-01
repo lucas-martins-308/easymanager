@@ -19,8 +19,8 @@ function Admin() {
                 </Link>
 
                 <Link to="/register-accommodation" className="admin-card">
-                    <h2>Serviços</h2>
-                    <p>Cadastre, edite e controle os serviços extras oferecidos, garantindo uma melhor experiência aos hóspedes.</p>
+                    <h2>Acomodação</h2>
+                    <p>Cadastre, edite e controle as acomodações oferecidas.</p>
                 </Link>
             </div>
         </div>
