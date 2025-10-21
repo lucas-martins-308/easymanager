@@ -44,20 +44,17 @@
 }
 
 .customer-form button {
-    width: 100%;
-    background-color: #007bff;
-    color: white;
+    background-color: #f9f9f9;
+    color: #555;
     font-size: 1rem;
     padding: 12px;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
     font-weight: bold;
 }
 
 .customer-form button:hover {
-    background-color: #0056b3;
     transform: scale(1.02);
 }
 

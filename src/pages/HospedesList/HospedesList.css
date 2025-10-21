@@ -23,7 +23,6 @@
 
 .search-container {
     flex: 1;
-    max-width: 400px;
 }
 
 .search-input {
@@ -190,6 +189,32 @@
     padding: 40px;
     color: #6c757d;
     font-size: 16px;
+}
+
+.header-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    width: 100%;
+
+}
+
+.add-hospede-btn {
+    background-color: #142F0E;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: background 0.2s, transform 0.2s;
+    box-shadow: 0 2px 8px rgba(20, 47, 14, 0.08);
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+    white-space: nowrap;
 }
 
 /* Responsividade */

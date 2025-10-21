@@ -17,7 +17,7 @@ function Navbar({isAuthenticated, handleLogout}) {
                     <>
                         <Link to="/map" className="navbar-link" id="navbar-map">Mapa</Link>
                         <Link to="/booking-calendar" className="navbar-link">Reservas</Link>
-                        <Link to="/hospedes" className="navbar-link">Hóspedes</Link>
+                        <Link to="/hospedes-list" className="navbar-link">Hóspedes</Link>
                         <Link to="/estoque" className="navbar-link">Estoque</Link>
                         <ProtectedRoute allowedRoles={['adm']}>
                             <Link to="/admin" className="navbar-link">Admin</Link>

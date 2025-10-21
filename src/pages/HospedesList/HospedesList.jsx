@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'; // Adicione esta linha
 import { customerService } from '../../services/customer/customerService';
 import './HospedesList.css';
 
@@ -135,14 +136,19 @@ const HospedesList = () => {
         <div className="hospedes-container">
             <div className="hospedes-header">
                 <h1>Listagem de Hóspedes</h1>
-                <div className="search-container">
-                    <input
-                        type="text"
-                        placeholder="Buscar por nome, documento ou email..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="search-input"
-                    />
+                <div className="header-actions">
+                    <div className="search-container">
+                        <input
+                            type="text"
+                            placeholder="Buscar por nome, documento ou email..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="search-input"
+                        />
+                    </div>
+                    <Link to="/register-customer" className="add-hospede-btn">
+                        + Adicionar Novo Hóspede
+                    </Link>
                 </div>
             </div>
 
