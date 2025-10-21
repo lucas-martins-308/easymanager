@@ -47,7 +47,6 @@ const ReservationForm = () => {
         loadRooms();
     }, []);
 
-    // Atualizar campos quando os parâmetros da URL mudarem
     useEffect(() => {
         if (quartoFromUrl) {
             setFormData(prev => ({ ...prev, quarto: quartoFromUrl }));
@@ -82,7 +81,6 @@ const ReservationForm = () => {
             console.log('Quartos disponíveis:', rooms);
             console.log('Clientes disponíveis:', customers);
             
-            // Encontrar o cliente selecionado
             console.log('Procurando cliente com nome:', formData.cliente);
             console.log('Clientes disponíveis:', customers.map(c => ({ id: c.idHospede, nome: c.nomeCompleto, documento: c.documento })));
             
@@ -94,7 +92,6 @@ const ReservationForm = () => {
             }
             console.log('Cliente selecionado:', selectedCustomer);
 
-            // Encontrar o quarto selecionado
             const selectedRoom = rooms.find(room => room.numeroQuarto.toString() === formData.quarto);
             if (!selectedRoom) {
                 console.log('Tentando encontrar quarto com valor:', formData.quarto);
@@ -103,10 +100,8 @@ const ReservationForm = () => {
             }
             console.log('Quarto selecionado:', selectedRoom);
 
-            // Calcular valor total
             const valorTotal = calculateTotalValue(formData.checkIn, formData.checkOut, selectedRoom);
 
-            // Mapear dados para o formato esperado pelo backend
             const reservationData = {
                 dtCheckin: formData.checkIn,
                 dtCheckout: formData.checkOut,
@@ -141,11 +136,18 @@ const ReservationForm = () => {
 
     return (
         <form className="reservation-form" onSubmit={handleSubmit}>
+            <button
+                type="button"
+                className="back-arrow-btn"
+                onClick={() => navigate("/reservation-calendar")}
+            >
+                &#8592; Voltar
+            </button>
             <h2>Cadastrar Reserva</h2>
 
             {(quartoFromUrl || dataCheckinFromUrl) && (
                 <div className="url-params-info">
-                    <p>✓ Preenchimento automático a partir do calendário</p>
+                    <p>Preenchimento automático a partir do calendário</p>
                 </div>
             )}
 

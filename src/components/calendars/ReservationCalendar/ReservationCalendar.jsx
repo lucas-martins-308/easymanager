@@ -54,10 +54,8 @@ const ReservationCalendar = () => {
 
     const weekDays = getWeekDays(startOfWeek);
 
-    // Função para normalizar data (remover timezone e garantir meia-noite local)
     const normalizeDate = (dateString) => {
         if (!dateString) return null;
-        // Pega apenas a parte da data (YYYY-MM-DD) e cria uma data local
         const datePart = dateString.split('T')[0];
         const [year, month, day] = datePart.split('-').map(Number);
         const date = new Date(year, month - 1, day);
@@ -65,21 +63,19 @@ const ReservationCalendar = () => {
         return date;
     };
 
-    // Retorna a reserva que está no quarto e cobre o dia da célula
     const getReservationForCell = (roomNumber, date) => {
         return reservations.find(res => {
             if (!res.dataCheckin || !res.dataCheckout || !res.quarto) {
                 return false;
             }
             
-            // Usar normalizeDate para evitar problemas de timezone
+            
             const checkIn = normalizeDate(res.dataCheckin);
             const checkOut = normalizeDate(res.dataCheckout);
             const currentDate = new Date(date);
             currentDate.setHours(0, 0, 0, 0);
             
-            // A reserva aparece desde o dia do check-in até o dia ANTERIOR ao checkout
-            // Exemplo: Check-in 01/10, Check-out 03/10 -> aparece nos dias 01/10 e 02/10
+        
             const isInDateRange = currentDate >= checkIn && currentDate < checkOut;
             const isCorrectRoom = String(res.quarto) === String(roomNumber);
             
@@ -183,13 +179,13 @@ const ReservationCalendar = () => {
     };
 
     const handleCellClick = (roomNumber, date) => {
-        // Formatar a data para YYYY-MM-DD
+        
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
         const formattedDate = `${year}-${month}-${day}`;
         
-        // Navegar para a página de registro com parâmetros
+        
         navigate(`/register-reservation?quarto=${roomNumber}&dataCheckin=${formattedDate}`);
     };
 

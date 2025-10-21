@@ -16,8 +16,8 @@
 }
 
 .url-params-info {
-    background-color: #e3f2fd;
-    border-left: 4px solid #4a90e2;
+    background-color: #f9f9f9;
+    border-left: 4px solid #a8c2ab;
     padding: 12px 15px;
     margin-bottom: 20px;
     border-radius: 5px;
@@ -25,7 +25,7 @@
 
 .url-params-info p {
     margin: 0;
-    color: #1565c0;
+    color: #a8c2ab;
     font-size: 0.95rem;
     font-weight: 500;
 }
@@ -114,6 +114,24 @@
     font-size: 1.1rem;
     font-weight: bold;
     margin: 0;
+}
+
+.reservation-form .back-arrow-btn {
+    position: absolute;
+    background-color: transparent !important;
+    color: #555;
+    font-size: 1rem;
+    padding: 12px;
+    border: none;
+    cursor: pointer;
+    transition: none;
+    font-weight: bold;
+    transform: none;
+}
+
+.reservation-form .back-arrow-btn:hover {
+    transform: none;
+    transition: none;
 }
 
 /* Responsividade */
