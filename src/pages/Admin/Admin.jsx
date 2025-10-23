@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from "react-router-dom";
+
 import './Admin.css';
 
 function Admin() {
@@ -23,6 +24,7 @@ function Admin() {
                     <p>Cadastre, edite e controle as acomodações oferecidas.</p>
                 </Link>
             </div>
+            <Outlet />
         </div>
     );
 }

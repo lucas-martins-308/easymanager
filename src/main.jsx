@@ -21,6 +21,7 @@ import Estoque from "./pages/Estoque/Estoque.jsx";
 import Admin from "./pages/Admin/Admin.jsx";
 import HospedesList from "./pages/HospedesList/HospedesList.jsx";
 import Reservas from "./pages/Reservas/Reservas.jsx";
+import ReportPage from "./pages/ReportPage/ReportPage.jsx"; // 👈 IMPORT NOVO
 
 const router = createBrowserRouter([
     {
@@ -119,6 +120,14 @@ const router = createBrowserRouter([
                 ),
             },
             {
+                path: 'relatorios', // 👈 NOVA ROTA AQUI
+                element: (
+                    <ProtectedRoute allowedRoles={['adm']}>
+                        <ReportPage />
+                    </ProtectedRoute>
+                ),
+            },
+            {
                 path: 'hospedes',
                 element: (
                     <ProtectedRoute allowedRoles={['adm', 'func']}>
@@ -143,13 +152,37 @@ const router = createBrowserRouter([
                 ),
             },
             {
-                path: 'admin',
-                element: (
-                    <ProtectedRoute allowedRoles={['adm']}>
-                        <Admin />
+  path: "admin",
+  element: (
+    <ProtectedRoute allowedRoles={['adm']}>
+      <Admin />
+    </ProtectedRoute>
+  ),
+  children: [
+    {
+      path: "financeiro/relatorios",
+      element: (
+        <ProtectedRoute allowedRoles={['adm']}>
+          <ReportPage />
+        </ProtectedRoute>
+      ),
+    }
+  ],
+},
+
+
+
+
+                {
+                 path: 'report',
+                 element: (
+                    <ProtectedRoute allowedRoles={['adm', 'func']}>
+                        <ReportPage />
                     </ProtectedRoute>
-                ),
-            },
+  ),
+},
+
+
         ],
     },
 ]);

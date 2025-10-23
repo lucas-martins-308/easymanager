@@ -1,35 +1,50 @@
-.financial-container {
-    height: 500px;
-    min-height: 32em;
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+/* src/pages/Financial/Financial.css */
+.page-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Roboto', sans-serif;
+  min-height: 32em;
+}
+
+.page-container h2 {
+  color: #142F0E;
+  margin-bottom: 20px;
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
 }
 
 .month-selector {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
 }
 
-.month-selector label {
-    font-size: 16px;
-    font-weight: bold;
-    margin-right: 10px;
+.custom-datepicker {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: #fff;
+  box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
+  transition: all 0.2s ease;
 }
 
-.month-selector input[type="month"] {
-    padding: 5px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.custom-datepicker:focus {
+  outline: none;
+  border-color: #36A2EB;
+  box-shadow: 0 0 0 2px rgba(54, 162, 235, 0.2);
 }
 
-.chart-container {
-    width: 100%;
-    height: 400px;
+@media (max-width: 768px) {
+  .page-container {
+    padding: 15px;
+  }
+  
+  .page-container h2 {
+    font-size: 1.8rem;
+  }
 }
