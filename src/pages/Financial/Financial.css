@@ -1,50 +1,88 @@
-/* src/pages/Financial/Financial.css */
 .page-container {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-  font-family: 'Roboto', sans-serif;
-  min-height: 32em;
+    padding: 15px;
+    max-width: 1000px; /* um pouco menor que antes */
+    margin: 0 auto;
+    font-family: 'Roboto', sans-serif;
+    min-height: 28em; /* menor altura mínima */
 }
 
 .page-container h2 {
-  color: #142F0E;
-  margin-bottom: 20px;
-  font-size: 2rem;
-  font-weight: bold;
-  text-align: center;
+    color: #142F0E;
+    margin-bottom: 15px;
+    font-size: 1.8rem; /* menor título */
+    font-weight: bold;
+    text-align: center;
 }
 
-.month-selector {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1rem;
+.filters label {
+    font-size: 1.2rem;
+    margin-right: 10px;
 }
 
-.custom-datepicker {
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  font-size: 1rem;
-  cursor: pointer;
-  background-color: #fff;
-  box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
-  transition: all 0.2s ease;
+.filters select {
+    font-size: 1.4rem;
+    padding: 5px 8px;
+    margin-left: 5px;
 }
 
-.custom-datepicker:focus {
-  outline: none;
-  border-color: #36A2EB;
-  box-shadow: 0 0 0 2px rgba(54, 162, 235, 0.2);
+.filters input {
+    font-size: 0.8rem;
+    padding: 5px 8px;
+    margin-left: 5px;
 }
+
+.table-container {
+    max-height: 350px; /* menor que antes */
+    overflow-y: auto;
+    margin-top: 10px;
+}
+
+.table-container table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem; /* fontes menores */
+}
+
+.table-container th,
+.table-container td {
+    padding: 6px 8px;
+    text-align: center;
+}
+
+.table-container th {
+    background-color: #f2f2f2;
+    font-weight: 600;
+
+    /* FIXAR CABEÇALHO */
+    position: sticky;
+    top: 0;
+    z-index: 1; /* garante que fique acima das linhas */
+}
+
+.table-container tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.chart-container {
+    height: 350px; /* gráfico menor */
+    margin-top: 20px;
+}
+
+/* .tabela-reservas{
+    position: fixed;
+} */
 
 @media (max-width: 768px) {
-  .page-container {
-    padding: 15px;
-  }
-  
-  .page-container h2 {
-    font-size: 1.8rem;
-  }
+    .page-container {
+        padding: 10px;
+    }
+
+    .page-container h2 {
+        font-size: 1.5rem;
+    }
+
+    .table-container table {
+        font-size: 0.75rem;
+    }
 }
+
