@@ -268,3 +268,39 @@
         font-size: 1.25rem;
     }
 }
+
+/* Define larguras para cada coluna — ajuste como preferir */
+.hospedes-table th:nth-child(1),
+.hospedes-table td:nth-child(1) {
+    width: 25%; /* Nome */
+}
+
+.hospedes-table th:nth-child(2),
+.hospedes-table td:nth-child(2) {
+    width: 15%; /* Documento */
+}
+
+.hospedes-table th:nth-child(3),
+.hospedes-table td:nth-child(3) {
+    width: 12%; /* Telefone */
+}
+
+.hospedes-table th:nth-child(4),
+.hospedes-table td:nth-child(4) {
+    width: 18%; /* Email */
+}
+
+.hospedes-table th:nth-child(5),
+.hospedes-table td:nth-child(5) {
+    width: 12%; /* Data de Nascimento */
+}
+
+.hospedes-table th:nth-child(6),
+.hospedes-table td:nth-child(6) {
+    width: 10%; /* Gênero */
+}
+
+.hospedes-table th:nth-child(7),
+.hospedes-table td:nth-child(7) {
+    width: 8%; /* Ações */
+}
