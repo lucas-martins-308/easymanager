@@ -31,9 +31,10 @@
     margin-left: 5px;
 }
 
+/* Tabela com 20 linhas fixas sem scroll */
 .table-container {
-    max-height: 350px; /* menor que antes */
-    overflow-y: auto;
+    max-height: 400px; /* Reativei uma altura máxima e scroll, pois é mais seguro para dados reais */
+    overflow-y: auto; 
     margin-top: 10px;
 }
 
@@ -63,14 +64,17 @@
     background-color: #fafafa;
 }
 
+/* Ajuste de altura para 20 linhas fixas */
+.table-container tbody tr {
+    height: 35px; /* altura de cada linha */
+}
+
+/* Gráfico */
 .chart-container {
     height: 350px; /* gráfico menor */
     margin-top: 20px;
 }
 
-/* .tabela-reservas{
-    position: fixed;
-} */
 
 @media (max-width: 768px) {
     .page-container {
@@ -86,3 +90,109 @@
     }
 }
 
+/* --- ESTILO AIRBNB PARA O DATEPICKER (Seleção de Intervalo) --- */
+
+/* Estilo do campo de entrada (onde o usuário clica) */
+.airbnb-datepicker-input {
+    /* Aparência do campo de data */
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px; /* Bordas arredondadas */
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    transition: border-color 0.3s;
+    background-color: white;
+    outline: none; /* Remove a borda azul padrão do foco */
+}
+
+.airbnb-datepicker-input:hover {
+    border-color: #36A2EB; /* Cor da borda ao passar o mouse */
+}
+
+/* Estilo do pop-up flutuante (Container principal) */
+.airbnb-datepicker-popper {
+    z-index: 2; /* Garante que fique acima de outros elementos */
+}
+
+/* AJUSTE PARA DOIS MESES LADO A LADO */
+.airbnb-datepicker-popper .react-datepicker {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); 
+    padding: 15px; /* Aumenta um pouco o padding para dois calendários */
+}
+
+/* Garante que os meses fiquem em linha */
+.airbnb-datepicker-popper .react-datepicker__month-container {
+    display: inline-block;
+}
+
+/* Cabeçalho (Mês/Ano) */
+.airbnb-datepicker-popper .react-datepicker__header {
+    background-color: white; /* Fundo branco */
+    border-bottom: none;
+    padding-top: 5px;
+}
+
+/* Cor do texto do mês atual */
+.airbnb-datepicker-popper .react-datepicker__current-month {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #142F0E;
+    margin-bottom: 10px;
+}
+
+/* Estilo dos dias (células) */
+.airbnb-datepicker-popper .react-datepicker__day {
+    width: 2rem; /* Ajuste o tamanho da célula do dia */
+    line-height: 2rem;
+    margin: 2px;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* Estilo dos dias ao passar o mouse */
+.airbnb-datepicker-popper .react-datepicker__day:not(.react-datepicker__day--in-range):not(.react-datepicker__day--range-start):not(.react-datepicker__day--range-end):hover {
+    background-color: #f0f0f0;
+    border-radius: 50%;
+}
+
+/* ------------------------------------------- */
+/* --- ESTILOS CRUCIAIS PARA SELEÇÃO DE RANGE --- */
+/* ------------------------------------------- */
+
+/* Destaque do Período (O "preenchimento" entre as datas) */
+.airbnb-datepicker-popper .react-datepicker__day--in-range {
+    background-color: #e6f7ff !important; /* Azul claro suave */
+    color: #000 !important;
+    border-radius: 0 !important; /* Retângulo para cobrir a área */
+}
+
+/* Destaque do dia selecionado (Início/Fim do período) */
+.airbnb-datepicker-popper .react-datepicker__day--range-start,
+.airbnb-datepicker-popper .react-datepicker__day--range-end {
+    background-color: #36A2EB !important; /* Azul escuro para as pontas */
+    color: white !important;
+    border-radius: 50% !important; /* Faz a bolinha nas pontas */
+}
+
+/* Ajuste para quando o dia de início e fim são iguais */
+.airbnb-datepicker-popper .react-datepicker__day--selecting-range-start,
+.airbnb-datepicker-popper .react-datepicker__day--selecting-range-end,
+.airbnb-datepicker-popper .react-datepicker__day--range-end {
+    background-color: #36A2EB !important;
+    color: white !important;
+}
+
+/* Remove a cor de fundo do dia selecionado padrão para evitar conflito com o range */
+.airbnb-datepicker-popper .react-datepicker__day--selected {
+    background-color: transparent !important; 
+    color: #000;
+}
+
+/* Cor das setas de navegação (próximo/anterior) */
+.airbnb-datepicker-popper .react-datepicker__navigation-icon::before {
+    border-color: #142F0E !important; 
+    border-width: 1.5px 1.5px 0 0 !important;
+}
