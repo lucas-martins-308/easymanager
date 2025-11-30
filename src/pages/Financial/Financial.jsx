@@ -40,10 +40,31 @@ const Financial = () => {
       setDailyRevenue([]);
       setLabels([]);
 
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Token não encontrado. Faça login novamente.');
+      }
+
+      console.log('Token encontrado:', token ? 'Sim' : 'Não');
+      console.log('URL da requisição:', `${API_URL}/api/reports/month?month=${month}&year=${year}`);
+
       const response = await fetch(
-        `${API_URL}/api/reports/month?month=${month}&year=${year}`
+        `${API_URL}/api/reports/month?month=${month}&year=${year}`,
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        }
       );
-      if (!response.ok) throw new Error("Erro ao buscar o relatório");
+      
+      if (!response.ok) {
+        if (response.status === 401) {
+          throw new Error('Token inválido ou expirado. Faça login novamente.');
+        }
+        throw new Error("Erro ao buscar o relatório");
+      }
 
       const data = await response.json();
       if (data.detalhes) data.detalhes.sort((a, b) => a.idReserva - b.idReserva);
