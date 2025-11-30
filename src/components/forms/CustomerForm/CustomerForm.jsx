@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CustomerForm.css";
 import { customerService } from '../../../services/customer/customerService';
+import CountrySelect from "../../../components/CountrySelect"; // ajuste o caminho conforme a pasta
+
 
 const CustomerForm = () => {
     const [customerData, setCustomerData] = useState({
@@ -121,14 +123,12 @@ const CustomerForm = () => {
                     <option value="Passaporte">Passaporte</option>
                 </select>
 
-                <label>País:</label>
-                <input
-                    type="text"
-                    name="country"
-                    value={customerData.country}
-                    onChange={handleChange}
-                    required
-                />
+               <label>País:</label>
+            <CountrySelect
+            value={customerData.country}
+                onChange={(value) => setCustomerData({ ...customerData, country: value })}
+/>
+
 
                 <label>Gênero:</label>
                 <select

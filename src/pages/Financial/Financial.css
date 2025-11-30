@@ -1,35 +1,198 @@
-.financial-container {
-    height: 500px;
-    min-height: 32em;
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.page-container {
+    padding: 15px;
+    max-width: 1000px; /* um pouco menor que antes */
+    margin: 0 auto;
+    font-family: 'Roboto', sans-serif;
+    min-height: 28em; /* menor altura mínima */
 }
 
-.month-selector {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-.month-selector label {
-    font-size: 16px;
+.page-container h2 {
+    color: #142F0E;
+    margin-bottom: 15px;
+    font-size: 1.8rem; /* menor título */
     font-weight: bold;
+    text-align: center;
+}
+
+.filters label {
+    font-size: 1.2rem;
     margin-right: 10px;
 }
 
-.month-selector input[type="month"] {
-    padding: 5px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.filters select {
+    font-size: 1.4rem;
+    padding: 5px 8px;
+    margin-left: 5px;
 }
 
-.chart-container {
+.filters input {
+    font-size: 0.8rem;
+    padding: 5px 8px;
+    margin-left: 5px;
+}
+
+/* Tabela com 20 linhas fixas sem scroll */
+.table-container {
+    max-height: 400px; /* Reativei uma altura máxima e scroll, pois é mais seguro para dados reais */
+    overflow-y: auto; 
+    margin-top: 10px;
+}
+
+.table-container table {
     width: 100%;
-    height: 400px;
+    border-collapse: collapse;
+    font-size: 0.85rem; /* fontes menores */
+}
+
+.table-container th,
+.table-container td {
+    padding: 6px 8px;
+    text-align: center;
+}
+
+.table-container th {
+    background-color: #f2f2f2;
+    font-weight: 600;
+
+    /* FIXAR CABEÇALHO */
+    position: sticky;
+    top: 0;
+    z-index: 1; /* garante que fique acima das linhas */
+}
+
+.table-container tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+/* Ajuste de altura para 20 linhas fixas */
+.table-container tbody tr {
+    height: 35px; /* altura de cada linha */
+}
+
+/* Gráfico */
+.chart-container {
+    height: 350px; /* gráfico menor */
+    margin-top: 20px;
+}
+
+
+@media (max-width: 768px) {
+    .page-container {
+        padding: 10px;
+    }
+
+    .page-container h2 {
+        font-size: 1.5rem;
+    }
+
+    .table-container table {
+        font-size: 0.75rem;
+    }
+}
+
+/* --- ESTILO AIRBNB PARA O DATEPICKER (Seleção de Intervalo) --- */
+
+/* Estilo do campo de entrada (onde o usuário clica) */
+.airbnb-datepicker-input {
+    /* Aparência do campo de data */
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px; /* Bordas arredondadas */
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    transition: border-color 0.3s;
+    background-color: white;
+    outline: none; /* Remove a borda azul padrão do foco */
+}
+
+.airbnb-datepicker-input:hover {
+    border-color: #36A2EB; /* Cor da borda ao passar o mouse */
+}
+
+/* Estilo do pop-up flutuante (Container principal) */
+.airbnb-datepicker-popper {
+    z-index: 2; /* Garante que fique acima de outros elementos */
+}
+
+/* AJUSTE PARA DOIS MESES LADO A LADO */
+.airbnb-datepicker-popper .react-datepicker {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); 
+    padding: 15px; /* Aumenta um pouco o padding para dois calendários */
+}
+
+/* Garante que os meses fiquem em linha */
+.airbnb-datepicker-popper .react-datepicker__month-container {
+    display: inline-block;
+}
+
+/* Cabeçalho (Mês/Ano) */
+.airbnb-datepicker-popper .react-datepicker__header {
+    background-color: white; /* Fundo branco */
+    border-bottom: none;
+    padding-top: 5px;
+}
+
+/* Cor do texto do mês atual */
+.airbnb-datepicker-popper .react-datepicker__current-month {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #142F0E;
+    margin-bottom: 10px;
+}
+
+/* Estilo dos dias (células) */
+.airbnb-datepicker-popper .react-datepicker__day {
+    width: 2rem; /* Ajuste o tamanho da célula do dia */
+    line-height: 2rem;
+    margin: 2px;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* Estilo dos dias ao passar o mouse */
+.airbnb-datepicker-popper .react-datepicker__day:not(.react-datepicker__day--in-range):not(.react-datepicker__day--range-start):not(.react-datepicker__day--range-end):hover {
+    background-color: #f0f0f0;
+    border-radius: 50%;
+}
+
+/* ------------------------------------------- */
+/* --- ESTILOS CRUCIAIS PARA SELEÇÃO DE RANGE --- */
+/* ------------------------------------------- */
+
+/* Destaque do Período (O "preenchimento" entre as datas) */
+.airbnb-datepicker-popper .react-datepicker__day--in-range {
+    background-color: #e6f7ff !important; /* Azul claro suave */
+    color: #000 !important;
+    border-radius: 0 !important; /* Retângulo para cobrir a área */
+}
+
+/* Destaque do dia selecionado (Início/Fim do período) */
+.airbnb-datepicker-popper .react-datepicker__day--range-start,
+.airbnb-datepicker-popper .react-datepicker__day--range-end {
+    background-color: #36A2EB !important; /* Azul escuro para as pontas */
+    color: white !important;
+    border-radius: 50% !important; /* Faz a bolinha nas pontas */
+}
+
+/* Ajuste para quando o dia de início e fim são iguais */
+.airbnb-datepicker-popper .react-datepicker__day--selecting-range-start,
+.airbnb-datepicker-popper .react-datepicker__day--selecting-range-end,
+.airbnb-datepicker-popper .react-datepicker__day--range-end {
+    background-color: #36A2EB !important;
+    color: white !important;
+}
+
+/* Remove a cor de fundo do dia selecionado padrão para evitar conflito com o range */
+.airbnb-datepicker-popper .react-datepicker__day--selected {
+    background-color: transparent !important; 
+    color: #000;
+}
+
+/* Cor das setas de navegação (próximo/anterior) */
+.airbnb-datepicker-popper .react-datepicker__navigation-icon::before {
+    border-color: #142F0E !important; 
+    border-width: 1.5px 1.5px 0 0 !important;
 }

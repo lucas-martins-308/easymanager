@@ -3,6 +3,9 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import Topbar from "./components/TopBar/TopBar.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import { AuthProvider, useAuth } from './pages/auth/AuthContext.jsx';
+import ReportPage from "./pages/ReportPage/ReportPage.jsx";
+
+
 
 function AppContent() {
     const { isAuthenticated, handleLogout } = useAuth();
