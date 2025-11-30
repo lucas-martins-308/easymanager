@@ -1,12 +1,15 @@
-import './ItensTable.css';
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { itemService } from '../../services/item/itemService';
+import './ItensTable.css';
 
-function ItensTable() {
+const ItensList = () => {
     const [itens, setItens] = useState([]);
-    const [editingIndex, setEditingIndex] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [editingItem, setEditingItem] = useState(null);
     const [formData, setFormData] = useState({});
-    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         loadItens();
@@ -17,130 +20,215 @@ function ItensTable() {
             setLoading(true);
             const data = await itemService.getAll();
             setItens(data);
-        } catch (error) {
-            console.error('Erro ao carregar itens:', error);
-            console.log('Erro ao carregar itens');
+            setError(null);
+        } catch (err) {
+            setError('Erro ao carregar itens');
+            console.error('Erro ao carregar itens:', err);
         } finally {
             setLoading(false);
         }
     };
 
-    const handleEditClick = (index) => {
-        setEditingIndex(index);
-        setFormData(itens[index]);
+    const handleEdit = (item) => {
+        setEditingItem(item);
+        setFormData({
+            nomeItem: item.nomeItem || '',
+            quantidade: item.quantidade || '',
+            preco: item.preco || '',
+            dtValidade: item.dtValidade ? item.dtValidade.split('T')[0] : ''
+        });
     };
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
-
-    const handleSaveClick = async () => {
+    const handleSave = async () => {
         try {
             setLoading(true);
-            const itemToUpdate = itens[editingIndex];
-            await itemService.update(itemToUpdate.idItem, formData);
-            
-            // Recarregar a lista de itens
+
+            await itemService.update(editingItem.idItem, formData);
+
             await loadItens();
-            
-            setEditingIndex(null);
+            setEditingItem(null);
             setFormData({});
-            console.log('Item atualizado com sucesso!');
-        } catch (error) {
-            console.error('Erro ao atualizar item:', error);
-            console.log('Erro ao atualizar item');
+        } catch (err) {
+            setError('Erro ao atualizar item');
+            console.error('Erro ao atualizar item:', err);
         } finally {
             setLoading(false);
         }
     };
 
-    const handleCancelClick = () => {
-        setEditingIndex(null);
+    const handleCancel = () => {
+        setEditingItem(null);
         setFormData({});
     };
 
+    const handleDelete = async (id) => {
+        if (window.confirm('Tem certeza que deseja excluir este item?')) {
+            try {
+                setLoading(true);
+                await itemService.delete(id);
+                await loadItens();
+            } catch (err) {
+                setError('Erro ao excluir item');
+                console.error('Erro ao excluir item:', err);
+            } finally {
+                setLoading(false);
+            }
+        }
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value} = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const filteredItens = itens.filter(
+        (item) =>
+            item.nomeItem?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            String(item.preco).includes(searchTerm)
+    );
+
+    if (loading && itens.length === 0) {
+        return (
+            <div className="itens-container">
+                <div className="loading">Carregando itens...</div>
+            </div>
+        );
+    }
+
     return (
-        <div className="itens-table">
-            <h2>Itens Cadastrados</h2>
-            {loading ? (
-                <p>Carregando itens...</p>
-            ) : itens.length > 0 ? (
-                <table>
+        <div className="itens-container">
+            <div className="itens-header">
+                <h1>Listagem de Itens</h1>
+                <div className="header-actions">
+                    <input
+                        type="text"
+                        placeholder="Buscar por nome..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="search-input"
+                    />
+
+                    <Link to="/itens-table" className="add-item-btn">
+                        + Adicionar Novo Item
+                    </Link>
+                </div>
+            </div>
+
+            {error && <div className="error-message">{error}</div>}
+
+            <div className="itens-table-container">
+                <table className="itens-table">
                     <thead>
-                    <tr>
-                        <th>Nome do Item</th>
-                        <th>Quantidade</th>
-                        <th>Preço</th>
-                        <th>Data de Validade</th>
-                        <th>Ações</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {itens.map((item, index) => (
-                        <tr key={item.idItem}>
-                            {editingIndex === index ? (
-                                <>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            name="nomeItem"
-                                            value={formData.nomeItem || ''}
-                                            onChange={handleInputChange}
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="number"
-                                            name="quantidade"
-                                            value={formData.quantidade || ''}
-                                            onChange={handleInputChange}
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="number"
-                                            step="0.01"
-                                            name="preco"
-                                            value={formData.preco || ''}
-                                            onChange={handleInputChange}
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="date"
-                                            name="dtValidade"
-                                            value={formData.dtValidade || ''}
-                                            onChange={handleInputChange}
-                                        />
-                                    </td>
-                                    <td>
-                                        <button onClick={handleSaveClick} disabled={loading}>
-                                            {loading ? 'Salvando...' : 'Salvar'}
-                                        </button>
-                                        <button onClick={handleCancelClick} disabled={loading}>Cancelar</button>
-                                    </td>
-                                </>
-                            ) : (
-                                <>
-                                    <td>{item.nomeItem}</td>
-                                    <td>{item.quantidade}</td>
-                                    <td>R$ {parseFloat(item.preco).toFixed(2)}</td>
-                                    <td>{item.dtValidade}</td>
-                                    <td>
-                                        <button onClick={() => handleEditClick(index)}>Editar</button>
-                                    </td>
-                                </>
-                            )}
+                        <tr>
+                            <th>Nome do Item</th>
+                            <th>Quantidade</th>
+                            <th>Preço</th>
+                            <th>Data de Validade</th>
+                            <th>Ações</th>
                         </tr>
-                    ))}
+                    </thead>
+
+                    <tbody>
+                        {filteredItens.length === 0 ? (
+                            <tr>
+                                <td colSpan="5" className="no-data">
+                                    {searchTerm
+                                        ? 'Nenhum item encontrado para a busca.'
+                                        : 'Nenhum item cadastrado.'}
+                                </td>
+                            </tr>
+                        ) : (
+                            filteredItens.map((item) => (
+                                <tr key={item.idItem}>
+                                    {editingItem?.idItem === item.idItem ? (
+                                        <>
+                                            <td>
+                                                <input
+                                                    type="text"
+                                                    name="nomeItem"
+                                                    value={formData.nomeItem}
+                                                    onChange={handleInputChange}
+                                                    className="edit-input"
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    type="number"
+                                                    name="quantidade"
+                                                    value={formData.quantidade}
+                                                    onChange={handleInputChange}
+                                                    className="edit-input"
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    type="number"
+                                                    step="0.01"
+                                                    name="preco"
+                                                    value={formData.preco}
+                                                    onChange={handleInputChange}
+                                                    className="edit-input"
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    type="date"
+                                                    name="dtValidade"
+                                                    value={formData.dtValidade}
+                                                    onChange={handleInputChange}
+                                                    className="edit-input"
+                                                />
+                                            </td>
+
+                                            <td>
+                                                <div className="action-buttons">
+                                                    <button onClick={handleSave} className="save-btn">
+                                                        Salvar
+                                                    </button>
+                                                    <button onClick={handleCancel} className="cancel-btn">
+                                                        Cancelar
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <td>{item.nomeItem}</td>
+                                            <td>{item.quantidade}</td>
+                                            <td>R$ {parseFloat(item.preco).toFixed(2)}</td>
+                                            <td>{item.dtValidade}</td>
+
+                                            <td>
+                                                <div className="action-buttons">
+                                                    <button
+                                                        onClick={() => handleEdit(item)}
+                                                        className="edit-btn"
+                                                    >
+                                                        Editar
+                                                    </button>
+
+                                                    <button
+                                                        onClick={() => handleDelete(item.idItem)}
+                                                        className="delete-btn"
+                                                    >
+                                                        Excluir
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </>
+                                    )}
+                                </tr>
+                            ))
+                        )}
                     </tbody>
                 </table>
-            ) : (
-                <p>Nenhum item cadastrado.</p>
-            )}
+            </div>
+
+            <div className="itens-summary">
+                <p>Total de itens: {filteredItens.length}</p>
+            </div>
         </div>
     );
-}
+};
 
-export default ItensTable;
+export default ItensList;

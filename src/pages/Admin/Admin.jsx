@@ -23,6 +23,11 @@ function Admin() {
                     <h2>Acomodação</h2>
                     <p>Cadastre, edite e controle as acomodações oferecidas.</p>
                 </Link>
+                <Link to="/fornecedores" className="admin-card">
+                    <h2>Fornecedores</h2>
+                    <p>Gerencie sua lista de fornecedores.</p>
+                </Link>
+
             </div>
             <Outlet />
         </div>
