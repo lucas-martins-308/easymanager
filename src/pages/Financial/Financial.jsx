@@ -14,6 +14,7 @@ import {
   Legend,
 } from "chart.js";
 import "./Financial.css";
+import { API_URL } from "../../config/constants";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 registerLocale("pt-BR", ptBR);
@@ -40,7 +41,7 @@ const Financial = () => {
       setLabels([]);
 
       const response = await fetch(
-        `http://localhost:3000/api/reports/month?month=${month}&year=${year}`
+        `${API_URL}/api/reports/month?month=${month}&year=${year}`
       );
       if (!response.ok) throw new Error("Erro ao buscar o relatório");
 
